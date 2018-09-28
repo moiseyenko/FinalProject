@@ -8,14 +8,16 @@ public class Client extends Entity {
 	private String lastName;
 	private String passport;
 	private String nationality;
+	private boolean blacklist;
 
-	public Client(int id, String firstName, String lastName, String passport, String nationality, boolean removed) {
-		super(removed);
+	public Client(int id, String firstName, String lastName, String passport, String nationality, boolean blacklist) {
+		super();
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.passport = passport;
 		this.nationality = nationality;
+		this.blacklist = blacklist;
 	}
 
 	public Client(String firstName, String lastName, String passport, String nationality) {
@@ -65,6 +67,14 @@ public class Client extends Entity {
 	public void setNationality(String nationality) {
 		this.nationality = nationality;
 	}
+	
+	public boolean isBlacklist() {
+		return blacklist;
+	}
+
+	public void setBlacklist(boolean blacklist) {
+		this.blacklist = blacklist;
+	}
 
 	@Override
 	public int hashCode() {
@@ -75,6 +85,7 @@ public class Client extends Entity {
 		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
 		result = prime * result + ((nationality == null) ? 0 : nationality.hashCode());
 		result = prime * result + ((passport == null) ? 0 : passport.hashCode());
+		result = prime * result + (blacklist ? 1231 : 1237);
 		return result;
 	}
 
@@ -109,13 +120,15 @@ public class Client extends Entity {
 				return false;
 		} else if (!passport.equals(other.passport))
 			return false;
+		if (blacklist != other.blacklist)
+			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
 		return super.toString() + " id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", passport="
-				+ passport + ", nationality=" + nationality;
+				+ passport + ", nationality=" + nationality +": blacklist=" + blacklist;
 	}
 
 }

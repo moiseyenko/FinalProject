@@ -13,7 +13,7 @@ public class BackToClientmainCommand implements ActionCommand {
 
 	@Override
 	public Router execute(HttpServletRequest request) {
-		System.out.println("in BackOrderCommand " + request.getSession().getAttribute("sessionData"));
+		System.out.println("in BackToClientmainCommand " + request.getSession().getAttribute("sessionData"));
 		Router router = new Router();
 		String page = null;
 		SessionData sessionData = (SessionData) request.getSession().getAttribute("sessionData");

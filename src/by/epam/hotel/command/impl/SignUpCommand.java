@@ -22,9 +22,9 @@ import by.epam.hotel.util.MessageManager;
 
 public class SignUpCommand implements ActionCommand {
 	private static final Logger LOG = LogManager.getLogger(SignUpCommand.class);
-	private static final String PARAM_LOGIN = "login";
-	private static final String PARAM_PASSWORD = "password";
-	private static final String PARAM_EMAIL = "email";
+	private final String PARAM_LOGIN = "login";
+	private final String PARAM_PASSWORD = "password";
+	private final String PARAM_EMAIL = "email";
 
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {

@@ -69,8 +69,8 @@ public class NationalityDao extends AbstractDao<String, Nationality> {
 			}
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
-				LOG.error("Finding all nationalities error: {}", exc);
-				throw new DaoException("Finding all nationalities error", exc);
+				LOG.error("Finding existing nationalities error: {}", exc);
+				throw new DaoException("Finding existing nationalities error", exc);
 			}
 		}
 		return nationalities;

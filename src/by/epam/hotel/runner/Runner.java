@@ -17,7 +17,6 @@ import java.util.List;
 import by.epam.hotel.dao.DaoFieldType;
 import by.epam.hotel.dao.TransactionHelper;
 import by.epam.hotel.dao.entity.Account;
-import by.epam.hotel.dao.entity.ClassRoomType;
 import by.epam.hotel.dao.entity.Client;
 import by.epam.hotel.dao.entity.Nationality;
 import by.epam.hotel.dao.entity.Order;
@@ -32,13 +31,23 @@ import by.epam.hotel.exception.ServiceException;
 
 public class Runner {
 	public static void main(String[] args) throws ParseException, DaoException, ServiceException, Exception {
-		String login = "temp1";
+		String login = "temp";
 		String password = "temp";
-		String email = "temp2@mail.ru";
+		String email = "temp@mail.ru";
 		AccountDao accountDao = new AccountDao();
 		OrderDao orderDao = new OrderDao();
+		NationalityDao nationDao = new NationalityDao();
+		RoomDao roomDao =  new RoomDao();
 		
 		try (TransactionHelper helper = new TransactionHelper()) {
+			helper.doOperation(roomDao);
+			List<Room> rooms = roomDao.showEmptyRoom(3, "Стандарт", LocalDate.parse("2018-10-02"), LocalDate.parse("2018-10-03"));
+			System.out.println(rooms);
+			boolean flag = rooms.contains(new Room(28, "Стандарт", 3, BigDecimal.valueOf(140.0)));
+			System.out.println(flag);
+		}
+		
+		/*try (TransactionHelper helper = new TransactionHelper()) {
 			helper.doOperation(accountDao);
 			try {
 				
@@ -50,7 +59,7 @@ public class Runner {
 				// throw new ServiceException(e);
 			}
 			helper.commit();
-		}
+		}*/
 		/*try(TransactionHelper helper = new TransactionHelper()){
 			helper.doOperation(orderDao);
 			for(Order items:orderDao.findAll()) {

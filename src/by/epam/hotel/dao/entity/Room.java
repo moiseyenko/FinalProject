@@ -6,11 +6,11 @@ public class Room extends Entity {
 
 	private static final long serialVersionUID = -5676280733157722525L;
 	private int number;
-	private ClassRoomType classRoom;
+	private String classRoom;
 	private int capacity;
 	private BigDecimal price;
 
-	public Room(int number, ClassRoomType classRoom, int capacity, BigDecimal price, boolean removed) {
+	public Room(int number, String classRoom, int capacity, BigDecimal price, boolean removed) {
 		super(removed);
 		this.number = number;
 		this.classRoom = classRoom;
@@ -18,7 +18,7 @@ public class Room extends Entity {
 		this.price = price;
 	}
 	
-	public Room(int number, ClassRoomType classRoom, int capacity, BigDecimal price) {
+	public Room(int number, String classRoom, int capacity, BigDecimal price) {
 		super();
 		this.number = number;
 		this.classRoom = classRoom;
@@ -34,11 +34,11 @@ public class Room extends Entity {
 		this.number = number;
 	}
 
-	public ClassRoomType getClassRoom() {
+	public String getClassRoom() {
 		return classRoom;
 	}
 
-	public void setClassRoom(ClassRoomType classRoom) {
+	public void setClassRoom(String classRoom) {
 		this.classRoom = classRoom;
 	}
 
@@ -80,7 +80,10 @@ public class Room extends Entity {
 		Room other = (Room) obj;
 		if (capacity != other.capacity)
 			return false;
-		if (classRoom != other.classRoom)
+		if (classRoom == null) {
+			if (other.classRoom != null)
+				return false;
+		} else if (!classRoom.equals(other.classRoom))
 			return false;
 		if (number != other.number)
 			return false;
@@ -97,5 +100,4 @@ public class Room extends Entity {
 		return super.toString() + ", number=" + number + ", classRoom=" + classRoom + ", capacity=" + capacity
 				+ ", price=" + price;
 	}
-
 }

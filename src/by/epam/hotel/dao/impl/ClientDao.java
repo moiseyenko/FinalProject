@@ -21,12 +21,12 @@ public class ClientDao extends AbstractDao<Integer, Client> {
 	private static final Logger LOG = LogManager.getLogger(ClientDao.class);
 
 	private static final String FIND_CLIENT = "SELECT `client`.`id`, `client`.`first_name`, `client`.`last_name`, "
-			+ "`client`.`passport`, `client`.`nationality_id`, `client`.`removed` "
+			+ "`client`.`passport`, `client`.`nationality_id`, `client`.`blacklist` "
 			+ "FROM `client` "
 			+ "WHERE `client`.`first_name` = ? AND `client`.`last_name` = ? AND `client`.`passport` = ? "
 			+ "AND `client`.`nationality_id` = ?;";
 	private static final String FIND_CLIENT_BY_ID = "SELECT `client`.`id`, `client`.`first_name`, `client`.`last_name`, "
-			+ "`client`.`passport`, `client`.`nationality_id`, `client`.`removed` "
+			+ "`client`.`passport`, `client`.`nationality_id`, `client`.`blacklist` "
 			+ "FROM `client`" 
 			+ "WHERE `client`.`id` = ?;";
 	private static final String DELETE_CLIENT = "DELETE FROM `client` WHERE `client`.`id` = ?;";
@@ -36,9 +36,9 @@ public class ClientDao extends AbstractDao<Integer, Client> {
 			+ "`client`.`passport` = ?,`client`.`nationality_id` = ? "
 			+ "WHERE `client`.`id` = ?;";
 	private static final String FIND_ALL = "SELECT `client`.`id`, `client`.`first_name`, `client`.`last_name`, "
-			+ "`client`.`passport`, `client`.`nationality_id`, `client`.`removed` "
+			+ "`client`.`passport`, `client`.`nationality_id`, `client`.`blacklist` "
 			+ "FROM `client`;";
-	private final String CHANGE_REMOVED = "UPDATE `client` SET `client`.`removed` = ? " + "WHERE `client`.`id` = ?;";
+	private final String CHANGE_BLACKLIST = "UPDATE `client` SET `client`.`blacklist` = ? " + "WHERE `client`.`id` = ?;";
 
 	@Override
 	public List<Client> findAll() throws DaoException {
@@ -170,9 +170,13 @@ public class ClientDao extends AbstractDao<Integer, Client> {
 
 	@Override
 	public boolean changeRemoved(Client entity) throws DaoException {
+		throw new UnsupportedOperationException("Client class doesn't support specified method");
+	}
+	
+	public boolean changeBlackList(Client entity) throws DaoException {
 		try {
-			try (PreparedStatement statement = connection.prepareStatement(CHANGE_REMOVED)) {
-				statement.setInt(1, entity.isRemoved() ? 0 : 1);
+			try (PreparedStatement statement = connection.prepareStatement(CHANGE_BLACKLIST)) {
+				statement.setInt(1, entity.isBlacklist() ? 0 : 1);
 				statement.setInt(2, entity.getId());
 				if (statement.executeUpdate() > 0) {
 					return true;
@@ -180,23 +184,31 @@ public class ClientDao extends AbstractDao<Integer, Client> {
 			}
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
-				LOG.error("Change client removed flag error: {}", exc);
-				throw new DaoException("Change client removed flag error", exc);
+				LOG.error("Change client blacklist error: {}", exc);
+				throw new DaoException("Change client blacklist error", exc);
 			}
 		}
 		return false;
 	}
 	
+	
 	public Client findClient(Client entity) throws DaoException {
 		try {
 			try (PreparedStatement statement = connection.prepareStatement(FIND_CLIENT)) {
-				statement.setString(1, entity.getFirstName());
-				statement.setString(2, entity.getLastName());
-				statement.setString(3, entity.getPassport());
-				statement.setString(4, entity.getNationality());
+				
+				String firstName = entity.getFirstName();
+				String lastName = entity.getLastName();
+				String passport = entity.getPassport();
+				String nationality = entity.getNationality();
+				statement.setString(1, firstName);
+				statement.setString(2, lastName);
+				statement.setString(3, passport);
+				statement.setString(4, nationality);
 				ResultSet result = statement.executeQuery();
 				if(result.next()) {
-					return entity;
+					int clientId = result.getInt(DaoFieldType.ID.getField());
+					boolean blacklist = result.getBoolean(DaoFieldType.BLACKLIST.getField());
+					return new Client(clientId, firstName, lastName, passport, nationality, blacklist);
 				}
 			}
 		} catch (SQLException e) {

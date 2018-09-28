@@ -10,8 +10,10 @@ import org.apache.logging.log4j.Logger;
 import by.epam.hotel.dao.TransactionHelper;
 import by.epam.hotel.dao.entity.Client;
 import by.epam.hotel.dao.entity.Nationality;
+import by.epam.hotel.dao.entity.RoomClass;
 import by.epam.hotel.dao.impl.ClientDao;
 import by.epam.hotel.dao.impl.NationalityDao;
+import by.epam.hotel.dao.impl.RoomClassDao;
 import by.epam.hotel.exception.CloseTransactionException;
 import by.epam.hotel.exception.DaoException;
 import by.epam.hotel.exception.ServiceException;
@@ -37,8 +39,8 @@ public class OrderLogic {
 		}
 		return clients;
 	}
-	
-	public static List<Nationality> getNationalityList() throws ServiceException{
+
+	public static List<Nationality> getNationalityList() throws ServiceException {
 		List<Nationality> nationalities = new LinkedList<>();
 		NationalityDao nationalityDao = new NationalityDao();
 		try (TransactionHelper helper = new TransactionHelper()) {
@@ -53,11 +55,24 @@ public class OrderLogic {
 			LOG.error("Resources cannot be closed", e);
 			throw new ServiceException("Resources cannot be closed", e);
 		}
-		
-		
-		
 		return nationalities;
 	}
-	
-	
+
+	public static List<RoomClass> getRoomClassList() throws ServiceException {
+		List<RoomClass> roomclasses = new LinkedList<>();
+		RoomClassDao roomClassDao = new RoomClassDao();
+		try (TransactionHelper helper = new TransactionHelper()) {
+			helper.doOperation(roomClassDao);
+			try {
+				roomclasses = roomClassDao.findExistingClass();
+			} catch (DaoException e) {
+				LOG.error(e);
+				throw new ServiceException(e);
+			}
+		} catch (CloseTransactionException e) {
+			LOG.error("Resources cannot be closed", e);
+			throw new ServiceException("Resources cannot be closed", e);
+		}
+		return roomclasses;
+	}
 }

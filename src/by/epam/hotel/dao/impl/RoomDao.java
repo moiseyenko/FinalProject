@@ -15,28 +15,27 @@ import org.apache.logging.log4j.Logger;
 
 import by.epam.hotel.dao.AbstractDao;
 import by.epam.hotel.dao.DaoFieldType;
-import by.epam.hotel.dao.entity.ClassRoomType;
 import by.epam.hotel.dao.entity.Room;
 import by.epam.hotel.exception.DaoException;
 
 public class RoomDao extends AbstractDao<Integer, Room> {
 	private static final Logger LOG = LogManager.getLogger(RoomDao.class);
-	private final String FIND_ALL = "SELECT `room`.`number`, `room`.`class`, `room`.`capacity`,"
+	private final String FIND_ALL = "SELECT `room`.`number`, `room`.`class_id`, `room`.`capacity`,"
 			+ "`room`.`price`, `room`.`removed` FROM `room`;";
-	private final String INSERT_ROOM = "INSERT INTO `hotel`.`room` (`number`, `class`, `capacity`, `price`) VALUE "
+	private final String INSERT_ROOM = "INSERT INTO `hotel`.`room` (`number`, `class_id`, `capacity`, `price`) VALUE "
 			+ "(?,?, ?, ?);";
-	private final String FIND_ROOM_BY_ID = "SELECT `room`.`number`, `room`.`class`, `room`.`capacity`, "
+	private final String FIND_ROOM_BY_ID = "SELECT `room`.`number`, `room`.`class_id`, `room`.`capacity`, "
 			+ "			+ `room`.`price`, `room`.`removed` FROM `room` WHERE `room`.`number` = ?;";
 	private final String DELETE_ROOM = "DELETE FROM `room` WHERE `room`.`number` = ?;";
-	private final String UPDATE_ROOM = "UPDATE `room` SET `room`.`class` = ?, "
+	private final String UPDATE_ROOM = "UPDATE `room` SET `room`.`class_id` = ?, "
 			+ "`room`.`capacity` = ?, `room`.`price` = ? WHERE `room`.`number` = ?;";
 	private final String CHANGE_REMOVED = "UPDATE `room` SET `room`.`removed` = ? WHERE `room`.`number` = ?;";
-	private final String EMPTY_ROOM = "SELECT `room`.`number`, `room`.`class`, `room`.`capacity`, `room`.`price` " 
+	private final String EMPTY_ROOM = "SELECT `room`.`number`, `room`.`class_id`, `room`.`capacity`, `room`.`price` " 
 		+ "FROM `room` " 
-		+ "WHERE `room`.`removed` = 0 AND `room`.`capacity` = ? AND `room`.`class` = ? " 
+		+ "WHERE `room`.`removed` = 0 AND `room`.`capacity` >= ? AND `room`.`class_id` = ? " 
 		+ "AND `room`.`number` NOT IN (SELECT DISTINCT `order`.`room_number` " 
 		+ "					 FROM `order` JOIN `room` ON `order`.`room_number` = `room`.`number` " 
-		+ "					 WHERE `room`.`capacity` = ? AND `room`.`class` = ? " 
+		+ "					 WHERE `room`.`capacity` >= ? AND `room`.`class_id` = ? " 
 		+ "					 AND `order`.`from`<= ? AND `order`.`to`>= ?);";
 
 	@Override
@@ -51,7 +50,7 @@ public class RoomDao extends AbstractDao<Integer, Room> {
 					int capacity = result.getInt(DaoFieldType.PRICE.getField());
 					BigDecimal price = result.getBigDecimal(DaoFieldType.PRICE.getField());
 					boolean removed = result.getBoolean(DaoFieldType.REMOVED.getField());
-					rooms.add(new Room(number, ClassRoomType.fromValue(roomClass), capacity, price, removed));
+					rooms.add(new Room(number, roomClass, capacity, price, removed));
 				}
 			}
 		} catch (SQLException e) {
@@ -74,7 +73,7 @@ public class RoomDao extends AbstractDao<Integer, Room> {
 					int capacity = result.getInt(DaoFieldType.PRICE.getField());
 					BigDecimal price = result.getBigDecimal(DaoFieldType.PRICE.getField());
 					boolean removed = result.getBoolean(DaoFieldType.REMOVED.getField());
-					return new Room(id, ClassRoomType.fromValue(roomClass), capacity, price, removed);
+					return new Room(id, roomClass, capacity, price, removed);
 				}
 			}
 		} catch (SQLException e) {
@@ -127,7 +126,7 @@ public class RoomDao extends AbstractDao<Integer, Room> {
 		try {
 			try (PreparedStatement statement = connection.prepareStatement(INSERT_ROOM)) {
 				statement.setInt(1, room.getNumber());
-				statement.setString(2, room.getClassRoom().getName());
+				statement.setString(2, room.getClassRoom());
 				statement.setInt(3, room.getCapacity());
 				statement.setBigDecimal(4, room.getPrice());
 				if (statement.executeUpdate() > 0) {
@@ -147,7 +146,7 @@ public class RoomDao extends AbstractDao<Integer, Room> {
 	public boolean update(Room room) throws DaoException {
 		try {
 			try (PreparedStatement statement = connection.prepareStatement(UPDATE_ROOM)) {
-				statement.setString(1, room.getClassRoom().getName());
+				statement.setString(1, room.getClassRoom());
 				statement.setInt(2, room.getCapacity());
 				statement.setBigDecimal(3, room.getPrice());
 				statement.setInt(4, room.getNumber());
@@ -196,8 +195,9 @@ public class RoomDao extends AbstractDao<Integer, Room> {
 				ResultSet result = statement.executeQuery();
 				while (result.next()) {
 					int number = result.getInt(DaoFieldType.NUMBER.getField());
+					int factCapacity = result.getInt(DaoFieldType.CAPACITY.getField());
 					BigDecimal price = result.getBigDecimal(DaoFieldType.PRICE.getField());
-					resultList.add(new Room(number, ClassRoomType.fromValue(roomClass), capacity, price));
+					resultList.add(new Room(number, roomClass, factCapacity, price));
 				}
 			}
 		} catch (SQLException e) {
@@ -211,13 +211,13 @@ public class RoomDao extends AbstractDao<Integer, Room> {
 	
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	private final String LEAST_PROFITABLE_HOTEL_ROOM = "SELECT `outer`.`number`, `outer`.`class`, " 
+	private final String LEAST_PROFITABLE_HOTEL_ROOM = "SELECT `outer`.`number`, `outer`.`class_id`, " 
 			+ "`outer`.`capacity`, `outer`.`price`"
 			+ "FROM `times_rooms` `outer` "
 			+ "WHERE `outer`.`times` = (SELECT MIN(`inner`.`times`) "
 			+ "						 FROM `times_rooms` `inner` "
-			+ "						 WHERE `inner`.`class` = `outer`.`class`) "
-			+ "ORDER BY `outer`.`class`;";
+			+ "						 WHERE `inner`.`class` = `outer`.`class_id`) "
+			+ "ORDER BY `outer`.`class_id`;";
 
 	public List<Room> showLeastProfitableRoom () throws DaoException{
 		List<Room> resultList = new LinkedList<>();
@@ -229,7 +229,7 @@ public class RoomDao extends AbstractDao<Integer, Room> {
 					String roomClass = result.getString(DaoFieldType.CLASS.getField());
 					int capasity = result.getInt(DaoFieldType.PRICE.getField());
 					BigDecimal price = result.getBigDecimal(DaoFieldType.PRICE.getField());
-					resultList.add(new Room(number, ClassRoomType.fromValue(roomClass), capasity, price));
+					resultList.add(new Room(number, roomClass, capasity, price));
 				}
 
 			}
