@@ -1,0 +1,52 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<fmt:setLocale value="${sessionData.locale.value}" scope="session" />
+<fmt:bundle basename="resource.i18n.i18n" prefix="clientmain.">
+<html>
+<head>
+<title><fmt:message key="title" /></title>
+</head>
+<body>
+	<jsp:include page="local.jsp" />
+	<br />
+	<hr />
+	<jsp:include page="loginlogout.jsp" />
+	<br />
+	<hr />
+	<h3>
+		<fmt:message key="welcome" />
+	</h3>
+	<hr />
+	${sessionData.login},<fmt:message key="hello" />!
+		
+	<hr />
+	
+	<form action="${pageContext.request.contextPath}/controller" method="post">
+		<!-- <input type="hidden" name="command" value="order" /> --> 
+		<input type="submit" value="Your orders" />
+	</form>
+	
+	
+	
+	<hr />
+	<form action="${pageContext.request.contextPath}/controller" method="post">
+		<input type="hidden" name="command" value="order" /> <input
+			type="submit" value="<fmt:message key="makeorder" />" />
+	</form>
+	${errorRelogMessage} ${errorReSignupMessage}
+	
+	<hr />
+	
+	<form action="${pageContext.request.contextPath}/controller" method="post">
+		<!-- <input type="hidden" name="command" value="order" />  -->
+		<input type="submit" value="Change personal data" />
+	</form>
+	
+	
+	
+	
+</body>
+</html>
+</fmt:bundle>

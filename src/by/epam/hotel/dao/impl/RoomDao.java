@@ -1,0 +1,246 @@
+package by.epam.hotel.dao.impl;
+
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import by.epam.hotel.dao.AbstractDao;
+import by.epam.hotel.dao.DaoFieldType;
+import by.epam.hotel.dao.entity.ClassRoomType;
+import by.epam.hotel.dao.entity.Room;
+import by.epam.hotel.exception.DaoException;
+
+public class RoomDao extends AbstractDao<Integer, Room> {
+	private static final Logger LOG = LogManager.getLogger(RoomDao.class);
+	private final String FIND_ALL = "SELECT `room`.`number`, `room`.`class`, `room`.`capacity`,"
+			+ "`room`.`price`, `room`.`removed` FROM `room`;";
+	private final String INSERT_ROOM = "INSERT INTO `hotel`.`room` (`number`, `class`, `capacity`, `price`) VALUE "
+			+ "(?,?, ?, ?);";
+	private final String FIND_ROOM_BY_ID = "SELECT `room`.`number`, `room`.`class`, `room`.`capacity`, "
+			+ "			+ `room`.`price`, `room`.`removed` FROM `room` WHERE `room`.`number` = ?;";
+	private final String DELETE_ROOM = "DELETE FROM `room` WHERE `room`.`number` = ?;";
+	private final String UPDATE_ROOM = "UPDATE `room` SET `room`.`class` = ?, "
+			+ "`room`.`capacity` = ?, `room`.`price` = ? WHERE `room`.`number` = ?;";
+	private final String CHANGE_REMOVED = "UPDATE `room` SET `room`.`removed` = ? WHERE `room`.`number` = ?;";
+	private final String EMPTY_ROOM = "SELECT `room`.`number`, `room`.`class`, `room`.`capacity`, `room`.`price` " 
+		+ "FROM `room` " 
+		+ "WHERE `room`.`removed` = 0 AND `room`.`capacity` = ? AND `room`.`class` = ? " 
+		+ "AND `room`.`number` NOT IN (SELECT DISTINCT `order`.`room_number` " 
+		+ "					 FROM `order` JOIN `room` ON `order`.`room_number` = `room`.`number` " 
+		+ "					 WHERE `room`.`capacity` = ? AND `room`.`class` = ? " 
+		+ "					 AND `order`.`from`<= ? AND `order`.`to`>= ?);";
+
+	@Override
+	public List<Room> findAll() throws DaoException {
+		List<Room> rooms = new LinkedList<>();
+		try {
+			try (Statement statement = connection.createStatement()) {
+				ResultSet result = statement.executeQuery(FIND_ALL);
+				while (result.next()) {
+					int number = result.getInt(DaoFieldType.NUMBER.getField());
+					String roomClass = result.getString(DaoFieldType.CLASS.getField());
+					int capacity = result.getInt(DaoFieldType.PRICE.getField());
+					BigDecimal price = result.getBigDecimal(DaoFieldType.PRICE.getField());
+					boolean removed = result.getBoolean(DaoFieldType.REMOVED.getField());
+					rooms.add(new Room(number, ClassRoomType.fromValue(roomClass), capacity, price, removed));
+				}
+			}
+		} catch (SQLException e) {
+			for (Throwable exc : e) {
+				LOG.error("Finding all rooms error: {}", exc);
+				throw new DaoException("Finding all rooms error", exc);
+			}
+		}
+		return rooms;
+	}
+
+	@Override
+	public Room findEntityById(Integer id) throws DaoException {
+		try {
+			try (PreparedStatement statement = connection.prepareStatement(FIND_ROOM_BY_ID)) {
+				statement.setInt(1, id);
+				ResultSet result = statement.executeQuery();
+				if (result.next()) {
+					String roomClass = result.getString(DaoFieldType.CLASS.getField());
+					int capacity = result.getInt(DaoFieldType.PRICE.getField());
+					BigDecimal price = result.getBigDecimal(DaoFieldType.PRICE.getField());
+					boolean removed = result.getBoolean(DaoFieldType.REMOVED.getField());
+					return new Room(id, ClassRoomType.fromValue(roomClass), capacity, price, removed);
+				}
+			}
+		} catch (SQLException e) {
+			for (Throwable exc : e) {
+				LOG.error("Finding room error: {}", exc);
+				throw new DaoException("Finding room error", exc);
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public boolean delete(Integer id) throws DaoException {
+		try {
+			try (PreparedStatement statement = connection.prepareStatement(DELETE_ROOM)) {
+				statement.setInt(1, id);
+				if (statement.executeUpdate() > 0) {
+					return true;
+				}
+			}
+		} catch (SQLException e) {
+			for (Throwable exc : e) {
+				LOG.error("Deletion room error: {}", exc);
+				throw new DaoException("Deletion room error", exc);
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean delete(Room room) throws DaoException {
+		try {
+			try (PreparedStatement statement = connection.prepareStatement(DELETE_ROOM)) {
+				statement.setInt(1, room.getNumber());
+				if (statement.executeUpdate() > 0) {
+					return true;
+				}
+			}
+		} catch (SQLException e) {
+			for (Throwable exc : e) {
+				LOG.error("Deletion room error: {}", exc);
+				throw new DaoException("Deletion room error", exc);
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean create(Room room) throws DaoException {
+		try {
+			try (PreparedStatement statement = connection.prepareStatement(INSERT_ROOM)) {
+				statement.setInt(1, room.getNumber());
+				statement.setString(2, room.getClassRoom().getName());
+				statement.setInt(3, room.getCapacity());
+				statement.setBigDecimal(4, room.getPrice());
+				if (statement.executeUpdate() > 0) {
+					return true;
+				}
+			}
+		} catch (SQLException e) {
+			for (Throwable exc : e) {
+				LOG.error("Creation room error: {}", exc);
+				throw new DaoException("Creation room error", exc);
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean update(Room room) throws DaoException {
+		try {
+			try (PreparedStatement statement = connection.prepareStatement(UPDATE_ROOM)) {
+				statement.setString(1, room.getClassRoom().getName());
+				statement.setInt(2, room.getCapacity());
+				statement.setBigDecimal(3, room.getPrice());
+				statement.setInt(4, room.getNumber());
+				if (statement.executeUpdate() > 0) {
+					return true;
+				}
+			}
+		} catch (SQLException e) {
+			for (Throwable exc : e) {
+				LOG.error("Update room error: {}", exc);
+				throw new DaoException("Update room error", exc);
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean changeRemoved(Room entity) throws DaoException {
+		try {
+			try (PreparedStatement statement = connection.prepareStatement(CHANGE_REMOVED)) {
+				statement.setInt(1, (entity.isRemoved() ? 0 : 1));
+				statement.setInt(2, entity.getNumber());
+				if (statement.executeUpdate() > 0) {
+					return true;
+				}
+			}
+		} catch (SQLException e) {
+			for (Throwable exc : e) {
+				LOG.error("Change room removed flag error: {}", exc);
+				throw new DaoException("Change room removed flag error", exc);
+			}
+		}
+		return false;
+	}
+	
+	public List<Room> showEmptyRoom(int capacity, String roomClass, LocalDate from, LocalDate to) throws DaoException{
+		List<Room> resultList = new LinkedList<>();
+		try {
+			try (PreparedStatement statement = connection.prepareStatement(EMPTY_ROOM)) {
+				statement.setInt(1, capacity);
+				statement.setString(2, roomClass);
+				statement.setInt(3, capacity);
+				statement.setString(4, roomClass);
+				statement.setDate(5, Date.valueOf(to));
+				statement.setDate(6, Date.valueOf(from));
+				ResultSet result = statement.executeQuery();
+				while (result.next()) {
+					int number = result.getInt(DaoFieldType.NUMBER.getField());
+					BigDecimal price = result.getBigDecimal(DaoFieldType.PRICE.getField());
+					resultList.add(new Room(number, ClassRoomType.fromValue(roomClass), capacity, price));
+				}
+			}
+		} catch (SQLException e) {
+			for (Throwable exc : e) {
+				LOG.error("Showing empty room error: {}", exc);
+				throw new DaoException("Showing empty room error", exc);
+			}
+		}
+		return resultList;
+	}
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	private final String LEAST_PROFITABLE_HOTEL_ROOM = "SELECT `outer`.`number`, `outer`.`class`, " 
+			+ "`outer`.`capacity`, `outer`.`price`"
+			+ "FROM `times_rooms` `outer` "
+			+ "WHERE `outer`.`times` = (SELECT MIN(`inner`.`times`) "
+			+ "						 FROM `times_rooms` `inner` "
+			+ "						 WHERE `inner`.`class` = `outer`.`class`) "
+			+ "ORDER BY `outer`.`class`;";
+
+	public List<Room> showLeastProfitableRoom () throws DaoException{
+		List<Room> resultList = new LinkedList<>();
+		try {
+			try (Statement statement = connection.createStatement()) {
+				ResultSet result = statement.executeQuery(LEAST_PROFITABLE_HOTEL_ROOM);
+				while (result.next()) {
+					int number = result.getInt(DaoFieldType.NUMBER.getField());
+					String roomClass = result.getString(DaoFieldType.CLASS.getField());
+					int capasity = result.getInt(DaoFieldType.PRICE.getField());
+					BigDecimal price = result.getBigDecimal(DaoFieldType.PRICE.getField());
+					resultList.add(new Room(number, ClassRoomType.fromValue(roomClass), capasity, price));
+				}
+
+			}
+		} catch (SQLException e) {
+			for (Throwable exc : e) {
+				LOG.error("Showing the least profitable rooms error: {}", exc);
+				throw new DaoException("Showing the least profitable rooms error", exc);
+			}
+		}
+		return resultList;
+	}
+	
+
+}

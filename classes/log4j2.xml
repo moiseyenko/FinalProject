@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="Warn">
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%msg" />
+			<LevelRangeFilter minLevel="INFO" maxLevel="INFO" />
+		</Console>
+		<File name="FileDebug" fileName="E:\workspace\Hotel\WebContent/logs/fileLog.log" append="false">
+			<PatternLayout pattern="%d %p %c{-3} [%t] %m%n" />
+			<LevelRangeFilter minLevel="DEBUG" maxLevel="DEBUG" />
+		</File>
+		<File name="FileError" fileName="E:\workspace\Hotel\WebContent/logs/fileLog.log">
+			<PatternLayout
+				pattern="%d{HH:mm:ss} %level - %t [%c{1}]:%M:%L %m - %throwable" />
+			<LevelRangeFilter minLevel="ERROR" maxLevel="ERROR" />
+		</File>
+	</Appenders>
+	<Loggers>
+		<Root level="DEBUG">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="FileDebug" />
+			<appender-ref ref="FileError" />
+		</Root>
+	</Loggers>
+</Configuration>
