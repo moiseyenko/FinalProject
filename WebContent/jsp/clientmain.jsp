@@ -24,10 +24,9 @@
 	<hr />
 	
 	<form action="${pageContext.request.contextPath}/controller" method="post">
-		<!-- <input type="hidden" name="command" value="order" /> --> 
+		<input type="hidden" name="command" value="toAccountOrders" /> 
 		<input type="submit" value="Your orders" />
 	</form>
-	
 	
 	
 	<hr />

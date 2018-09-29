@@ -19,6 +19,15 @@ public class Client extends Entity {
 		this.nationality = nationality;
 		this.blacklist = blacklist;
 	}
+	
+	public Client(int id, String firstName, String lastName, String passport, String nationality) {
+		super();
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.passport = passport;
+		this.nationality = nationality;
+	}
 
 	public Client(String firstName, String lastName, String passport, String nationality) {
 		super();

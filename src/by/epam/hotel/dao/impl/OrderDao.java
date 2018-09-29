@@ -15,7 +15,12 @@ import org.apache.logging.log4j.Logger;
 
 import by.epam.hotel.dao.AbstractDao;
 import by.epam.hotel.dao.DaoFieldType;
+import by.epam.hotel.dao.entity.Account;
+import by.epam.hotel.dao.entity.Client;
+import by.epam.hotel.dao.entity.FullInfoOrder;
+import by.epam.hotel.dao.entity.Nationality;
 import by.epam.hotel.dao.entity.Order;
+import by.epam.hotel.dao.entity.Room;
 import by.epam.hotel.exception.DaoException;
 
 public class OrderDao extends AbstractDao<Integer, Order> {
@@ -195,5 +200,65 @@ public class OrderDao extends AbstractDao<Integer, Order> {
 		}
 		return false;
 	}
+	//////////////////////////////////////////////////////////////////////////////
+	
+	private final String FIND_FULL_INFO_ORDER_BY_ACCOUNT = "SELECT `order`.`id`,`order`.`account_id`, `account`.`login`, "
+			+ "`account`.`email`, `order`.`client_id`, `client`.`first_name`, `client`.`last_name`, "
+			+ "`client`.`passport`, `client`.`nationality_id`, "
+			+ "`nationality`.`country`, `order`.`room_number`, `room`.`class_id` AS `class`, `room`.`capacity`, `room`.`price`, "
+			+ "`order`.`from`, `order`.`to`, `order`.`cost`, `order`.`removed` "
+			+ "FROM `account` INNER JOIN (`room` INNER JOIN (`order` INNER JOIN (`client` INNER JOIN `nationality` "
+			+ "ON `client`.nationality_id = `nationality`.`id`) ON `order`.`client_id` = `client`.`id`) "
+			+ "ON `room`.`number` = `order`.`room_number`) ON `account`.`id` = `order`.`account_id` "
+			+ "WHERE `account`.`id` = ?;";
+	
+	public List<FullInfoOrder> findFullInfoOrderByAccount (Integer accountId) throws DaoException {
+		List<FullInfoOrder> resultList = new LinkedList<>();
+		try {
+			try (PreparedStatement statement = connection.prepareStatement(FIND_FULL_INFO_ORDER_BY_ACCOUNT)) {
+				statement.setInt(1, accountId);
+				ResultSet result = statement.executeQuery();
+				Account account;
+				Client client;
+				Nationality nationality;
+				Room room;
+				FullInfoOrder fullInfoOrder;
+				while (result.next()) {
+					int orderId = result.getInt(DaoFieldType.ID.getField());
+					String login = result.getString(DaoFieldType.LOGIN.getField());
+					String email = result.getString(DaoFieldType.EMAIL.getField());
+					account = new Account(accountId, login, email);
+					int clientId = result.getInt(DaoFieldType.CLIENT_ID.getField());
+					String firstName = result.getString(DaoFieldType.FIRST_NAME.getField());
+					String lastName = result.getString(DaoFieldType.LAST_NAME.getField());
+					String passport = result.getString(DaoFieldType.PASSPORT.getField());
+					String nationalityId = result.getString(DaoFieldType.NATIONALITY_ID.getField());
+					client = new Client(clientId, firstName, lastName, passport, nationalityId);
+					String country = result.getString(DaoFieldType.COUNTRY.getField());
+					nationality = new Nationality(nationalityId, country);
+					int roomNumber = result.getInt(DaoFieldType.ROOM_NUMBER.getField());
+					String roomClass = result.getString(DaoFieldType.CLASS.getField());
+					int capacity = result.getInt(DaoFieldType.CAPACITY.getField());
+					BigDecimal price = result.getBigDecimal(DaoFieldType.PRICE.getField());
+					room = new Room(roomNumber, roomClass, capacity, price);
+					LocalDate from = result.getDate(DaoFieldType.FROM.getField()).toLocalDate();
+					LocalDate to = result.getDate(DaoFieldType.TO.getField()).toLocalDate();
+					BigDecimal cost = result.getBigDecimal(DaoFieldType.COST.getField());
+					boolean removed = result.getBoolean(DaoFieldType.REMOVED.getField());
+					fullInfoOrder = new FullInfoOrder(orderId, room, account, client, nationality, from, to, cost, removed);
+					resultList.add(fullInfoOrder);
+				}
+			}
+		} catch (SQLException e) {
+			for (Throwable exc : e) {
+				LOG.error("Finding full info order error: {}", exc);
+				throw new DaoException("Finding full info order error", exc);
+			}
+		}
+		return resultList;
+	}
+
+	
+	
 
 }

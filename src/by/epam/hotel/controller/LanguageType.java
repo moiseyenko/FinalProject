@@ -12,4 +12,12 @@ public enum LanguageType {
 	public String getValue() {
 		return value;
 	}
+	
+	public String getCountry() {
+		return value.substring(3);
+	}
+	
+	public String getLanguage() {
+		return value.substring(0, 2);
+	}
 }

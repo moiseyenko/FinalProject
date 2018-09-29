@@ -8,11 +8,17 @@ import by.epam.hotel.command.impl.LoginBackCommand;
 import by.epam.hotel.command.impl.LoginCommand;
 import by.epam.hotel.command.impl.LogoutCommand;
 import by.epam.hotel.command.impl.BackToClientmainCommand;
+import by.epam.hotel.command.impl.BackToInfoPaymentCommnamd;
 import by.epam.hotel.command.impl.BackToOrderCommand;
+import by.epam.hotel.command.impl.BackToPayPageCommand;
 import by.epam.hotel.command.impl.BackToRoomsCommand;
 import by.epam.hotel.command.impl.OrderCommand;
+import by.epam.hotel.command.impl.PayCommand;
+import by.epam.hotel.command.impl.ReplenishCommand;
+import by.epam.hotel.command.impl.ToReplenishCommand;
 import by.epam.hotel.command.impl.SignUpCommand;
 import by.epam.hotel.command.impl.SignupBackCommand;
+import by.epam.hotel.command.impl.ToAccountOrdersCommand;
 import by.epam.hotel.command.impl.ToLoginCommand;
 import by.epam.hotel.command.impl.ToPayCommand;
 import by.epam.hotel.command.impl.ToSighUpCommand;
@@ -23,7 +29,9 @@ public enum CommandType {
 	BACKTOCLIENTMAIN (new BackToClientmainCommand()), LOGINBACK(new LoginBackCommand()), SIGNUPBACK(new SignupBackCommand()),
 	CHANGELOCALE(new ChangeLocaleCommand()), FILLORDERFORM(new FillOrderFormCommand()), FINDROOM(new FindRoomCommand()),
 	BACKTOORDER (new BackToOrderCommand()), CHOOSEROOM(new ChooseRoomCommand()), BACKTOROOMS(new BackToRoomsCommand()),
-	TOPAY(new ToPayCommand());
+	TOPAY(new ToPayCommand()), BACKTOINFOPAYMENT(new BackToInfoPaymentCommnamd()), TOREPLENISH(new ToReplenishCommand()),
+	BACKTOPAYPAGE(new BackToPayPageCommand()), REPLENISH(new ReplenishCommand()), PAY(new PayCommand()), 
+	TOACCOUNTORDERS(new ToAccountOrdersCommand());
 	private CommandType(ActionCommand command) {
 		this.command = command;
 	}

@@ -53,8 +53,11 @@
 				<td>To Pay: </td>
 				<td><input type="text" value="${sessionData.toPay}" size="40" disabled="disabled" /></td>
 			</tr>
+			<tr>
+				<td><input type="submit" value="Pay" size="20" /></td>
+				<td>${errorFindBankAccountMessage }</td>
+			</tr>
 		</table>
-		<input type="submit" value="Pay" size="20" />
 	</form>
 	<form action="${pageContext.request.contextPath}/controller" method="post">
 		<input type="hidden" name="command" value="backToRooms" />

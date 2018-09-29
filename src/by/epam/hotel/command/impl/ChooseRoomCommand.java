@@ -1,6 +1,7 @@
 package by.epam.hotel.command.impl;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -41,8 +42,8 @@ public class ChooseRoomCommand implements ActionCommand {
 				if (updatedAvailableRoomList.contains(chosenRoom)) {
 					sessionData.setChosenRoom(chosenRoom);
 					int timeStampDiff = to.getDayOfYear()-from.getDayOfYear();
-					int toPay = (timeStampDiff!=0?timeStampDiff:1)*chosenRoom.getPrice().intValue();
-					BigDecimal toPayBigDecimal = BigDecimal.valueOf(toPay);
+					double toPay = (timeStampDiff!=0?timeStampDiff:1)*chosenRoom.getPrice().doubleValue();
+					BigDecimal toPayBigDecimal = new BigDecimal(toPay).setScale(2, RoundingMode.HALF_UP);
 					sessionData.setToPay(toPayBigDecimal);
 					page = ConfigurationManager.getProperty("path.page.infoforpayment");
 				} else {

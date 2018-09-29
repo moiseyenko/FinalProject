@@ -38,7 +38,7 @@ public class AccountDao extends AbstractDao<Integer, Account> {
 	private final String UPDATE_PASSWORD = "UPDATE `account` SET `account`.`password` = ? WHERE `account`.`login` = ? AND `account`.`removed` = 0;";
 	private final String UPDATE_ACCOUNT = "UPDATE `account` SET `account`.`login` = ?,  `account`.`admin` = ? WHERE `account`.`id` = ? AND `account`.`removed` = 0;";
 	private final String CHANGE_REMOVED = "UPDATE `account` SET`account`.`removed` = ? WHERE `account`.`id` = ?;";
-	private final String GET_PASSWORD_BY_ID = "SELECT `account`.`password` FROM `account` WHERE `account`.`id` = ?;";
+	private final String FIND_PASSWORD_BY_ID = "SELECT `account`.`password` FROM `account` WHERE `account`.`id` = ?;";
 
 	@Override
 	public List<Account> findAll() throws DaoException {
@@ -203,7 +203,7 @@ public class AccountDao extends AbstractDao<Integer, Account> {
 	public boolean checkPassword(int accountID, String password) throws DaoException {
 		String encodedPassword = encodePassword(password, String.valueOf(accountID));
 		try {
-			try (PreparedStatement statement = connection.prepareStatement(GET_PASSWORD_BY_ID)) {
+			try (PreparedStatement statement = connection.prepareStatement(FIND_PASSWORD_BY_ID)) {
 				statement.setInt(1, accountID);
 				ResultSet result = statement.executeQuery();
 				result.next();

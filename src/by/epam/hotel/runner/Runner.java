@@ -17,20 +17,23 @@ import java.util.List;
 import by.epam.hotel.dao.DaoFieldType;
 import by.epam.hotel.dao.TransactionHelper;
 import by.epam.hotel.dao.entity.Account;
+import by.epam.hotel.dao.entity.BankAccount;
 import by.epam.hotel.dao.entity.Client;
 import by.epam.hotel.dao.entity.Nationality;
 import by.epam.hotel.dao.entity.Order;
 import by.epam.hotel.dao.entity.Room;
 import by.epam.hotel.dao.impl.AccountDao;
+import by.epam.hotel.dao.impl.BankAccountDao;
 import by.epam.hotel.dao.impl.ClientDao;
 import by.epam.hotel.dao.impl.NationalityDao;
 import by.epam.hotel.dao.impl.OrderDao;
 import by.epam.hotel.dao.impl.RoomDao;
+import by.epam.hotel.exception.CloseTransactionException;
 import by.epam.hotel.exception.DaoException;
 import by.epam.hotel.exception.ServiceException;
 
 public class Runner {
-	public static void main(String[] args) throws ParseException, DaoException, ServiceException, Exception {
+	public static void main(String[] args) throws ParseException, ServiceException, CloseTransactionException {
 		String login = "temp";
 		String password = "temp";
 		String email = "temp@mail.ru";
@@ -38,14 +41,52 @@ public class Runner {
 		OrderDao orderDao = new OrderDao();
 		NationalityDao nationDao = new NationalityDao();
 		RoomDao roomDao =  new RoomDao();
+		BankAccountDao bankdao = new BankAccountDao();
+		
 		
 		try (TransactionHelper helper = new TransactionHelper()) {
+			helper.doTransaction(accountDao, bankdao);
+			try {
+				if (!accountDao.IsExistAccount(login, email)) {
+					boolean flag = accountDao.create(login, email, password);
+					System.out.println(flag);
+					Account account = accountDao.findAccountByLogin(login);
+					System.out.println(account);
+					boolean newflag = bankdao.create(new BankAccount(account.getId(), new BigDecimal(150)));
+					System.out.println(newflag);
+					helper.commit();
+				}
+			}catch (DaoException e) {
+				System.out.println("daoexceprion");
+				helper.rollback();
+			}
+			
+		} 
+		
+		
+		
+		/*try (TransactionHelper helper = new TransactionHelper()) {
+			helper.doOperation(bankdao);
+			//boolean createtrue = bankdao.create(new BankAccount(10, new BigDecimal(300)));
+			//boolean createfalse = bankdao.create(new BankAccount(10, new BigDecimal(300)));
+			//System.out.println("createtrue"+createtrue);
+			//System.out.println("createfalse"+createfalse);
+			BankAccount findtrue = bankdao.findEntityById(10);
+			BankAccount findfalse = bankdao.findEntityById(11);
+			System.out.println("findtrue"+findtrue);
+			System.out.println("findfalse"+findfalse);
+			boolean updatetrue = bankdao.update(new BankAccount(10, new BigDecimal(-100)));
+			boolean updatefalse = bankdao.update(new BankAccount(11, new BigDecimal(-100)));
+			System.out.println("updatetrue"+updatetrue);
+			System.out.println("updatefalse"+updatefalse);
+		}*/
+		/*try (TransactionHelper helper = new TransactionHelper()) {
 			helper.doOperation(roomDao);
 			List<Room> rooms = roomDao.showEmptyRoom(3, "Стандарт", LocalDate.parse("2018-10-02"), LocalDate.parse("2018-10-03"));
 			System.out.println(rooms);
 			boolean flag = rooms.contains(new Room(28, "Стандарт", 3, BigDecimal.valueOf(140.0)));
 			System.out.println(flag);
-		}
+		}*/
 		
 		/*try (TransactionHelper helper = new TransactionHelper()) {
 			helper.doOperation(accountDao);

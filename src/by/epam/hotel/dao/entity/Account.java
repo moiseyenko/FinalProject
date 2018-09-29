@@ -16,12 +16,11 @@ public class Account extends Entity {
 		this.admin = admin;
 	}
 	
-	public Account(int id, String login, String email, boolean admin) {
+	public Account(int id, String login, String email) {
 		super();
 		this.id = id;
 		this.login = login;
 		this.email = email;
-		this.admin = admin;
 	}
 	
 	public int getId() {

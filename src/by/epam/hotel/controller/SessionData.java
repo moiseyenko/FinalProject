@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import by.epam.hotel.dao.entity.Client;
+import by.epam.hotel.dao.entity.FullInfoOrder;
 import by.epam.hotel.dao.entity.Nationality;
 import by.epam.hotel.dao.entity.Room;
 import by.epam.hotel.dao.entity.RoomClass;
@@ -23,6 +24,8 @@ public class SessionData {
 	private LocalDate to;
 	private Room chosenRoom;
 	private BigDecimal toPay;
+	private BigDecimal currentAmount;
+	private List<FullInfoOrder> listFullInfoOrder;
 	
 	public String getLogin() {
 		return login;
@@ -126,6 +129,22 @@ public class SessionData {
 
 	public void setToPay(BigDecimal toPay) {
 		this.toPay = toPay;
+	}
+
+	public BigDecimal getCurrentAmount() {
+		return currentAmount;
+	}
+
+	public void setCurrentAmount(BigDecimal currentAmount) {
+		this.currentAmount = currentAmount;
+	}
+
+	public List<FullInfoOrder> getListFullInfoOrder() {
+		return listFullInfoOrder;
+	}
+
+	public void setListFullInfoOrder(List<FullInfoOrder> listFullInfoOrder) {
+		this.listFullInfoOrder = listFullInfoOrder;
 	}
 
 	@Override

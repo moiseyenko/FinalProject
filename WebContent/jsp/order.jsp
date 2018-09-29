@@ -67,7 +67,7 @@
 			</tr>
 			<tr>
 				<td valign="top">Capacity: </td>
-				<td valign="top"><input type="text" name="capacity" value="${sessionData.chosenRoom.capacity }" size="40" /></td>
+				<td valign="top"><input type="text" name="capacity" size="40" /></td>
 				<td valign="top">${errorCapacityMessage}</td>
 			</tr>
 			<tr>

@@ -56,6 +56,7 @@ public class FindRoomCommand implements ActionCommand {
 				try {
 					Client chosenClient = new Client(fname, lname, passport, nationality);
 					if (!FindRoomLogic.checkClientInBlacklist(chosenClient)) {
+						chosenClient = FindRoomLogic.getClient(chosenClient);
 						sessionData.setChosenClient(chosenClient);
 						LocalDate localFrom = LocalDate.parse(from);
 						LocalDate localTo = LocalDate.parse(to);

@@ -19,7 +19,9 @@ import by.epam.hotel.dao.entity.Room;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
 import by.epam.hotel.logic.FindRoomLogic;
+import by.epam.hotel.logic.ToPayLogic;
 import by.epam.hotel.util.ConfigurationManager;
+import by.epam.hotel.util.MessageManager;
 
 public class ToPayCommand implements ActionCommand {
 	private static final Logger LOG = LogManager.getLogger(ToPayCommand.class);
@@ -38,16 +40,15 @@ public class ToPayCommand implements ActionCommand {
 				List<Room> updatedAvailableRoomList = FindRoomLogic.findAvailableRoom(chosenRoom.getCapacity(),
 						chosenRoom.getClassRoom(), from, to);
 				if (updatedAvailableRoomList.contains(chosenRoom)) {
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					page = ConfigurationManager.getProperty("path.page.paypage");
+					BigDecimal currentAmount = ToPayLogic.getCurrentAmount(sessionData.getLogin());
+					if(currentAmount != null) {
+						sessionData.setCurrentAmount(currentAmount);
+						page = ConfigurationManager.getProperty("path.page.paypage");
+					}else {
+						request.setAttribute("errorFindBankAccountMessage", MessageManager.getProrerty("message.findinbankaccounterror"));
+						page = ConfigurationManager.getProperty("path.page.infoforpayment");
+						router.setType(RouterType.FORWARD);
+					}
 				} else {
 					sessionData.setAvailableRoomList(updatedAvailableRoomList);
 					page = ConfigurationManager.getProperty("path.page.alreadyorderedroom");

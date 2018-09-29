@@ -52,7 +52,6 @@ public class SignUpCommand implements ActionCommand {
 						System.out.println("!!!!!!!!!");
 						System.out.println("!!!in signupcommmand!!!!!!");
 						System.out.println("!!!!!!!!!!!!");
-						// session.setAttribute("sessionData", sessionData);
 					} else {
 						request.setAttribute("errorSignupMessage", MessageManager.getProrerty("message.signuperror"));
 						page = ConfigurationManager.getProperty("path.page.signup");

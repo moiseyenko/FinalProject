@@ -39,6 +39,25 @@ public class FindRoomLogic {
 		return false;
 	}
 	
+	public static Client getClient (Client client) throws ServiceException {
+		ClientDao clientDao = new ClientDao();
+		Client storedClient = null;
+		try (TransactionHelper helper = new TransactionHelper()) {
+			helper.doOperation(clientDao);
+			try {
+				storedClient = clientDao.findClient(client);
+			} catch (DaoException e) {
+				LOG.error(e);
+				throw new ServiceException(e);
+			}
+
+		} catch (CloseTransactionException e) {
+			LOG.error("Resources cannot be closed", e);
+			throw new ServiceException("Resources cannot be closed", e);
+		}
+		return storedClient;
+	}
+	
 	public static List<Room> findAvailableRoom(int capacity, String roomClass, LocalDate from, LocalDate to) throws ServiceException {
 		List<Room> rooms = null;
 		RoomDao roomDao = new RoomDao();

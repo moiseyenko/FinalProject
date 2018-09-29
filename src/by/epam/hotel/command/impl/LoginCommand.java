@@ -36,11 +36,9 @@ public class LoginCommand implements ActionCommand {
 			String password = request.getParameter(PARAM_PASSWORD);
 			try {
 				if (LoginLogic.checkLogin(login, password)) {
-					page = ConfigurationManager.getProperty("path.page.clientmain");
 					sessionData.setRole(RoleType.CLIENT);
 					sessionData.setLogin(login);
-					sessionData.setInnerRedirect(true);
-					//session.setAttribute("sessionData", sessionData);
+					page = ConfigurationManager.getProperty("path.page.clientmain");
 					router.setPage(page);
 					router.setType(RouterType.REDIRECT);
 				} else {

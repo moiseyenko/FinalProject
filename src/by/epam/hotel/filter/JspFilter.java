@@ -1,6 +1,8 @@
 package by.epam.hotel.filter;
 
 import java.io.IOException;
+import java.util.Enumeration;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -13,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import by.epam.hotel.controller.RoleType;
 import by.epam.hotel.controller.SessionData;
 
 @WebFilter(urlPatterns = { "/jsp/*" }, initParams = { @WebInitParam(name = "INDEX_PATH", value = "/index.jsp") })
@@ -29,15 +32,17 @@ public class JspFilter implements Filter {
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
 		System.out.println("!!!!!!!in filter!!!!!!!!");
 		HttpSession session = httpRequest.getSession();
-
 		SessionData sessionData = (SessionData) session.getAttribute("sessionData");
-		if (sessionData != null && sessionData.isInnerRedirect()) {
+		
+		if(sessionData != null&&(sessionData.getRole()==RoleType.CLIENT||sessionData.getRole()==RoleType.ADMIN)) {
 			System.out.println("dofilter");
-			sessionData.setInnerRedirect(false);
-			// may be need session.setAttribute(sessionData);
 			chain.doFilter(request, response);
-
-		} else {
+		}
+		/*if (  sessionData.isInnerRedirect()) {
+			System.out.println("dofilter");
+			//sessionData.setInnerRedirect(false);
+			chain.doFilter(request, response);
+		}*/ else {
 			System.out.println("redirect");
 			httpResponse.sendRedirect(httpRequest.getContextPath() + indexPath);
 		}
