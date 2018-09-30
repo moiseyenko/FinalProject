@@ -10,6 +10,7 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <html>
 <head>
 <title>Account Orders</title>
@@ -41,6 +42,7 @@
 			    <th class="tg-88nc">Cost</th>
 			    <th class="tg-88nc">Status</th>
 			  </tr>
+			   <jsp:useBean id = "localDateNow" class = "by.epam.hotel.dao.entity.LocalDateNow"/> 
 				<c:forEach var="order" items="${sessionData.listFullInfoOrder }" varStatus="status">
 					<tr>
 						<td class="tg-c3ow">${order.id }</td>
@@ -56,18 +58,40 @@
 					    <td class="tg-c3ow">${order.from }</td>
 					    <td class="tg-c3ow">${order.to }</td>
 					    <td class="tg-c3ow">${order.cost }</td>
-					    <td>
-					    <form action="${pageContext.request.contextPath}/controller">
-					    <input type="hidden" name="command" value="One" />
-					    <input type="hidden" name="orderId" value="${order.id }" />
-					    <input type="submit" value="Cancel" />
-					    </form>
+					    <td>   
+					    <c:choose>
+					    	<c:when test="${order.from.isAfter(localDateNow.now) && order.removed=='false' }">
+					    	<form action="${pageContext.request.contextPath}/controller">
+					    		 <input type="hidden" name=command value="cancelorder" />
+							    <input type="hidden" name="orderIndex" value="${status.count }" />
+							    <input type="submit" value="Cancel" />
+						    </form>
+					    	</c:when>
+					    	<c:when test="${order.from.isEqual(localDateNow.now) && order.removed=='false' }">
+					    	<form action="${pageContext.request.contextPath}/controller">
+					    		 <input type="hidden" name=command value="cancelorder" />
+							    <input type="hidden" name="orderIndex" value="${status.count }" />
+							    <input type="submit" value="Cancel" />
+						    </form>
+					    	</c:when>
+					    	<c:when test="${order.removed }">
+					    		CANCELLED
+					    	</c:when>
+					    	<c:otherwise>
+					    		SUCCESSED
+					    	</c:otherwise>
+					    </c:choose>  
 					    </td>
 					</tr>
 				</c:forEach>
 			</table>
 		</c:otherwise>
 	</c:choose> 
-
+	<hr/>
+	<form action="${pageContext.request.contextPath}/controller"
+		method="post">
+		<input type="hidden" name="command" value="backToClientmain" />
+		<input type="submit" value="Back" size="20" />
+	</form>
 </body>
 </html>

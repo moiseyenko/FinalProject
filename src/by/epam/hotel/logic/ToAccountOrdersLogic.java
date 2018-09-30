@@ -1,6 +1,6 @@
 package by.epam.hotel.logic;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -19,7 +19,7 @@ public class ToAccountOrdersLogic {
 	private static final Logger LOG = LogManager.getLogger(ToAccountOrdersLogic.class);
 	
 	public static List<FullInfoOrder> getFullInfoOrderList(String currentLogin) throws ServiceException {
-		List<FullInfoOrder> resultList = new LinkedList<>();
+		List<FullInfoOrder> resultList = new ArrayList<>();
 		AccountDao accountDao = new AccountDao();
 		OrderDao orderDao = new OrderDao();
 		try (TransactionHelper helper = new TransactionHelper()) {

@@ -22,6 +22,7 @@ import by.epam.hotel.dao.entity.Room;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
 import by.epam.hotel.logic.FindRoomLogic;
+import by.epam.hotel.logic.OrderLogic;
 import by.epam.hotel.util.ConfigurationManager;
 import by.epam.hotel.util.MessageManager;
 
@@ -69,6 +70,7 @@ public class FindRoomCommand implements ActionCommand {
 						sessionData.setAvailableRoomList(availableRoomList);
 						page = ConfigurationManager.getProperty("path.page.availableroom");
 					} else {
+						sessionData.setClients(OrderLogic.getClientList(sessionData.getLogin()));
 						request.setAttribute("errorBlackListClientMessage",
 								MessageManager.getProrerty("message.blacklistclient"));
 						page = ConfigurationManager.getProperty("path.page.order");
@@ -163,7 +165,7 @@ public class FindRoomCommand implements ActionCommand {
 		}
 		LocalDate localDateFrom = LocalDate.parse(from);
 		LocalDate localDateTo = LocalDate.parse(to);
-		return (localDateFrom.isAfter(LocalDate.now()) && (localDateFrom.isEqual(localDateTo)||localDateTo.isAfter(localDateFrom)));
+		return (localDateFrom.isAfter(LocalDate.now())||localDateFrom.isEqual(LocalDate.now())) && (localDateFrom.isEqual(localDateTo)||localDateTo.isAfter(localDateFrom));
 	}
 
 }

@@ -19,7 +19,7 @@
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
 		<input type="hidden" name="command" value="backToClientmain" /> <input
-			type="submit" value="Back" size="20" />
+			type="submit" value="To main page" />
 	</form>
 </body>
 </html>

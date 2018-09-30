@@ -33,10 +33,10 @@ public class RoomDao extends AbstractDao<Integer, Room> {
 	private final String EMPTY_ROOM = "SELECT `room`.`number`, `room`.`class_id`, `room`.`capacity`, `room`.`price` " 
 		+ "FROM `room` " 
 		+ "WHERE `room`.`removed` = 0 AND `room`.`capacity` >= ? AND `room`.`class_id` = ? " 
-		+ "AND `room`.`number` NOT IN (SELECT DISTINCT `order`.`room_number` " 
+		+ "AND `room`.`number` NOT IN (SELECT `order`.`room_number` " 
 		+ "					 FROM `order` JOIN `room` ON `order`.`room_number` = `room`.`number` " 
 		+ "					 WHERE `room`.`capacity` >= ? AND `room`.`class_id` = ? " 
-		+ "					 AND `order`.`from`<= ? AND `order`.`to`>= ?);";
+		+ "					 AND `order`.`from`<= ? AND `order`.`to`>= ? AND `order`.`removed` = 0);";
 
 	@Override
 	public List<Room> findAll() throws DaoException {

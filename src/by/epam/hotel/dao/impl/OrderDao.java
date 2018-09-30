@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -213,7 +214,7 @@ public class OrderDao extends AbstractDao<Integer, Order> {
 			+ "WHERE `account`.`id` = ?;";
 	
 	public List<FullInfoOrder> findFullInfoOrderByAccount (Integer accountId) throws DaoException {
-		List<FullInfoOrder> resultList = new LinkedList<>();
+		List<FullInfoOrder> resultList = new ArrayList<>();
 		try {
 			try (PreparedStatement statement = connection.prepareStatement(FIND_FULL_INFO_ORDER_BY_ACCOUNT)) {
 				statement.setInt(1, accountId);

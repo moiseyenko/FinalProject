@@ -39,7 +39,7 @@
 	<hr />
 	
 	<form action="${pageContext.request.contextPath}/controller" method="post">
-		<!-- <input type="hidden" name="command" value="order" />  -->
+		<input type="hidden" name="command" value="toChangePersonalData" /> 
 		<input type="submit" value="Change personal data" />
 	</form>
 	

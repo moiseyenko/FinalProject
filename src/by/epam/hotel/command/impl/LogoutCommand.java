@@ -16,11 +16,11 @@ public class LogoutCommand implements ActionCommand {
 	public Router execute(HttpServletRequest request) {
 		System.out.println("in LogoutCommand");
 		request.getSession().invalidate();
-		SessionData sessionData = new SessionData();
+		/*SessionData sessionData = new SessionData();
 		sessionData.setRole(RoleType.GUEST);
 		sessionData.setLocale(LanguageType.RUSSIAN);
 		sessionData.setInnerRedirect(true);
-		request.getSession().setAttribute("sessionData", sessionData);
+		request.getSession().setAttribute("sessionData", sessionData);*/
 		Router router = new Router();
 		String page = ConfigurationManager.getProperty("path.page.welcome");
 		router.setPage(page);

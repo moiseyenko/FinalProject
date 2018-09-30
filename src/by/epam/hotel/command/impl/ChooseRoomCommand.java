@@ -3,6 +3,7 @@ package by.epam.hotel.command.impl;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.temporal.ChronoField;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,7 +42,7 @@ public class ChooseRoomCommand implements ActionCommand {
 				List<Room> updatedAvailableRoomList = FindRoomLogic.findAvailableRoom(chosenRoom.getCapacity(), chosenRoom.getClassRoom(), from, to);
 				if (updatedAvailableRoomList.contains(chosenRoom)) {
 					sessionData.setChosenRoom(chosenRoom);
-					int timeStampDiff = to.getDayOfYear()-from.getDayOfYear();
+					long timeStampDiff = to.getLong(ChronoField.EPOCH_DAY)-from.getLong(ChronoField.EPOCH_DAY);
 					double toPay = (timeStampDiff!=0?timeStampDiff:1)*chosenRoom.getPrice().doubleValue();
 					BigDecimal toPayBigDecimal = new BigDecimal(toPay).setScale(2, RoundingMode.HALF_UP);
 					sessionData.setToPay(toPayBigDecimal);

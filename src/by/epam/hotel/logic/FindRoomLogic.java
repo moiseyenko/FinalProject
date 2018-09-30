@@ -24,7 +24,7 @@ public class FindRoomLogic {
 			helper.doOperation(clientDao);
 			try {
 				Client storedClient = clientDao.findClient(client);
-				if (storedClient == null || storedClient.isBlacklist()) {
+				if (storedClient != null && storedClient.isBlacklist()) {
 					return true;
 				}
 			} catch (DaoException e) {
@@ -46,11 +46,13 @@ public class FindRoomLogic {
 			helper.doOperation(clientDao);
 			try {
 				storedClient = clientDao.findClient(client);
+				if(storedClient == null) {
+					storedClient = client;
+				}
 			} catch (DaoException e) {
 				LOG.error(e);
 				throw new ServiceException(e);
 			}
-
 		} catch (CloseTransactionException e) {
 			LOG.error("Resources cannot be closed", e);
 			throw new ServiceException("Resources cannot be closed", e);

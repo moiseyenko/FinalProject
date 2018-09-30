@@ -2,6 +2,8 @@ package by.epam.hotel.runner;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -40,128 +42,124 @@ public class Runner {
 		AccountDao accountDao = new AccountDao();
 		OrderDao orderDao = new OrderDao();
 		NationalityDao nationDao = new NationalityDao();
-		RoomDao roomDao =  new RoomDao();
+		RoomDao roomDao = new RoomDao();
 		BankAccountDao bankdao = new BankAccountDao();
-		
-		
+
+		List<Room> rooms = null;
+
 		try (TransactionHelper helper = new TransactionHelper()) {
-			helper.doTransaction(accountDao, bankdao);
 			try {
-				if (!accountDao.IsExistAccount(login, email)) {
-					boolean flag = accountDao.create(login, email, password);
-					System.out.println(flag);
-					Account account = accountDao.findAccountByLogin(login);
-					System.out.println(account);
-					boolean newflag = bankdao.create(new BankAccount(account.getId(), new BigDecimal(150)));
-					System.out.println(newflag);
-					helper.commit();
-				}
-			}catch (DaoException e) {
+				helper.doOperation(roomDao);
+
+				rooms = roomDao.showEmptyRoom(3, "Бизнес", LocalDate.parse("2018-12-30"),
+						LocalDate.parse("2019-01-25"));
+				System.out.println(rooms);
+			} catch (DaoException e) {
 				System.out.println("daoexceprion");
 				helper.rollback();
 			}
-			
-		} 
-		
-		
-		
-		/*try (TransactionHelper helper = new TransactionHelper()) {
-			helper.doOperation(bankdao);
-			//boolean createtrue = bankdao.create(new BankAccount(10, new BigDecimal(300)));
-			//boolean createfalse = bankdao.create(new BankAccount(10, new BigDecimal(300)));
-			//System.out.println("createtrue"+createtrue);
-			//System.out.println("createfalse"+createfalse);
-			BankAccount findtrue = bankdao.findEntityById(10);
-			BankAccount findfalse = bankdao.findEntityById(11);
-			System.out.println("findtrue"+findtrue);
-			System.out.println("findfalse"+findfalse);
-			boolean updatetrue = bankdao.update(new BankAccount(10, new BigDecimal(-100)));
-			boolean updatefalse = bankdao.update(new BankAccount(11, new BigDecimal(-100)));
-			System.out.println("updatetrue"+updatetrue);
-			System.out.println("updatefalse"+updatefalse);
-		}*/
-		/*try (TransactionHelper helper = new TransactionHelper()) {
-			helper.doOperation(roomDao);
-			List<Room> rooms = roomDao.showEmptyRoom(3, "Стандарт", LocalDate.parse("2018-10-02"), LocalDate.parse("2018-10-03"));
-			System.out.println(rooms);
-			boolean flag = rooms.contains(new Room(28, "Стандарт", 3, BigDecimal.valueOf(140.0)));
-			System.out.println(flag);
-		}*/
-		
-		/*try (TransactionHelper helper = new TransactionHelper()) {
-			helper.doOperation(accountDao);
-			try {
-				
-				if (!accountDao.IsExistAccount(login, email)) {
-					System.out.println(accountDao.create(login, email, password));
-				}
-			} catch (DaoException e) {
-				e.printStackTrace();
-				// throw new ServiceException(e);
-			}
-			helper.commit();
-		}*/
-		/*try(TransactionHelper helper = new TransactionHelper()){
-			helper.doOperation(orderDao);
-			for(Order items:orderDao.findAll()) {
-				System.out.println(items);
-			}
-			System.out.println("-------------------------------");
-			System.out.println(orderDao.findEntityById(5)); 
-			System.out.println("-------------------------------");
-			System.out.println("create: "+orderDao.create(new Order(25, 35, 5, LocalDate.parse("2018-05-10"), LocalDate.parse("2018-06-10"), new BigDecimal("2000"))));
-			System.out.println("-------------------------------");
-			System.out.println("update: "+orderDao.update(new Order(169, 25, 35, 5, LocalDate.parse("2018-05-10"), LocalDate.parse("2018-06-01"), new BigDecimal("2000"), false)));
-			System.out.println("-------------------------------");
-			System.out.println("delete: "+orderDao.changeRemoved(orderDao.findEntityById(169)));
-			System.out.println("-------------------------------");
-			System.out.println("delete: "+orderDao.delete(169));
-			
-		}*/
-		
-		/*try(TransactionHelper helper = new TransactionHelper()){
-			AccountStatistics accountStats = new AccountStatistics();
-			helper.doStatsOperation(accountStats);
-			List<StatisticsData> list = accountStats.calculateSumForEachClient("user10@epam.com", LocalDate.parse("2018-01-01"), LocalDate.parse("2018-12-31"));
-			System.out.println("---------------");
-			for(StatisticsData data:list) {
-				System.out.println("---------------");
-				System.out.println(data);
-			}
-		}*/
-		
-		/*try(TransactionHelper helper = new TransactionHelper()){
-			ClientStatistics clientStatistics = new ClientStatistics();
-			helper.doStatsOperation(clientStatistics);
-			List<StatisticsData> list = clientStatistics.showClientsStatus();
-			for(StatisticsData data:list) {
-				System.out.println("---------------");
-				System.out.println(data);
-			}
-		}*/
-		
-		/*try(TransactionHelper helper = new TransactionHelper()){
-			RoomStatistics roomStatistics = new RoomStatistics();
-			helper.doStatsOperation(roomStatistics);
-			List<Room> list = roomStatistics.showLeastProfitableRoom();
-			for(Room data:list) {
-				System.out.println("---------------");
-				System.out.println(data);
-			}
-		}*/
-		
-		/*try(TransactionHelper helper = new TransactionHelper()){
-			RoomDao roomDao = new RoomDao();
-			helper.doOperation(roomDao);
-			List<Room> list = roomDao.showEmptyRoom(3, "Стандарт", LocalDate.parse("2018-01-19"), LocalDate.parse("2018-05-31"));
-			for(Room data:list) {
-				System.out.println("---------------");
-				System.out.println(data);
-			}
-		}*/
-		
-		
-		
+		}
+
+		/*
+		 * try (TransactionHelper helper = new TransactionHelper()) {
+		 * helper.doTransaction(accountDao, bankdao); try { if
+		 * (!accountDao.IsExistAccount(login, email)) { boolean flag =
+		 * accountDao.create(login, email, password); System.out.println(flag); Account
+		 * account = accountDao.findAccountByLogin(login); System.out.println(account);
+		 * boolean newflag = bankdao.create(new BankAccount(account.getId(), new
+		 * BigDecimal(150))); System.out.println(newflag); helper.commit(); } }catch
+		 * (DaoException e) { System.out.println("daoexceprion"); helper.rollback(); }
+		 * 
+		 * }
+		 */
+
+		/*
+		 * try (TransactionHelper helper = new TransactionHelper()) {
+		 * helper.doOperation(bankdao); //boolean createtrue = bankdao.create(new
+		 * BankAccount(10, new BigDecimal(300))); //boolean createfalse =
+		 * bankdao.create(new BankAccount(10, new BigDecimal(300)));
+		 * //System.out.println("createtrue"+createtrue);
+		 * //System.out.println("createfalse"+createfalse); BankAccount findtrue =
+		 * bankdao.findEntityById(10); BankAccount findfalse =
+		 * bankdao.findEntityById(11); System.out.println("findtrue"+findtrue);
+		 * System.out.println("findfalse"+findfalse); boolean updatetrue =
+		 * bankdao.update(new BankAccount(10, new BigDecimal(-100))); boolean
+		 * updatefalse = bankdao.update(new BankAccount(11, new BigDecimal(-100)));
+		 * System.out.println("updatetrue"+updatetrue);
+		 * System.out.println("updatefalse"+updatefalse); }
+		 */
+		/*
+		 * try (TransactionHelper helper = new TransactionHelper()) {
+		 * helper.doOperation(roomDao); List<Room> rooms = roomDao.showEmptyRoom(3,
+		 * "Стандарт", LocalDate.parse("2018-10-02"), LocalDate.parse("2018-10-03"));
+		 * System.out.println(rooms); boolean flag = rooms.contains(new Room(28,
+		 * "Стандарт", 3, BigDecimal.valueOf(140.0))); System.out.println(flag); }
+		 */
+
+		/*
+		 * try (TransactionHelper helper = new TransactionHelper()) {
+		 * helper.doOperation(accountDao); try {
+		 * 
+		 * if (!accountDao.IsExistAccount(login, email)) {
+		 * System.out.println(accountDao.create(login, email, password)); } } catch
+		 * (DaoException e) { e.printStackTrace(); // throw new ServiceException(e); }
+		 * helper.commit(); }
+		 */
+		/*
+		 * try(TransactionHelper helper = new TransactionHelper()){
+		 * helper.doOperation(orderDao); for(Order items:orderDao.findAll()) {
+		 * System.out.println(items); }
+		 * System.out.println("-------------------------------");
+		 * System.out.println(orderDao.findEntityById(5));
+		 * System.out.println("-------------------------------");
+		 * System.out.println("create: "+orderDao.create(new Order(25, 35, 5,
+		 * LocalDate.parse("2018-05-10"), LocalDate.parse("2018-06-10"), new
+		 * BigDecimal("2000")))); System.out.println("-------------------------------");
+		 * System.out.println("update: "+orderDao.update(new Order(169, 25, 35, 5,
+		 * LocalDate.parse("2018-05-10"), LocalDate.parse("2018-06-01"), new
+		 * BigDecimal("2000"), false)));
+		 * System.out.println("-------------------------------");
+		 * System.out.println("delete: "+orderDao.changeRemoved(orderDao.findEntityById(
+		 * 169))); System.out.println("-------------------------------");
+		 * System.out.println("delete: "+orderDao.delete(169));
+		 * 
+		 * }
+		 */
+
+		/*
+		 * try(TransactionHelper helper = new TransactionHelper()){ AccountStatistics
+		 * accountStats = new AccountStatistics();
+		 * helper.doStatsOperation(accountStats); List<StatisticsData> list =
+		 * accountStats.calculateSumForEachClient("user10@epam.com",
+		 * LocalDate.parse("2018-01-01"), LocalDate.parse("2018-12-31"));
+		 * System.out.println("---------------"); for(StatisticsData data:list) {
+		 * System.out.println("---------------"); System.out.println(data); } }
+		 */
+
+		/*
+		 * try(TransactionHelper helper = new TransactionHelper()){ ClientStatistics
+		 * clientStatistics = new ClientStatistics();
+		 * helper.doStatsOperation(clientStatistics); List<StatisticsData> list =
+		 * clientStatistics.showClientsStatus(); for(StatisticsData data:list) {
+		 * System.out.println("---------------"); System.out.println(data); } }
+		 */
+
+		/*
+		 * try(TransactionHelper helper = new TransactionHelper()){ RoomStatistics
+		 * roomStatistics = new RoomStatistics();
+		 * helper.doStatsOperation(roomStatistics); List<Room> list =
+		 * roomStatistics.showLeastProfitableRoom(); for(Room data:list) {
+		 * System.out.println("---------------"); System.out.println(data); } }
+		 */
+
+		/*
+		 * try(TransactionHelper helper = new TransactionHelper()){ RoomDao roomDao =
+		 * new RoomDao(); helper.doOperation(roomDao); List<Room> list =
+		 * roomDao.showEmptyRoom(3, "Стандарт", LocalDate.parse("2018-01-19"),
+		 * LocalDate.parse("2018-05-31")); for(Room data:list) {
+		 * System.out.println("---------------"); System.out.println(data); } }
+		 */
+
 		/*
 		 * boolean i = false; boolean j = false; List<Account> list = new
 		 * LinkedList<>(); AccountDao accountDao = new AccountDao(); ClientDao clientDao

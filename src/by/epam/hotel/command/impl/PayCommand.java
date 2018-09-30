@@ -15,10 +15,12 @@ import by.epam.hotel.controller.RoleType;
 import by.epam.hotel.controller.Router;
 import by.epam.hotel.controller.RouterType;
 import by.epam.hotel.controller.SessionData;
+import by.epam.hotel.dao.entity.Client;
 import by.epam.hotel.dao.entity.Room;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
 import by.epam.hotel.logic.FindRoomLogic;
+import by.epam.hotel.logic.OrderLogic;
 import by.epam.hotel.logic.PayLogic;
 import by.epam.hotel.util.ConfigurationManager;
 import by.epam.hotel.util.MessageManager;
@@ -37,33 +39,45 @@ public class PayCommand implements ActionCommand {
 			LocalDate from = sessionData.getFrom();
 			LocalDate to = sessionData.getTo();
 			try {
-				List<Room> updatedAvailableRoomList = FindRoomLogic.findAvailableRoom(chosenRoom.getCapacity(),
-						chosenRoom.getClassRoom(), from, to);
-				if (updatedAvailableRoomList.contains(chosenRoom)) {
-					BigDecimal currentAmount = sessionData.getCurrentAmount();
-					BigDecimal toPay = sessionData.getToPay();
-					if(currentAmount.compareTo(toPay)>=0) {
-						int room_number = sessionData.getChosenRoom().getNumber();
-						int client_id = sessionData.getChosenClient().getId();
-						String login = sessionData.getLogin();
-						if(PayLogic.doPay(room_number, client_id, login, from, to, toPay)) {
-							page = ConfigurationManager.getProperty("path.page.successpayment");
-							router.setType(RouterType.REDIRECT);
-						}else {
-							request.setAttribute("PaymentErrorMessage", MessageManager.getProrerty("message.paymenterror"));
+
+				if (!FindRoomLogic.checkClientInBlacklist(sessionData.getChosenClient())) {
+					List<Room> updatedAvailableRoomList = FindRoomLogic.findAvailableRoom(chosenRoom.getCapacity(),
+							chosenRoom.getClassRoom(), from, to);
+					if (updatedAvailableRoomList.contains(chosenRoom)) {
+						BigDecimal currentAmount = sessionData.getCurrentAmount();
+						BigDecimal toPay = sessionData.getToPay();
+						if (currentAmount.compareTo(toPay) >= 0) {
+							int room_number = sessionData.getChosenRoom().getNumber();
+							Client client = sessionData.getChosenClient();
+							String login = sessionData.getLogin();
+							if (PayLogic.doPay(room_number, client, login, from, to, toPay)) {
+								page = ConfigurationManager.getProperty("path.page.successpayment");
+								router.setType(RouterType.REDIRECT);
+							} else {
+								request.setAttribute("PaymentErrorMessage",
+										MessageManager.getProrerty("message.paymenterror"));
+								page = ConfigurationManager.getProperty("path.page.paypage");
+								router.setType(RouterType.FORWARD);
+							}
+						} else {
+							request.setAttribute("errorEnoughMoneyMessage",
+									MessageManager.getProrerty("message.enoughmoneyerror"));
 							page = ConfigurationManager.getProperty("path.page.paypage");
 							router.setType(RouterType.FORWARD);
 						}
-					}else {
-						request.setAttribute("errorEnoughMoneyMessage", MessageManager.getProrerty("message.enoughmoneyerror"));
-						page = ConfigurationManager.getProperty("path.page.paypage");
+					} else {
+						sessionData.setAvailableRoomList(updatedAvailableRoomList);
+						page = ConfigurationManager.getProperty("path.page.alreadyorderedroom");
 						router.setType(RouterType.FORWARD);
 					}
 				} else {
-					sessionData.setAvailableRoomList(updatedAvailableRoomList);
-					page = ConfigurationManager.getProperty("path.page.alreadyorderedroom");
+					sessionData.setClients(OrderLogic.getClientList(sessionData.getLogin()));
+					request.setAttribute("errorBlackListClientMessage",
+							MessageManager.getProrerty("message.blacklistclient"));
+					page = ConfigurationManager.getProperty("path.page.order");
 					router.setType(RouterType.FORWARD);
 				}
+
 			} catch (ServiceException e) {
 				LOG.error(e);
 				throw new CommandException(e);
