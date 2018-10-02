@@ -21,9 +21,9 @@ import by.epam.hotel.exception.DaoException;
 public class RoomDao extends AbstractDao<Integer, Room> {
 	private static final Logger LOG = LogManager.getLogger(RoomDao.class);
 	private final String FIND_ALL = "SELECT `room`.`number`, `room`.`class_id`, `room`.`capacity`,"
-			+ "`room`.`price`, `room`.`removed` FROM `room`;";
+			+ "`room`.`price`, `room`.`removed` FROM `room` LIMIT ?, ?;";
 	private final String INSERT_ROOM = "INSERT INTO `hotel`.`room` (`number`, `class_id`, `capacity`, `price`) VALUE "
-			+ "(?,?, ?, ?);";
+			+ "(?, ?, ?, ?);";
 	private final String FIND_ROOM_BY_ID = "SELECT `room`.`number`, `room`.`class_id`, `room`.`capacity`, "
 			+ "			+ `room`.`price`, `room`.`removed` FROM `room` WHERE `room`.`number` = ?;";
 	private final String DELETE_ROOM = "DELETE FROM `room` WHERE `room`.`number` = ?;";
@@ -39,15 +39,17 @@ public class RoomDao extends AbstractDao<Integer, Room> {
 		+ "					 AND `order`.`from`<= ? AND `order`.`to`>= ? AND `order`.`removed` = 0);";
 
 	@Override
-	public List<Room> findAll() throws DaoException {
+	public List<Room> findAll(int start, int recordsPerPage) throws DaoException {
 		List<Room> rooms = new LinkedList<>();
 		try {
-			try (Statement statement = connection.createStatement()) {
-				ResultSet result = statement.executeQuery(FIND_ALL);
+			try (PreparedStatement statement = connection.prepareStatement(FIND_ALL)) {
+				statement.setInt(1, start);
+				statement.setInt(2, recordsPerPage);
+				ResultSet result = statement.executeQuery();
 				while (result.next()) {
 					int number = result.getInt(DaoFieldType.NUMBER.getField());
-					String roomClass = result.getString(DaoFieldType.CLASS.getField());
-					int capacity = result.getInt(DaoFieldType.PRICE.getField());
+					String roomClass = result.getString(DaoFieldType.CLASS_ID.getField());
+					int capacity = result.getInt(DaoFieldType.CAPACITY.getField());
 					BigDecimal price = result.getBigDecimal(DaoFieldType.PRICE.getField());
 					boolean removed = result.getBoolean(DaoFieldType.REMOVED.getField());
 					rooms.add(new Room(number, roomClass, capacity, price, removed));
@@ -69,7 +71,7 @@ public class RoomDao extends AbstractDao<Integer, Room> {
 				statement.setInt(1, id);
 				ResultSet result = statement.executeQuery();
 				if (result.next()) {
-					String roomClass = result.getString(DaoFieldType.CLASS.getField());
+					String roomClass = result.getString(DaoFieldType.CLASS_ID.getField());
 					int capacity = result.getInt(DaoFieldType.PRICE.getField());
 					BigDecimal price = result.getBigDecimal(DaoFieldType.PRICE.getField());
 					boolean removed = result.getBoolean(DaoFieldType.REMOVED.getField());
@@ -241,6 +243,28 @@ public class RoomDao extends AbstractDao<Integer, Room> {
 		}
 		return resultList;
 	}
+	
+	
+private final String COUNT_ROOMS = "SELECT COUNT(`room`.`number`) AS `QUANTITY` FROM `room`;";
+	
+	public int countRooms() throws DaoException {
+		int quantity = 0;
+		try {
+			try (Statement statement = connection.createStatement()) {
+				ResultSet result = statement.executeQuery(COUNT_ROOMS);
+				if (result.next()) {
+					quantity = result.getInt(DaoFieldType.QUANTITY.getField());
+				}
+			}
+		} catch (SQLException e) {
+			for (Throwable exc : e) {
+				LOG.error("Counting rooms error: {}", exc);
+				throw new DaoException("Counting rooms error", exc);
+			}
+		}
+		return quantity;
+	}
+	
 	
 
 }

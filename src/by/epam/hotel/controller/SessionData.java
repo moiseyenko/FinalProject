@@ -25,7 +25,16 @@ public class SessionData {
 	private Room chosenRoom;
 	private BigDecimal toPay;
 	private BigDecimal currentAmount;
-	private List<FullInfoOrder> listFullInfoOrder;
+	private List<FullInfoOrder> listAccountFullInfoOrder;
+	private List<FullInfoOrder> listAdminFullInfoOrder;
+	private List<Client> clientList;
+	private List<Room> roomList;
+	private List<Nationality> nationalityList;
+	private int currentPage;
+	private int recordsPerPage;
+	private int noOfPages;
+	private Room roomToChange;
+	private Nationality nationalityToChange;
 	
 	public String getLogin() {
 		return login;
@@ -139,12 +148,84 @@ public class SessionData {
 		this.currentAmount = currentAmount;
 	}
 
-	public List<FullInfoOrder> getListFullInfoOrder() {
-		return listFullInfoOrder;
+	public List<FullInfoOrder> getListAccountFullInfoOrder() {
+		return listAccountFullInfoOrder;
 	}
 
-	public void setListFullInfoOrder(List<FullInfoOrder> listFullInfoOrder) {
-		this.listFullInfoOrder = listFullInfoOrder;
+	public void setListAccountFullInfoOrder(List<FullInfoOrder> listAccountFullInfoOrder) {
+		this.listAccountFullInfoOrder = listAccountFullInfoOrder;
+	}
+
+	public List<FullInfoOrder> getListAdminFullInfoOrder() {
+		return listAdminFullInfoOrder;
+	}
+
+	public void setListAdminFullInfoOrder(List<FullInfoOrder> listAdminFullInfoOrder) {
+		this.listAdminFullInfoOrder = listAdminFullInfoOrder;
+	}
+	
+	public int getCurrentPage() {
+		return currentPage;
+	}
+
+	public void setCurrentPage(int currentPage) {
+		this.currentPage = currentPage;
+	}
+
+	public int getRecordsPerPage() {
+		return recordsPerPage;
+	}
+
+	public void setRecordsPerPage(int recordsPerPage) {
+		this.recordsPerPage = recordsPerPage;
+	}
+
+	public int getNoOfPages() {
+		return noOfPages;
+	}
+
+	public void setNoOfPages(int noOfPages) {
+		this.noOfPages = noOfPages;
+	}
+
+	public List<Client> getClientList() {
+		return clientList;
+	}
+
+	public void setClientList(List<Client> clientList) {
+		this.clientList = clientList;
+	}
+
+	public List<Room> getRoomList() {
+		return roomList;
+	}
+
+	public void setRoomList(List<Room> roomList) {
+		this.roomList = roomList;
+	}
+
+	public Room getRoomToChange() {
+		return roomToChange;
+	}
+
+	public void setRoomToChange(Room roomToChange) {
+		this.roomToChange = roomToChange;
+	}
+
+	public List<Nationality> getNationalityList() {
+		return nationalityList;
+	}
+
+	public void setNationalityList(List<Nationality> nationalityList) {
+		this.nationalityList = nationalityList;
+	}
+
+	public Nationality getNationalityToChange() {
+		return nationalityToChange;
+	}
+
+	public void setNationalityToChange(Nationality nationalityToChange) {
+		this.nationalityToChange = nationalityToChange;
 	}
 
 	@Override

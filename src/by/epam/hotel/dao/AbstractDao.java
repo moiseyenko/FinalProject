@@ -9,7 +9,7 @@ import by.epam.hotel.exception.DaoException;
 public abstract class AbstractDao<K, T extends Entity> {
 	protected Connection connection;
 
-	public abstract List<T> findAll() throws DaoException;
+	public abstract List<T> findAll(int start, int recordsPerPage) throws DaoException;
 
 	public abstract T findEntityById(K id) throws DaoException;
 

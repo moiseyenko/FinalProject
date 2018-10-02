@@ -1,164 +1,34 @@
-2018-10-01 00:41:52,089 DEBUG controller.Controller [http-nio-8080-exec-361] Router: page=/jsp/login.jsp, type=FORWARD
-2018-10-01 00:42:10,998 DEBUG controller.Controller [http-nio-8080-exec-360] Router: page=/jsp/welcome.jsp, type=REDIRECT
-2018-10-01 00:42:11,615 DEBUG controller.Controller [http-nio-8080-exec-365] Router: page=/jsp/login.jsp, type=FORWARD
-2018-10-01 00:42:29,473 DEBUG pool.ConnectionPool [http-nio-8080-exec-363] by.epam.hotel.pool.ProxyConnection@333a58d4 got FROM pool
-2018-10-01 00:42:29,488 DEBUG pool.ConnectionPool [http-nio-8080-exec-363] true
-2018-10-01 00:42:29,551 DEBUG pool.ConnectionPool [http-nio-8080-exec-363] by.epam.hotel.pool.ProxyConnection@333a58d4 returned IN pool
-2018-10-01 00:42:29,551 DEBUG controller.Controller [http-nio-8080-exec-363] Router: page=/jsp/login.jsp, type=FORWARD
-2018-10-01 00:42:37,265 DEBUG pool.ConnectionPool [http-nio-8080-exec-366] by.epam.hotel.pool.ProxyConnection@178e1bef got FROM pool
-2018-10-01 00:42:37,265 DEBUG pool.ConnectionPool [http-nio-8080-exec-366] true
-2018-10-01 00:42:37,265 DEBUG pool.ConnectionPool [http-nio-8080-exec-366] by.epam.hotel.pool.ProxyConnection@178e1bef returned IN pool
-2018-10-01 00:42:37,265 DEBUG controller.Controller [http-nio-8080-exec-366] Router: page=/jsp/clientmain.jsp, type=REDIRECT
-2018-10-01 00:42:41,764 DEBUG controller.Controller [http-nio-8080-exec-370] Router: page=/jsp/changepersonaldata.jsp, type=FORWARD
-2018-10-01 00:42:43,206 DEBUG controller.Controller [http-nio-8080-exec-372] Router: page=/jsp/clientmain.jsp, type=FORWARD
-2018-10-01 00:42:44,045 DEBUG pool.ConnectionPool [http-nio-8080-exec-362] by.epam.hotel.pool.ProxyConnection@706ff929 got FROM pool
-2018-10-01 00:42:44,154 DEBUG pool.ConnectionPool [http-nio-8080-exec-362] true
-2018-10-01 00:42:44,154 DEBUG pool.ConnectionPool [http-nio-8080-exec-362] by.epam.hotel.pool.ProxyConnection@706ff929 returned IN pool
-2018-10-01 00:42:44,154 DEBUG controller.Controller [http-nio-8080-exec-362] Router: page=/jsp/accountorders.jsp, type=FORWARD
-2018-10-01 00:42:46,295 DEBUG controller.Controller [http-nio-8080-exec-360] Router: page=/jsp/approveordercancel.jsp, type=FORWARD
-2018-10-01 00:42:48,301 DEBUG pool.ConnectionPool [http-nio-8080-exec-368] by.epam.hotel.pool.ProxyConnection@1bbcf8c8 got FROM pool
-2018-10-01 00:42:48,379 DEBUG pool.ConnectionPool [http-nio-8080-exec-368] true
-2018-10-01 00:42:48,379 DEBUG pool.ConnectionPool [http-nio-8080-exec-368] by.epam.hotel.pool.ProxyConnection@1bbcf8c8 returned IN pool
-2018-10-01 00:42:48,379 DEBUG pool.ConnectionPool [http-nio-8080-exec-368] by.epam.hotel.pool.ProxyConnection@50b47cf6 got FROM pool
-2018-10-01 00:42:48,457 DEBUG pool.ConnectionPool [http-nio-8080-exec-368] true
-2018-10-01 00:42:48,457 DEBUG pool.ConnectionPool [http-nio-8080-exec-368] by.epam.hotel.pool.ProxyConnection@50b47cf6 returned IN pool
-2018-10-01 00:42:48,457 DEBUG controller.Controller [http-nio-8080-exec-368] Router: page=/jsp/accountorders.jsp, type=REDIRECT
-2018-10-01 00:42:51,200 DEBUG controller.Controller [http-nio-8080-exec-373] Router: page=/jsp/clientmain.jsp, type=FORWARD
-2018-10-01 00:42:52,438 DEBUG pool.ConnectionPool [http-nio-8080-exec-374] by.epam.hotel.pool.ProxyConnection@357e7a63 got FROM pool
-2018-10-01 00:42:52,438 DEBUG pool.ConnectionPool [http-nio-8080-exec-374] true
-2018-10-01 00:42:52,438 DEBUG pool.ConnectionPool [http-nio-8080-exec-374] by.epam.hotel.pool.ProxyConnection@357e7a63 returned IN pool
-2018-10-01 00:42:52,438 DEBUG pool.ConnectionPool [http-nio-8080-exec-374] by.epam.hotel.pool.ProxyConnection@3f861113 got FROM pool
-2018-10-01 00:42:52,438 DEBUG pool.ConnectionPool [http-nio-8080-exec-374] true
-2018-10-01 00:42:52,454 DEBUG pool.ConnectionPool [http-nio-8080-exec-374] by.epam.hotel.pool.ProxyConnection@3f861113 returned IN pool
-2018-10-01 00:42:52,454 DEBUG pool.ConnectionPool [http-nio-8080-exec-374] by.epam.hotel.pool.ProxyConnection@3c6f58d6 got FROM pool
-2018-10-01 00:42:52,454 DEBUG pool.ConnectionPool [http-nio-8080-exec-374] true
-2018-10-01 00:42:52,454 DEBUG pool.ConnectionPool [http-nio-8080-exec-374] by.epam.hotel.pool.ProxyConnection@3c6f58d6 returned IN pool
-2018-10-01 00:42:52,454 DEBUG controller.Controller [http-nio-8080-exec-374] Router: page=/jsp/order.jsp, type=FORWARD
-2018-10-01 00:43:28,103 DEBUG controller.Controller [http-nio-8080-exec-371] Router: page=/jsp/order.jsp, type=FORWARD
-2018-10-01 00:43:51,911 DEBUG controller.Controller [http-nio-8080-exec-372] Router: page=/jsp/order.jsp, type=FORWARD
-2018-10-01 00:44:21,391 DEBUG pool.ConnectionPool [http-nio-8080-exec-377] by.epam.hotel.pool.ProxyConnection@4e212250 got FROM pool
-2018-10-01 00:44:21,391 DEBUG pool.ConnectionPool [http-nio-8080-exec-377] true
-2018-10-01 00:44:21,391 DEBUG pool.ConnectionPool [http-nio-8080-exec-377] by.epam.hotel.pool.ProxyConnection@4e212250 returned IN pool
-2018-10-01 00:44:21,391 DEBUG pool.ConnectionPool [http-nio-8080-exec-377] by.epam.hotel.pool.ProxyConnection@44d94920 got FROM pool
-2018-10-01 00:44:21,438 DEBUG pool.ConnectionPool [http-nio-8080-exec-377] true
-2018-10-01 00:44:21,438 DEBUG pool.ConnectionPool [http-nio-8080-exec-377] by.epam.hotel.pool.ProxyConnection@44d94920 returned IN pool
-2018-10-01 00:44:21,438 DEBUG pool.ConnectionPool [http-nio-8080-exec-377] by.epam.hotel.pool.ProxyConnection@30906ad2 got FROM pool
-2018-10-01 00:44:21,469 DEBUG pool.ConnectionPool [http-nio-8080-exec-377] true
-2018-10-01 00:44:21,469 DEBUG pool.ConnectionPool [http-nio-8080-exec-377] by.epam.hotel.pool.ProxyConnection@30906ad2 returned IN pool
-2018-10-01 00:44:21,469 DEBUG controller.Controller [http-nio-8080-exec-377] Router: page=/jsp/availableroom.jsp, type=FORWARD
-2018-10-01 00:44:22,816 DEBUG pool.ConnectionPool [http-nio-8080-exec-378] by.epam.hotel.pool.ProxyConnection@333a58d4 got FROM pool
-2018-10-01 00:44:22,816 DEBUG pool.ConnectionPool [http-nio-8080-exec-378] true
-2018-10-01 00:44:22,816 DEBUG pool.ConnectionPool [http-nio-8080-exec-378] by.epam.hotel.pool.ProxyConnection@333a58d4 returned IN pool
-2018-10-01 00:44:22,816 DEBUG controller.Controller [http-nio-8080-exec-378] Router: page=/jsp/infoforpayment.jsp, type=FORWARD
-2018-10-01 00:44:25,152 DEBUG pool.ConnectionPool [http-nio-8080-exec-373] by.epam.hotel.pool.ProxyConnection@178e1bef got FROM pool
-2018-10-01 00:44:25,152 DEBUG pool.ConnectionPool [http-nio-8080-exec-373] true
-2018-10-01 00:44:25,152 DEBUG pool.ConnectionPool [http-nio-8080-exec-373] by.epam.hotel.pool.ProxyConnection@178e1bef returned IN pool
-2018-10-01 00:44:25,152 DEBUG pool.ConnectionPool [http-nio-8080-exec-373] by.epam.hotel.pool.ProxyConnection@706ff929 got FROM pool
-2018-10-01 00:44:25,152 DEBUG pool.ConnectionPool [http-nio-8080-exec-373] true
-2018-10-01 00:44:25,152 DEBUG pool.ConnectionPool [http-nio-8080-exec-373] by.epam.hotel.pool.ProxyConnection@706ff929 returned IN pool
-2018-10-01 00:44:25,152 DEBUG controller.Controller [http-nio-8080-exec-373] Router: page=/jsp/paypage.jsp, type=FORWARD
-2018-10-01 00:44:30,332 DEBUG controller.Controller [http-nio-8080-exec-375] Router: page=/jsp/infoforpayment.jsp, type=FORWARD
-2018-10-01 00:44:31,346 DEBUG pool.ConnectionPool [http-nio-8080-exec-371] by.epam.hotel.pool.ProxyConnection@1bbcf8c8 got FROM pool
-2018-10-01 00:44:31,361 DEBUG pool.ConnectionPool [http-nio-8080-exec-371] true
-2018-10-01 00:44:31,361 DEBUG pool.ConnectionPool [http-nio-8080-exec-371] by.epam.hotel.pool.ProxyConnection@1bbcf8c8 returned IN pool
-2018-10-01 00:44:31,361 DEBUG pool.ConnectionPool [http-nio-8080-exec-371] by.epam.hotel.pool.ProxyConnection@50b47cf6 got FROM pool
-2018-10-01 00:44:31,408 DEBUG pool.ConnectionPool [http-nio-8080-exec-371] true
-2018-10-01 00:44:31,408 DEBUG pool.ConnectionPool [http-nio-8080-exec-371] by.epam.hotel.pool.ProxyConnection@50b47cf6 returned IN pool
-2018-10-01 00:44:31,408 DEBUG controller.Controller [http-nio-8080-exec-371] Router: page=/jsp/paypage.jsp, type=FORWARD
-2018-10-01 00:44:32,124 DEBUG pool.ConnectionPool [http-nio-8080-exec-370] by.epam.hotel.pool.ProxyConnection@357e7a63 got FROM pool
-2018-10-01 00:44:32,124 DEBUG pool.ConnectionPool [http-nio-8080-exec-370] true
-2018-10-01 00:44:32,124 DEBUG pool.ConnectionPool [http-nio-8080-exec-370] by.epam.hotel.pool.ProxyConnection@357e7a63 returned IN pool
-2018-10-01 00:44:32,124 DEBUG pool.ConnectionPool [http-nio-8080-exec-370] by.epam.hotel.pool.ProxyConnection@3f861113 got FROM pool
-2018-10-01 00:44:32,124 DEBUG pool.ConnectionPool [http-nio-8080-exec-370] true
-2018-10-01 00:44:32,124 DEBUG pool.ConnectionPool [http-nio-8080-exec-370] by.epam.hotel.pool.ProxyConnection@3f861113 returned IN pool
-2018-10-01 00:44:32,124 DEBUG pool.ConnectionPool [http-nio-8080-exec-370] by.epam.hotel.pool.ProxyConnection@3c6f58d6 got FROM pool
-2018-10-01 00:44:32,155 DEBUG pool.ConnectionPool [http-nio-8080-exec-370] true
-2018-10-01 00:44:32,155 DEBUG pool.ConnectionPool [http-nio-8080-exec-370] by.epam.hotel.pool.ProxyConnection@3c6f58d6 returned IN pool
-2018-10-01 00:44:32,155 DEBUG controller.Controller [http-nio-8080-exec-370] Router: page=/jsp/successpayment.jsp, type=REDIRECT
-2018-10-01 00:44:42,408 DEBUG controller.Controller [http-nio-8080-exec-372] Router: page=/jsp/clientmain.jsp, type=FORWARD
-2018-10-01 00:44:43,877 DEBUG controller.Controller [http-nio-8080-exec-376] Router: page=/jsp/changepersonaldata.jsp, type=FORWARD
-2018-10-01 00:44:46,366 DEBUG controller.Controller [http-nio-8080-exec-377] Router: page=/jsp/deleteaccount.jsp, type=FORWARD
-2018-10-01 00:44:54,192 DEBUG pool.ConnectionPool [http-nio-8080-exec-378] by.epam.hotel.pool.ProxyConnection@4e212250 got FROM pool
-2018-10-01 00:44:54,192 DEBUG pool.ConnectionPool [http-nio-8080-exec-378] true
-2018-10-01 00:44:54,192 DEBUG pool.ConnectionPool [http-nio-8080-exec-378] by.epam.hotel.pool.ProxyConnection@4e212250 returned IN pool
-2018-10-01 00:44:54,224 DEBUG pool.ConnectionPool [http-nio-8080-exec-378] by.epam.hotel.pool.ProxyConnection@44d94920 got FROM pool
-2018-10-01 00:44:54,224 DEBUG pool.ConnectionPool [http-nio-8080-exec-378] true
-2018-10-01 00:44:54,224 DEBUG pool.ConnectionPool [http-nio-8080-exec-378] by.epam.hotel.pool.ProxyConnection@44d94920 returned IN pool
-2018-10-01 00:44:54,224 DEBUG controller.Controller [http-nio-8080-exec-378] Router: page=/tempjsp/successdeleteaccount.jsp, type=REDIRECT
-2018-10-01 00:44:58,150 DEBUG controller.Controller [http-nio-8080-exec-374] Router: page=/jsp/welcome.jsp, type=FORWARD
-2018-10-01 00:45:58,475 DEBUG controller.Controller [http-nio-8080-exec-371] Router: page=/jsp/login.jsp, type=FORWARD
-2018-10-01 00:46:07,433 DEBUG pool.ConnectionPool [http-nio-8080-exec-370] by.epam.hotel.pool.ProxyConnection@30906ad2 got FROM pool
-2018-10-01 00:46:07,433 DEBUG pool.ConnectionPool [http-nio-8080-exec-370] true
-2018-10-01 00:46:07,480 DEBUG pool.ConnectionPool [http-nio-8080-exec-370] by.epam.hotel.pool.ProxyConnection@30906ad2 returned IN pool
-2018-10-01 00:46:07,480 DEBUG controller.Controller [http-nio-8080-exec-370] Router: page=/jsp/clientmain.jsp, type=REDIRECT
-2018-10-01 00:46:09,205 DEBUG pool.ConnectionPool [http-nio-8080-exec-372] by.epam.hotel.pool.ProxyConnection@333a58d4 got FROM pool
-2018-10-01 00:46:09,220 DEBUG pool.ConnectionPool [http-nio-8080-exec-372] true
-2018-10-01 00:46:09,220 DEBUG pool.ConnectionPool [http-nio-8080-exec-372] by.epam.hotel.pool.ProxyConnection@333a58d4 returned IN pool
-2018-10-01 00:46:09,220 DEBUG controller.Controller [http-nio-8080-exec-372] Router: page=/jsp/accountorders.jsp, type=FORWARD
-2018-10-01 00:46:15,293 DEBUG controller.Controller [http-nio-8080-exec-376] Router: page=/jsp/clientmain.jsp, type=FORWARD
-2018-10-01 00:46:18,009 DEBUG controller.Controller [http-nio-8080-exec-377] Router: page=jsp/clientmain.jsp, type=FORWARD
-2018-10-01 00:46:22,257 DEBUG controller.Controller [http-nio-8080-exec-378] Router: page=/jsp/changepersonaldata.jsp, type=FORWARD
-2018-10-01 00:46:25,238 DEBUG controller.Controller [http-nio-8080-exec-374] Router: page=/jsp/changepassword.jsp, type=FORWARD
-2018-10-01 00:46:26,998 DEBUG controller.Controller [http-nio-8080-exec-375] Router: page=/jsp/changepersonaldata.jsp, type=FORWARD
-2018-10-01 00:46:27,503 DEBUG controller.Controller [http-nio-8080-exec-371] Router: page=/jsp/changelogin.jsp, type=FORWARD
-2018-10-01 00:46:28,192 DEBUG controller.Controller [http-nio-8080-exec-370] Router: page=/jsp/changepersonaldata.jsp, type=FORWARD
-2018-10-01 00:46:29,055 DEBUG controller.Controller [http-nio-8080-exec-379] Router: page=/jsp/deleteaccount.jsp, type=FORWARD
-2018-10-01 00:46:30,854 DEBUG controller.Controller [http-nio-8080-exec-372] Router: page=/jsp/changepersonaldata.jsp, type=FORWARD
-2018-10-01 00:46:31,777 DEBUG controller.Controller [http-nio-8080-exec-376] Router: page=/jsp/clientmain.jsp, type=FORWARD
-2018-10-01 00:46:32,478 DEBUG pool.ConnectionPool [http-nio-8080-exec-377] by.epam.hotel.pool.ProxyConnection@178e1bef got FROM pool
-2018-10-01 00:46:32,478 DEBUG pool.ConnectionPool [http-nio-8080-exec-377] true
-2018-10-01 00:46:32,478 DEBUG pool.ConnectionPool [http-nio-8080-exec-377] by.epam.hotel.pool.ProxyConnection@178e1bef returned IN pool
-2018-10-01 00:46:32,478 DEBUG pool.ConnectionPool [http-nio-8080-exec-377] by.epam.hotel.pool.ProxyConnection@706ff929 got FROM pool
-2018-10-01 00:46:32,478 DEBUG pool.ConnectionPool [http-nio-8080-exec-377] true
-2018-10-01 00:46:32,478 DEBUG pool.ConnectionPool [http-nio-8080-exec-377] by.epam.hotel.pool.ProxyConnection@706ff929 returned IN pool
-2018-10-01 00:46:32,478 DEBUG pool.ConnectionPool [http-nio-8080-exec-377] by.epam.hotel.pool.ProxyConnection@1bbcf8c8 got FROM pool
-2018-10-01 00:46:32,572 DEBUG pool.ConnectionPool [http-nio-8080-exec-377] true
-2018-10-01 00:46:32,572 DEBUG pool.ConnectionPool [http-nio-8080-exec-377] by.epam.hotel.pool.ProxyConnection@1bbcf8c8 returned IN pool
-2018-10-01 00:46:32,572 DEBUG controller.Controller [http-nio-8080-exec-377] Router: page=/jsp/order.jsp, type=FORWARD
-2018-10-01 00:46:34,435 DEBUG controller.Controller [http-nio-8080-exec-378] Router: page=/jsp/order.jsp, type=FORWARD
-2018-10-01 00:46:40,668 DEBUG pool.ConnectionPool [http-nio-8080-exec-374] by.epam.hotel.pool.ProxyConnection@50b47cf6 got FROM pool
-2018-10-01 00:46:40,668 DEBUG pool.ConnectionPool [http-nio-8080-exec-374] true
-2018-10-01 00:46:40,668 DEBUG pool.ConnectionPool [http-nio-8080-exec-374] by.epam.hotel.pool.ProxyConnection@50b47cf6 returned IN pool
-2018-10-01 00:46:40,668 DEBUG pool.ConnectionPool [http-nio-8080-exec-374] by.epam.hotel.pool.ProxyConnection@357e7a63 got FROM pool
-2018-10-01 00:46:40,668 DEBUG pool.ConnectionPool [http-nio-8080-exec-374] true
-2018-10-01 00:46:40,668 DEBUG pool.ConnectionPool [http-nio-8080-exec-374] by.epam.hotel.pool.ProxyConnection@357e7a63 returned IN pool
-2018-10-01 00:46:40,668 DEBUG pool.ConnectionPool [http-nio-8080-exec-374] by.epam.hotel.pool.ProxyConnection@3f861113 got FROM pool
-2018-10-01 00:46:40,668 DEBUG pool.ConnectionPool [http-nio-8080-exec-374] true
-2018-10-01 00:46:40,668 DEBUG pool.ConnectionPool [http-nio-8080-exec-374] by.epam.hotel.pool.ProxyConnection@3f861113 returned IN pool
-2018-10-01 00:46:40,668 DEBUG controller.Controller [http-nio-8080-exec-374] Router: page=/jsp/availableroom.jsp, type=FORWARD
-2018-10-01 00:46:42,681 DEBUG pool.ConnectionPool [http-nio-8080-exec-375] by.epam.hotel.pool.ProxyConnection@3c6f58d6 got FROM pool
-2018-10-01 00:46:42,712 DEBUG pool.ConnectionPool [http-nio-8080-exec-375] true
-2018-10-01 00:46:42,728 DEBUG pool.ConnectionPool [http-nio-8080-exec-375] by.epam.hotel.pool.ProxyConnection@3c6f58d6 returned IN pool
-2018-10-01 00:46:42,728 DEBUG controller.Controller [http-nio-8080-exec-375] Router: page=/jsp/infoforpayment.jsp, type=FORWARD
-2018-10-01 00:46:44,275 DEBUG pool.ConnectionPool [http-nio-8080-exec-371] by.epam.hotel.pool.ProxyConnection@4e212250 got FROM pool
-2018-10-01 00:46:44,322 DEBUG pool.ConnectionPool [http-nio-8080-exec-371] true
-2018-10-01 00:46:44,322 DEBUG pool.ConnectionPool [http-nio-8080-exec-371] by.epam.hotel.pool.ProxyConnection@4e212250 returned IN pool
-2018-10-01 00:46:44,322 DEBUG pool.ConnectionPool [http-nio-8080-exec-371] by.epam.hotel.pool.ProxyConnection@44d94920 got FROM pool
-2018-10-01 00:46:44,337 DEBUG pool.ConnectionPool [http-nio-8080-exec-371] true
-2018-10-01 00:46:44,337 DEBUG pool.ConnectionPool [http-nio-8080-exec-371] by.epam.hotel.pool.ProxyConnection@44d94920 returned IN pool
-2018-10-01 00:46:44,337 DEBUG controller.Controller [http-nio-8080-exec-371] Router: page=/jsp/paypage.jsp, type=FORWARD
-2018-10-01 00:46:47,346 DEBUG pool.ConnectionPool [http-nio-8080-exec-370] by.epam.hotel.pool.ProxyConnection@30906ad2 got FROM pool
-2018-10-01 00:46:47,346 DEBUG pool.ConnectionPool [http-nio-8080-exec-370] true
-2018-10-01 00:46:47,346 DEBUG pool.ConnectionPool [http-nio-8080-exec-370] by.epam.hotel.pool.ProxyConnection@30906ad2 returned IN pool
-2018-10-01 00:46:47,346 DEBUG pool.ConnectionPool [http-nio-8080-exec-370] by.epam.hotel.pool.ProxyConnection@333a58d4 got FROM pool
-2018-10-01 00:46:47,346 DEBUG pool.ConnectionPool [http-nio-8080-exec-370] true
-2018-10-01 00:46:47,346 DEBUG pool.ConnectionPool [http-nio-8080-exec-370] by.epam.hotel.pool.ProxyConnection@333a58d4 returned IN pool
-2018-10-01 00:46:47,346 DEBUG controller.Controller [http-nio-8080-exec-370] Router: page=/jsp/paypage.jsp, type=FORWARD
-2018-10-01 00:46:48,502 DEBUG controller.Controller [http-nio-8080-exec-372] Router: page=/jsp/replenishpage.jsp, type=FORWARD
-2018-10-01 00:46:54,714 DEBUG controller.Controller [http-nio-8080-exec-376] Router: page=/jsp/replenishpage.jsp, type=FORWARD
-2018-10-01 00:47:01,494 DEBUG pool.ConnectionPool [http-nio-8080-exec-377] by.epam.hotel.pool.ProxyConnection@178e1bef got FROM pool
-2018-10-01 00:47:01,525 DEBUG pool.ConnectionPool [http-nio-8080-exec-377] true
-2018-10-01 00:47:01,525 DEBUG pool.ConnectionPool [http-nio-8080-exec-377] by.epam.hotel.pool.ProxyConnection@178e1bef returned IN pool
-2018-10-01 00:47:01,525 DEBUG controller.Controller [http-nio-8080-exec-377] Router: page=/jsp/paypage.jsp, type=REDIRECT
-2018-10-01 00:47:04,002 DEBUG pool.ConnectionPool [http-nio-8080-exec-373] by.epam.hotel.pool.ProxyConnection@706ff929 got FROM pool
-2018-10-01 00:47:04,002 DEBUG pool.ConnectionPool [http-nio-8080-exec-373] true
-2018-10-01 00:47:04,002 DEBUG pool.ConnectionPool [http-nio-8080-exec-373] by.epam.hotel.pool.ProxyConnection@706ff929 returned IN pool
-2018-10-01 00:47:04,002 DEBUG pool.ConnectionPool [http-nio-8080-exec-373] by.epam.hotel.pool.ProxyConnection@1bbcf8c8 got FROM pool
-2018-10-01 00:47:04,002 DEBUG pool.ConnectionPool [http-nio-8080-exec-373] true
-2018-10-01 00:47:04,002 DEBUG pool.ConnectionPool [http-nio-8080-exec-373] by.epam.hotel.pool.ProxyConnection@1bbcf8c8 returned IN pool
-2018-10-01 00:47:04,002 DEBUG pool.ConnectionPool [http-nio-8080-exec-373] by.epam.hotel.pool.ProxyConnection@50b47cf6 got FROM pool
-2018-10-01 00:47:04,034 DEBUG pool.ConnectionPool [http-nio-8080-exec-373] true
-2018-10-01 00:47:04,034 DEBUG pool.ConnectionPool [http-nio-8080-exec-373] by.epam.hotel.pool.ProxyConnection@50b47cf6 returned IN pool
-2018-10-01 00:47:04,034 DEBUG controller.Controller [http-nio-8080-exec-373] Router: page=/jsp/successpayment.jsp, type=REDIRECT
-2018-10-01 00:47:09,236 DEBUG controller.Controller [http-nio-8080-exec-375] Router: page=/jsp/order.jsp, type=FORWARD
-2018-10-01 00:47:10,805 DEBUG controller.Controller [http-nio-8080-exec-371] Router: page=/jsp/clientmain.jsp, type=FORWARD
+2018-10-03 01:42:16,166 DEBUG controller.Controller [http-nio-8080-exec-373] Router: page=/jsp/welcome.jsp, type=REDIRECT
+2018-10-03 01:42:16,833 DEBUG controller.Controller [http-nio-8080-exec-371] Router: page=/jsp/login.jsp, type=FORWARD
+2018-10-03 01:42:20,863 DEBUG pool.ConnectionPool [http-nio-8080-exec-367] by.epam.hotel.pool.ProxyConnection@59bfd311 got FROM pool
+2018-10-03 01:42:20,926 DEBUG pool.ConnectionPool [http-nio-8080-exec-367] true
+2018-10-03 01:42:20,926 DEBUG pool.ConnectionPool [http-nio-8080-exec-367] by.epam.hotel.pool.ProxyConnection@59bfd311 returned IN pool
+2018-10-03 01:42:20,926 DEBUG pool.ConnectionPool [http-nio-8080-exec-367] by.epam.hotel.pool.ProxyConnection@454425cf got FROM pool
+2018-10-03 01:42:20,926 DEBUG pool.ConnectionPool [http-nio-8080-exec-367] true
+2018-10-03 01:42:20,926 DEBUG pool.ConnectionPool [http-nio-8080-exec-367] by.epam.hotel.pool.ProxyConnection@454425cf returned IN pool
+2018-10-03 01:42:20,926 DEBUG controller.Controller [http-nio-8080-exec-367] Router: page=/jsp/admin/adminmain.jsp, type=REDIRECT
+2018-10-03 01:42:20,934 DEBUG controller.Controller [http-nio-8080-exec-377] Router: page=/jsp/admin/adminmain.jsp, type=FORWARD
+2018-10-03 01:42:27,738 DEBUG controller.Controller [http-nio-8080-exec-365] Router: page=/jsp/admin/setrecordsperpageorders.jsp, type=FORWARD
+2018-10-03 01:42:29,181 DEBUG pool.ConnectionPool [http-nio-8080-exec-370] by.epam.hotel.pool.ProxyConnection@2624645a got FROM pool
+2018-10-03 01:42:29,714 DEBUG pool.ConnectionPool [http-nio-8080-exec-370] true
+2018-10-03 01:42:29,745 DEBUG pool.ConnectionPool [http-nio-8080-exec-370] by.epam.hotel.pool.ProxyConnection@2624645a returned IN pool
+2018-10-03 01:42:29,745 DEBUG pool.ConnectionPool [http-nio-8080-exec-370] by.epam.hotel.pool.ProxyConnection@2fcf18eb got FROM pool
+2018-10-03 01:42:29,776 DEBUG pool.ConnectionPool [http-nio-8080-exec-370] true
+2018-10-03 01:42:29,776 DEBUG pool.ConnectionPool [http-nio-8080-exec-370] by.epam.hotel.pool.ProxyConnection@2fcf18eb returned IN pool
+2018-10-03 01:42:29,776 DEBUG controller.Controller [http-nio-8080-exec-370] Router: page=/jsp/admin/allorders.jsp, type=FORWARD
+2018-10-03 01:42:32,604 DEBUG controller.Controller [http-nio-8080-exec-378] Router: page=/jsp/welcome.jsp, type=REDIRECT
+2018-10-03 01:42:33,466 DEBUG controller.Controller [http-nio-8080-exec-374] Router: page=/jsp/login.jsp, type=FORWARD
+2018-10-03 01:42:39,287 DEBUG pool.ConnectionPool [http-nio-8080-exec-379] by.epam.hotel.pool.ProxyConnection@4e40f30c got FROM pool
+2018-10-03 01:42:39,287 DEBUG pool.ConnectionPool [http-nio-8080-exec-379] true
+2018-10-03 01:42:39,287 DEBUG pool.ConnectionPool [http-nio-8080-exec-379] by.epam.hotel.pool.ProxyConnection@4e40f30c returned IN pool
+2018-10-03 01:42:39,287 DEBUG pool.ConnectionPool [http-nio-8080-exec-379] by.epam.hotel.pool.ProxyConnection@48ab5527 got FROM pool
+2018-10-03 01:42:39,287 DEBUG pool.ConnectionPool [http-nio-8080-exec-379] true
+2018-10-03 01:42:39,287 DEBUG pool.ConnectionPool [http-nio-8080-exec-379] by.epam.hotel.pool.ProxyConnection@48ab5527 returned IN pool
+2018-10-03 01:42:39,287 DEBUG controller.Controller [http-nio-8080-exec-379] Router: page=/jsp/client/clientmain.jsp, type=REDIRECT
+2018-10-03 01:42:39,301 DEBUG controller.Controller [http-nio-8080-exec-375] Router: page=/jsp/client/clientmain.jsp, type=FORWARD
+2018-10-03 01:43:28,690 DEBUG controller.Controller [http-nio-8080-exec-382] Router: page=/jsp/client/clientmain.jsp, type=FORWARD
+2018-10-03 01:43:31,174 DEBUG controller.Controller [http-nio-8080-exec-378] Router: page=/jsp/changepersonaldata.jsp, type=FORWARD
+2018-10-03 01:43:42,903 DEBUG controller.Controller [http-nio-8080-exec-376] Router: page=/jsp/client/clientmain.jsp, type=FORWARD
+2018-10-03 01:43:54,039 DEBUG controller.Controller [http-nio-8080-exec-379] Router: page=/jsp/client/clientmain.jsp, type=FORWARD
+2018-10-03 01:44:34,400 DEBUG controller.Controller [http-nio-8080-exec-377] Router: page=/jsp/client/clientmain.jsp, type=FORWARD
+2018-10-03 01:44:38,901 DEBUG controller.Controller [http-nio-8080-exec-381] Router: page=/jsp/welcome.jsp, type=REDIRECT

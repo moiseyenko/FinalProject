@@ -47,28 +47,25 @@ public class Runner {
 
 		List<Room> rooms = null;
 
+		NationalityDao nationalityDao = new NationalityDao();
 		try (TransactionHelper helper = new TransactionHelper()) {
+			helper.doOperation(nationalityDao);
 			try {
-				helper.doOperation(roomDao);
-
-				rooms = roomDao.showEmptyRoom(3, "Бизнес", LocalDate.parse("2018-12-30"),
-						LocalDate.parse("2019-01-25"));
-				System.out.println(rooms);
+				System.out.println(nationalityDao.update(new Nationality("BY", "Республика Беларус'ия")));
 			} catch (DaoException e) {
-				System.out.println("daoexceprion");
-				helper.rollback();
+				
+				throw new ServiceException(e);
 			}
 		}
 
 		/*
 		 * try (TransactionHelper helper = new TransactionHelper()) {
-		 * helper.doTransaction(accountDao, bankdao); try { if
-		 * (!accountDao.IsExistAccount(login, email)) { boolean flag =
-		 * accountDao.create(login, email, password); System.out.println(flag); Account
-		 * account = accountDao.findAccountByLogin(login); System.out.println(account);
-		 * boolean newflag = bankdao.create(new BankAccount(account.getId(), new
-		 * BigDecimal(150))); System.out.println(newflag); helper.commit(); } }catch
-		 * (DaoException e) { System.out.println("daoexceprion"); helper.rollback(); }
+		 * helper.doOperation(accountDao); try {
+		 * 
+		 * System.out.println(accountDao.changeAccountPassword(new Account(1, "admin",
+		 * ""), "admin"));
+		 * 
+		 * } catch (DaoException e) { System.out.println("daoexceprion"); }
 		 * 
 		 * }
 		 */

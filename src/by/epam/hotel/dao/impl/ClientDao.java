@@ -37,23 +37,26 @@ public class ClientDao extends AbstractDao<Integer, Client> {
 			+ "WHERE `client`.`id` = ?;";
 	private static final String FIND_ALL = "SELECT `client`.`id`, `client`.`first_name`, `client`.`last_name`, "
 			+ "`client`.`passport`, `client`.`nationality_id`, `client`.`blacklist` "
-			+ "FROM `client`;";
+			+ "FROM `client` "
+			+ "LIMIT ?, ?;";
 	private final String CHANGE_BLACKLIST = "UPDATE `client` SET `client`.`blacklist` = ? " + "WHERE `client`.`id` = ?;";
 
 	@Override
-	public List<Client> findAll() throws DaoException {
+	public List<Client> findAll(int start, int recordsPerPage) throws DaoException {
 		List<Client> clients = new LinkedList<>();
 		try {
-			try (Statement statement = connection.createStatement()) {
-				ResultSet result = statement.executeQuery(FIND_ALL);
+			try (PreparedStatement statement = connection.prepareStatement(FIND_ALL)) {
+				statement.setInt(1, start);
+				statement.setInt(2, recordsPerPage);
+				ResultSet result = statement.executeQuery();
 				while (result.next()) {
 					int id = result.getInt(DaoFieldType.ID.getField());
 					String firstName = result.getString(DaoFieldType.FIRST_NAME.getField());
 					String lastName = result.getString(DaoFieldType.LAST_NAME.getField());
 					String passport = result.getString(DaoFieldType.PASSPORT.getField());
 					String nationalityId = result.getString(DaoFieldType.NATIONALITY_ID.getField());
-					boolean removed = result.getBoolean(DaoFieldType.REMOVED.getField());
-					clients.add(new Client(id, firstName, lastName, passport, nationalityId, removed));
+					boolean blacklist = result.getBoolean(DaoFieldType.BLACKLIST.getField());
+					clients.add(new Client(id, firstName, lastName, passport, nationalityId, blacklist));
 				}
 			}
 		} catch (SQLException e) {
@@ -76,8 +79,8 @@ public class ClientDao extends AbstractDao<Integer, Client> {
 					String lastName = result.getString(DaoFieldType.LAST_NAME.getField());
 					String passport = result.getString(DaoFieldType.PASSPORT.getField());
 					String nationalityId = result.getString(DaoFieldType.NATIONALITY_ID.getField());
-					boolean removed = result.getBoolean(DaoFieldType.REMOVED.getField());
-					return new Client(id, firstName, lastName, passport, nationalityId, removed);
+					boolean blacklist = result.getBoolean(DaoFieldType.BLACKLIST.getField());
+					return new Client(id, firstName, lastName, passport, nationalityId, blacklist);
 				}
 			}
 		} catch (SQLException e) {
@@ -251,5 +254,25 @@ public class ClientDao extends AbstractDao<Integer, Client> {
 			}
 		}
 		return clients;
+	}
+
+	private final String COUNT_CLIENTS = "SELECT COUNT(`client`.`id`) AS `QUANTITY` FROM `client`;";
+	
+	public int countClients() throws DaoException {
+		int quantity = 0;
+		try {
+			try (Statement statement = connection.createStatement()) {
+				ResultSet result = statement.executeQuery(COUNT_CLIENTS);
+				if (result.next()) {
+					quantity = result.getInt(DaoFieldType.QUANTITY.getField());
+				}
+			}
+		} catch (SQLException e) {
+			for (Throwable exc : e) {
+				LOG.error("Counting clients error: {}", exc);
+				throw new DaoException("Counting clients error", exc);
+			}
+		}
+		return quantity;
 	}
 }

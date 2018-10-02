@@ -19,7 +19,7 @@ public class RoomClassDao extends AbstractDao<String, RoomClass> {
 	
 	private static final Logger LOG = LogManager.getLogger(RoomClassDao.class);
 	private final String FIND_ALL = "SELECT `class`.`id`, `class`.`removed`"
-			+ "FROM `class`;";
+			+ "FROM `class` LIMIT ?, ?;";
 	private final String FIND_EXISTING_CLASS = "SELECT `class`.`id` "
 			+ "FROM `class` WHERE `class`.`removed` = 0;";
 	private final String FIND_CLASS_NOT_REMOVED = "SELECT `class`.`id`, `class`.`removed` "
@@ -35,11 +35,13 @@ public class RoomClassDao extends AbstractDao<String, RoomClass> {
 	
 
 	@Override
-	public List<RoomClass> findAll() throws DaoException {
+	public List<RoomClass> findAll(int start, int recordsPerPage) throws DaoException {
 		List<RoomClass> classes = new LinkedList<>();
 		try {
-			try (Statement statement = connection.createStatement()) {
-				ResultSet result = statement.executeQuery(FIND_ALL);
+			try (PreparedStatement statement = connection.prepareStatement(FIND_ALL)) {
+				statement.setInt(1, start);
+				statement.setInt(2, recordsPerPage);
+				ResultSet result = statement.executeQuery();
 				while (result.next()) {
 					String classId = result.getString(DaoFieldType.ID.getField());
 					boolean removed = result.getBoolean(DaoFieldType.REMOVED.getField());

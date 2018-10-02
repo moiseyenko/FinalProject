@@ -29,7 +29,8 @@ public class OrderDao extends AbstractDao<Integer, Order> {
 	private final String FIND_ALL = "SELECT `order`.`id`, `order`.`room_number`, "
 			+ "`order`.`client_id`, `order`.`account_id`, `order`.`from`, "
 			+ "`order`.`to`, `order`.`cost`, `order`.`removed` " 
-			+ "FROM `hotel`.`order` ORDER BY `order`.`id`;";
+			+ "FROM `hotel`.`order` ORDER BY `order`.`id` "
+			+ "LIMIT ?, ?;";
 	private final String FIND_ORDER_BY_ID = "SELECT `order`.`id`, `order`.`room_number`, `order`.`client_id`,"
 			+ "`order`.`account_id`,`order`.`from`, `order`.`to`, `order`.`cost`, `order`.`removed`" 
 			+ "FROM `order`"
@@ -44,11 +45,13 @@ public class OrderDao extends AbstractDao<Integer, Order> {
 			+ "WHERE `order`.`id` = ?;";
 
 	@Override
-	public List<Order> findAll() throws DaoException {
+	public List<Order> findAll(int start, int recordsPerPage) throws DaoException {
 		List<Order> orders = new LinkedList<>();
 		try {
-			try (Statement statement = connection.createStatement()) {
-				ResultSet result = statement.executeQuery(FIND_ALL);
+			try (PreparedStatement statement = connection.prepareStatement(FIND_ALL)) {
+				statement.setInt(1, start);
+				statement.setInt(2, recordsPerPage);
+				ResultSet result = statement.executeQuery();
 				while (result.next()) {
 					int id = result.getInt(DaoFieldType.ID.getField());
 					int room = result.getInt(DaoFieldType.ROOM_NUMBER.getField());
@@ -209,7 +212,7 @@ public class OrderDao extends AbstractDao<Integer, Order> {
 			+ "`nationality`.`country`, `order`.`room_number`, `room`.`class_id` AS `class`, `room`.`capacity`, `room`.`price`, "
 			+ "`order`.`from`, `order`.`to`, `order`.`cost`, `order`.`removed` "
 			+ "FROM `account` INNER JOIN (`room` INNER JOIN (`order` INNER JOIN (`client` INNER JOIN `nationality` "
-			+ "ON `client`.nationality_id = `nationality`.`id`) ON `order`.`client_id` = `client`.`id`) "
+			+ "ON `client`.`nationality_id` = `nationality`.`id`) ON `order`.`client_id` = `client`.`id`) "
 			+ "ON `room`.`number` = `order`.`room_number`) ON `account`.`id` = `order`.`account_id` "
 			+ "WHERE `account`.`id` = ?;";
 	
@@ -258,7 +261,143 @@ public class OrderDao extends AbstractDao<Integer, Order> {
 		}
 		return resultList;
 	}
-
+	
+	private final String FIND_FULL_INFO_ORDER = "SELECT `order`.`id`,`order`.`account_id`, `account`.`login`, "
+			+ "`account`.`email`, `order`.`client_id`, `client`.`first_name`, `client`.`last_name`, "
+			+ "`client`.`passport`, `client`.`nationality_id`, "
+			+ "`nationality`.`country`, `order`.`room_number`, `room`.`class_id` AS `class`, `room`.`capacity`, `room`.`price`, "
+			+ "`order`.`from`, `order`.`to`, `order`.`cost`, `order`.`removed` "
+			+ "FROM `account` INNER JOIN (`room` INNER JOIN (`order` INNER JOIN (`client` INNER JOIN `nationality` "
+			+ "ON `client`.`nationality_id` = `nationality`.`id`) ON `order`.`client_id` = `client`.`id`) "
+			+ "ON `room`.`number` = `order`.`room_number`) ON `account`.`id` = `order`.`account_id` "
+			+ "GROUP BY  `order`.`id` "
+			+ "LIMIT ?, ?";
+	
+	public List<FullInfoOrder> findFullInfoOrder (int start, int recordsPerPage) throws DaoException {
+		List<FullInfoOrder> resultList = new ArrayList<>();
+		try {
+			try (PreparedStatement statement = connection.prepareStatement(FIND_FULL_INFO_ORDER)) {
+				statement.setInt(1, start);
+				statement.setInt(2, recordsPerPage);
+				ResultSet result = statement.executeQuery();
+				Account account;
+				Client client;
+				Nationality nationality;
+				Room room;
+				FullInfoOrder fullInfoOrder;
+				while (result.next()) {
+					int orderId = result.getInt(DaoFieldType.ID.getField());
+					int accountId = result.getInt(DaoFieldType.ACCOUNT_ID.getField());
+					String login = result.getString(DaoFieldType.LOGIN.getField());
+					String email = result.getString(DaoFieldType.EMAIL.getField());
+					account = new Account(accountId, login, email);
+					int clientId = result.getInt(DaoFieldType.CLIENT_ID.getField());
+					String firstName = result.getString(DaoFieldType.FIRST_NAME.getField());
+					String lastName = result.getString(DaoFieldType.LAST_NAME.getField());
+					String passport = result.getString(DaoFieldType.PASSPORT.getField());
+					String nationalityId = result.getString(DaoFieldType.NATIONALITY_ID.getField());
+					client = new Client(clientId, firstName, lastName, passport, nationalityId);
+					String country = result.getString(DaoFieldType.COUNTRY.getField());
+					nationality = new Nationality(nationalityId, country);
+					int roomNumber = result.getInt(DaoFieldType.ROOM_NUMBER.getField());
+					String roomClass = result.getString(DaoFieldType.CLASS.getField());
+					int capacity = result.getInt(DaoFieldType.CAPACITY.getField());
+					BigDecimal price = result.getBigDecimal(DaoFieldType.PRICE.getField());
+					room = new Room(roomNumber, roomClass, capacity, price);
+					LocalDate from = result.getDate(DaoFieldType.FROM.getField()).toLocalDate();
+					LocalDate to = result.getDate(DaoFieldType.TO.getField()).toLocalDate();
+					BigDecimal cost = result.getBigDecimal(DaoFieldType.COST.getField());
+					boolean removed = result.getBoolean(DaoFieldType.REMOVED.getField());
+					fullInfoOrder = new FullInfoOrder(orderId, room, account, client, nationality, from, to, cost, removed);
+					resultList.add(fullInfoOrder);
+				}
+			}
+		} catch (SQLException e) {
+			for (Throwable exc : e) {
+				LOG.error("Finding full info order error: {}", exc);
+				throw new DaoException("Finding full info order error", exc);
+			}
+		}
+		return resultList;
+	}
+	
+	private final String COUNT_ORDERS = "SELECT COUNT(`order`.`id`) AS `QUANTITY` FROM `order`;";
+	
+	public int countOrders() throws DaoException {
+		int quantity = 0;
+		try {
+			try (Statement statement = connection.createStatement()) {
+				ResultSet result = statement.executeQuery(COUNT_ORDERS);
+				if (result.next()) {
+					quantity = result.getInt(DaoFieldType.QUANTITY.getField());
+				}
+			}
+		} catch (SQLException e) {
+			for (Throwable exc : e) {
+				LOG.error("Counting orders error: {}", exc);
+				throw new DaoException("Counting orders error", exc);
+			}
+		}
+		return quantity;
+	}
+	
+	private final String FIND_FULL_INFO_ORDER_BY_ORDERID = "SELECT `order`.`id`,`order`.`account_id`, `account`.`login`, "
+			+ "`account`.`email`, `order`.`client_id`, `client`.`first_name`, `client`.`last_name`, "
+			+ "`client`.`passport`, `client`.`nationality_id`, "
+			+ "`nationality`.`country`, `order`.`room_number`, `room`.`class_id` AS `class`, `room`.`capacity`, `room`.`price`, "
+			+ "`order`.`from`, `order`.`to`, `order`.`cost`, `order`.`removed` "
+			+ "FROM `account` INNER JOIN (`room` INNER JOIN (`order` INNER JOIN (`client` INNER JOIN `nationality` "
+			+ "ON `client`.`nationality_id` = `nationality`.`id`) ON `order`.`client_id` = `client`.`id`) "
+			+ "ON `room`.`number` = `order`.`room_number`) ON `account`.`id` = `order`.`account_id` "
+			+ "WHERE `order`.`id` = ?;";
+	
+	public FullInfoOrder findFullInfoOrderByOrderId (Integer orderId) throws DaoException {
+		FullInfoOrder fullInfoOrder = null;
+		try {
+			try (PreparedStatement statement = connection.prepareStatement(FIND_FULL_INFO_ORDER_BY_ORDERID)) {
+				statement.setInt(1, orderId);
+				ResultSet result = statement.executeQuery();
+				Account account;
+				Client client;
+				Nationality nationality;
+				Room room;
+				if (result.next()) {
+					int accountId = result.getInt(DaoFieldType.ACCOUNT_ID.getField());
+					String login = result.getString(DaoFieldType.LOGIN.getField());
+					String email = result.getString(DaoFieldType.EMAIL.getField());
+					account = new Account(accountId, login, email);
+					int clientId = result.getInt(DaoFieldType.CLIENT_ID.getField());
+					String firstName = result.getString(DaoFieldType.FIRST_NAME.getField());
+					String lastName = result.getString(DaoFieldType.LAST_NAME.getField());
+					String passport = result.getString(DaoFieldType.PASSPORT.getField());
+					String nationalityId = result.getString(DaoFieldType.NATIONALITY_ID.getField());
+					client = new Client(clientId, firstName, lastName, passport, nationalityId);
+					String country = result.getString(DaoFieldType.COUNTRY.getField());
+					nationality = new Nationality(nationalityId, country);
+					int roomNumber = result.getInt(DaoFieldType.ROOM_NUMBER.getField());
+					String roomClass = result.getString(DaoFieldType.CLASS.getField());
+					int capacity = result.getInt(DaoFieldType.CAPACITY.getField());
+					BigDecimal price = result.getBigDecimal(DaoFieldType.PRICE.getField());
+					room = new Room(roomNumber, roomClass, capacity, price);
+					LocalDate from = result.getDate(DaoFieldType.FROM.getField()).toLocalDate();
+					LocalDate to = result.getDate(DaoFieldType.TO.getField()).toLocalDate();
+					BigDecimal cost = result.getBigDecimal(DaoFieldType.COST.getField());
+					boolean removed = result.getBoolean(DaoFieldType.REMOVED.getField());
+					fullInfoOrder = new FullInfoOrder(orderId, room, account, client, nationality, from, to, cost, removed);
+				}
+			}
+		} catch (SQLException e) {
+			for (Throwable exc : e) {
+				LOG.error("Finding full info order by orderId error: {}", exc);
+				throw new DaoException("Finding full info order by orderId error", exc);
+			}
+		}
+		return fullInfoOrder;
+	}
+	
+	
+	
+	
 	
 	
 

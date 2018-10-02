@@ -26,7 +26,7 @@ public class BankAccountDao extends AbstractDao<Integer, BankAccount>{
 	
 	
 	@Override
-	public List<BankAccount> findAll() throws DaoException {
+	public List<BankAccount> findAll(int start, int recordsPerPage) throws DaoException {
 		throw new UnsupportedOperationException("Account class doesn't support specified method");
 	}
 

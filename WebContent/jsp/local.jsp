@@ -8,13 +8,13 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<fmt:setBundle basename="resource.localtest" var="rb" />
-	<c:url value="/controller" var="russianURL">
+	<fmt:setBundle basename="resource.localtest" var="rb"  />
+	<c:url value="/controller" var="russianURL" >
 		<c:param name="locale" value="Russian" />
 		<c:param name="command" value="changeLocale" />
 		<c:param name="jsppath" value="${pageContext.request.requestURI }" />
 	</c:url>
-	<a href="${russianURL}"> Русский </a>
+	<a href="${russianURL}" > Русский </a>
 	
 	<c:url value="/controller" var="englishURL">
 		<c:param name="locale" value="English" />

@@ -8,7 +8,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,7 +25,7 @@ import by.epam.hotel.exception.DaoException;
 public class AccountDao extends AbstractDao<Integer, Account> {
 	private static final Logger LOG = LogManager.getLogger(AccountDao.class);
 	private final String FIND_ALL = "SELECT `account`.`id`, `account`.`login`, `account`.`email`, `account`.`admin`, `account`.`removed` "
-			+ "FROM `account`;";
+			+ "FROM `account` LIMIT ?, ?;";
 	private final String FIND_ACCOUNT_BY_ID = "SELECT `account`.`id`, `account`.`login`,`account`.`email`, `account`.`admin`, `account`.`removed` "
 			+ "FROM `account` " + "WHERE `account`.`id` = ?;";
 	private final String DELETE_ACCOUNT = "DELETE FROM `account` WHERE `account`.`id` = ?;";
@@ -41,11 +40,13 @@ public class AccountDao extends AbstractDao<Integer, Account> {
 	private final String FIND_PASSWORD_BY_ID = "SELECT `account`.`password` FROM `account` WHERE `account`.`id` = ?;";
 
 	@Override
-	public List<Account> findAll() throws DaoException {
+	public List<Account> findAll(int start, int recordsPerPage) throws DaoException {
 		List<Account> accounts = new LinkedList<>();
 		try {
-			try (Statement statement = connection.createStatement()) {
-				ResultSet result = statement.executeQuery(FIND_ALL);
+			try (PreparedStatement statement = connection.prepareStatement(FIND_ALL)) {
+				statement.setInt(1, start);
+				statement.setInt(2, recordsPerPage);
+				ResultSet result = statement.executeQuery();
 				while (result.next()) {
 					int id = result.getInt(DaoFieldType.ID.getField());
 					String login = result.getString(DaoFieldType.LOGIN.getField());

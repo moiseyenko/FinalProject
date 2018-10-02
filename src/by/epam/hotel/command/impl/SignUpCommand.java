@@ -75,7 +75,10 @@ public class SignUpCommand implements ActionCommand {
 			router.setType(RouterType.FORWARD);
 			break;
 		case ADMIN:
-			// TODO admin
+			request.setAttribute("errorReSignupMessage", MessageManager.getProrerty("message.resignuperror"));
+			page = ConfigurationManager.getProperty("path.page.adminmain");
+			router.setPage(page);
+			router.setType(RouterType.FORWARD);
 			break;
 		}
 		return router;

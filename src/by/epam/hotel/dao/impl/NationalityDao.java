@@ -17,7 +17,7 @@ import by.epam.hotel.exception.DaoException;
 public class NationalityDao extends AbstractDao<String, Nationality> {
 	private static final Logger LOG = LogManager.getLogger(NationalityDao.class);
 	private final String FIND_ALL = "SELECT `nationality`.`id`, `nationality`.`country`, `nationality`.`removed`"
-			+ "FROM `nationality`;";
+			+ "FROM `nationality` LIMIT ?, ?;";
 	private final String FIND_EXISTING_NATIONALITIES = "SELECT `nationality`.`id`, `nationality`.`country` "
 			+ "FROM `nationality` WHERE `nationality`.`removed` = 0;";
 	private final String FIND_NATIONALITY_NOT_REMOVED = "SELECT `nationality`.`id`, `nationality`.`country`, `nationality`.`removed`\r\n"
@@ -35,11 +35,13 @@ public class NationalityDao extends AbstractDao<String, Nationality> {
 			+ "WHERE `nationality`.`id` = ?;";
 
 	@Override
-	public List<Nationality> findAll() throws DaoException {
+	public List<Nationality> findAll(int start, int recordsPerPage) throws DaoException {
 		List<Nationality> nationalities = new LinkedList<>();
 		try {
-			try (Statement statement = connection.createStatement()) {
-				ResultSet result = statement.executeQuery(FIND_ALL);
+			try (PreparedStatement statement = connection.prepareStatement(FIND_ALL)) {
+				statement.setInt(1, start);
+				statement.setInt(2, recordsPerPage);
+				ResultSet result = statement.executeQuery();
 				while (result.next()) {
 					String countryId = result.getString(DaoFieldType.ID.getField());
 					String country = result.getString(DaoFieldType.COUNTRY.getField());
@@ -246,5 +248,26 @@ public class NationalityDao extends AbstractDao<String, Nationality> {
 		}
 		return null;
 	}
+
+	private final String COUNT_NATIONALITIES = "SELECT COUNT(`nationality`.`id`) AS `QUANTITY` FROM `nationality`;";
+	
+	public int countNationalities() throws DaoException {
+		int quantity = 0;
+		try {
+			try (Statement statement = connection.createStatement()) {
+				ResultSet result = statement.executeQuery(COUNT_NATIONALITIES);
+				if (result.next()) {
+					quantity = result.getInt(DaoFieldType.QUANTITY.getField());
+				}
+			}
+		} catch (SQLException e) {
+			for (Throwable exc : e) {
+				LOG.error("Counting nationalities error: {}", exc);
+				throw new DaoException("Counting nationalities error", exc);
+			}
+		}
+		return quantity;
+	}
+	
 
 }

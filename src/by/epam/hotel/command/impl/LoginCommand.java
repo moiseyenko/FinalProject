@@ -36,9 +36,14 @@ public class LoginCommand implements ActionCommand {
 			String password = request.getParameter(PARAM_PASSWORD);
 			try {
 				if (LoginLogic.checkLogin(login, password)) {
-					sessionData.setRole(RoleType.CLIENT);
+					RoleType role = LoginLogic.checkRights(login);
+					sessionData.setRole(role);
 					sessionData.setLogin(login);
-					page = ConfigurationManager.getProperty("path.page.clientmain");
+					if(role==RoleType.ADMIN) {
+						page = ConfigurationManager.getProperty("path.page.adminmain");
+					}else {
+						page = ConfigurationManager.getProperty("path.page.clientmain");	
+					}
 					router.setPage(page);
 					router.setType(RouterType.REDIRECT);
 				} else {
@@ -59,7 +64,10 @@ public class LoginCommand implements ActionCommand {
 			router.setType(RouterType.FORWARD);
 			break;
 		case ADMIN:
-			// TODO admin
+			request.setAttribute("errorRelogMessage", MessageManager.getProrerty("message.relogerror"));
+			page = ConfigurationManager.getProperty("path.page.adminmain");
+			router.setPage(page);
+			router.setType(RouterType.FORWARD);
 			break;
 		}
 		return router;

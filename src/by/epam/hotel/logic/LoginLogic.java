@@ -3,6 +3,7 @@ package by.epam.hotel.logic;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import by.epam.hotel.controller.RoleType;
 import by.epam.hotel.dao.TransactionHelper;
 import by.epam.hotel.dao.entity.Account;
 import by.epam.hotel.dao.impl.AccountDao;
@@ -32,5 +33,30 @@ public class LoginLogic {
 			throw new ServiceException("Resources cannot be closed", e);
 		}
 		return flag;
+	}
+
+	public static RoleType checkRights(String login) throws ServiceException {
+		RoleType role = null;
+		AccountDao accountDao = new AccountDao();
+		try (TransactionHelper helper = new TransactionHelper()) {
+			helper.doOperation(accountDao);
+			try {
+				Account storedAccount = accountDao.findAccountByLogin(login);
+				if (storedAccount != null) {
+					if(storedAccount.isAdmin()) {
+						role = RoleType.ADMIN;
+					}else {
+						role = RoleType.CLIENT;
+					}
+				}
+			} catch (DaoException e) {
+				LOG.error(e);
+				throw new ServiceException(e);
+			}
+		} catch (CloseTransactionException e) {
+			LOG.error("Resources cannot be closed", e);
+			throw new ServiceException("Resources cannot be closed", e);
+		}
+		return role;
 	}
 }
