@@ -214,13 +214,17 @@ public class OrderDao extends AbstractDao<Integer, Order> {
 			+ "FROM `account` INNER JOIN (`room` INNER JOIN (`order` INNER JOIN (`client` INNER JOIN `nationality` "
 			+ "ON `client`.`nationality_id` = `nationality`.`id`) ON `order`.`client_id` = `client`.`id`) "
 			+ "ON `room`.`number` = `order`.`room_number`) ON `account`.`id` = `order`.`account_id` "
-			+ "WHERE `account`.`id` = ?;";
+			+ "WHERE `account`.`id` = ? "
+			+ "GROUP BY  `order`.`id` "
+			+ "LIMIT ?, ?";
 	
-	public List<FullInfoOrder> findFullInfoOrderByAccount (Integer accountId) throws DaoException {
+	public List<FullInfoOrder> findFullInfoOrderByAccount (Integer accountId, int start, int recordsPerPage) throws DaoException {
 		List<FullInfoOrder> resultList = new ArrayList<>();
 		try {
 			try (PreparedStatement statement = connection.prepareStatement(FIND_FULL_INFO_ORDER_BY_ACCOUNT)) {
 				statement.setInt(1, accountId);
+				statement.setInt(2, start);
+				statement.setInt(3, recordsPerPage);
 				ResultSet result = statement.executeQuery();
 				Account account;
 				Client client;
@@ -262,6 +266,27 @@ public class OrderDao extends AbstractDao<Integer, Order> {
 		return resultList;
 	}
 	
+	private final String COUNT_ACCOUNT_ORDERS = "SELECT COUNT(`order`.`id`) AS `QUANTITY` FROM `order` WHERE `order`.`account_id` = ?;";
+	
+	public int countAccountOrders(int accountId) throws DaoException {
+		int quantity = 0;
+		try {
+			try (PreparedStatement statement = connection.prepareStatement(COUNT_ACCOUNT_ORDERS)) {
+				statement.setInt(1, accountId);
+				ResultSet result = statement.executeQuery();
+				if (result.next()) {
+					quantity = result.getInt(DaoFieldType.QUANTITY.getField());
+				}
+			}
+		} catch (SQLException e) {
+			for (Throwable exc : e) {
+				LOG.error("Counting orders error: {}", exc);
+				throw new DaoException("Counting orders error", exc);
+			}
+		}
+		return quantity;
+	}
+
 	private final String FIND_FULL_INFO_ORDER = "SELECT `order`.`id`,`order`.`account_id`, `account`.`login`, "
 			+ "`account`.`email`, `order`.`client_id`, `client`.`first_name`, `client`.`last_name`, "
 			+ "`client`.`passport`, `client`.`nationality_id`, "

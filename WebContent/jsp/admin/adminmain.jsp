@@ -16,10 +16,10 @@
 	<br />
 	<hr />
 	ADMIN
-	<br />
+	
 	<hr />
 	${errorRelogMessage} ${errorReSignupMessage}
-	<br />
+	
 	<hr />
 	<form action="${pageContext.request.contextPath}/controller" method="post">
 		<input type="hidden" name="command" value="toSetRecordsPerPageOrder" /> 
@@ -39,6 +39,21 @@
 	<form action="${pageContext.request.contextPath}/controller" method="post">
 		<input type="hidden" name="command" value="toAdminNationalities" /> 
 		<input type="submit" value="Nationalities" />
+	</form>
+	<hr />
+	<form action="${pageContext.request.contextPath}/controller" method="post">
+		<input type="hidden" name="command" value="toAdminClasses" /> 
+		<input type="submit" value="Room Classes" />
+	</form>
+	<hr />
+	<form action="${pageContext.request.contextPath}/controller" method="post">
+		<input type="hidden" name="command" value="toSetRecordsPerPageAccount" /> 
+		<input type="submit" value="Accounts" />
+	</form>
+	<hr />
+	<form action="${pageContext.request.contextPath}/controller" method="post">
+		<input type="hidden" name="command" value="toChangePersonalData" /> 
+		<input type="submit" value="Change personal data" />
 	</form>
 </body>
 </html>

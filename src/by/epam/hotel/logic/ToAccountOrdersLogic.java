@@ -18,8 +18,9 @@ import by.epam.hotel.exception.ServiceException;
 public class ToAccountOrdersLogic {
 	private static final Logger LOG = LogManager.getLogger(ToAccountOrdersLogic.class);
 	
-	public static List<FullInfoOrder> getFullInfoOrderList(String currentLogin) throws ServiceException {
+	public static List<FullInfoOrder> getFullInfoOrderList(String currentLogin, int currentPage, int recordsPerPage) throws ServiceException {
 		List<FullInfoOrder> resultList = new ArrayList<>();
+		int start = currentPage * recordsPerPage - recordsPerPage;
 		AccountDao accountDao = new AccountDao();
 		OrderDao orderDao = new OrderDao();
 		try (TransactionHelper helper = new TransactionHelper()) {
@@ -27,7 +28,7 @@ public class ToAccountOrdersLogic {
 			try {
 				Account account = accountDao.findAccountByLogin(currentLogin);
 				if(account != null) {
-					resultList = orderDao.findFullInfoOrderByAccount(account.getId());
+					resultList = orderDao.findFullInfoOrderByAccount(account.getId(), start, recordsPerPage);
 				}
 			} catch (DaoException e) {
 				LOG.error(e);
@@ -39,5 +40,26 @@ public class ToAccountOrdersLogic {
 		}
 		return resultList;
 	}
-		
+
+	public static int getNumberOfRows(String currentLogin) throws ServiceException {
+		int numberOfRows = 0;
+		AccountDao accountDao = new AccountDao();
+		OrderDao orderDao = new OrderDao();
+		try (TransactionHelper helper = new TransactionHelper()) {
+			helper.doTransaction(accountDao, orderDao);
+			try {
+				Account account = accountDao.findAccountByLogin(currentLogin);
+				if(account != null) {
+					numberOfRows = orderDao.countAccountOrders(account.getId());
+				}
+			} catch (DaoException e) {
+				LOG.error(e);
+				throw new ServiceException(e);
+			}
+		} catch (CloseTransactionException e) {
+			LOG.error("Resources cannot be closed", e);
+			throw new ServiceException("Resources cannot be closed", e);
+		}
+		return numberOfRows;
+	}	
 }

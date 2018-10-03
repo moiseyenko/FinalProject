@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.temporal.ChronoField;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -28,8 +27,7 @@ public class CancelOrderCommand implements ActionCommand {
 		SessionData sessionData = (SessionData) session.getAttribute("sessionData");
 		if (sessionData.getRole() == RoleType.CLIENT) {
 			int orderIndex = Integer.parseInt(request.getParameter("orderIndex")) ;
-			List<FullInfoOrder> ordersList = sessionData.getListAccountFullInfoOrder();
-			FullInfoOrder orderToCancel = ordersList.get(--orderIndex);
+			FullInfoOrder orderToCancel =sessionData.getListAccountFullInfoOrder().get(--orderIndex);
 			BigDecimal returnedSum = calculateReturnSum(orderToCancel);
 			request.setAttribute("returnedSum", returnedSum);
 			request.setAttribute("orderToCancel", orderToCancel);

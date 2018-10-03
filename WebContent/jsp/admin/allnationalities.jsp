@@ -33,8 +33,7 @@
 			    <th class="tg-88nc">Remove/Restore</th>
 			    <th class="tg-88nc"> </th>
 			  </tr>
-			   <jsp:useBean id = "localDateNow" class = "by.epam.hotel.dao.entity.LocalDateNow"/> 
-				<c:forEach var="nationality" items="${sessionData.nationalityList }" varStatus="status">
+			  <c:forEach var="nationality" items="${sessionData.nationalityList }" varStatus="status">
 					<tr>
 						<td class="tg-c3ow">${nationality.countryId }</td>
 					    <td class="tg-c3ow">${nationality.country }</td>
@@ -56,7 +55,6 @@
 							    <input type="hidden" name="nationalityIndex" value="${status.count }" />
 							    <input type="submit" value="Restore" />
 						    </form>
-						    ${errorChangeNationalityRemovedMessage }
 					    	</c:when>
 					    	<c:otherwise>
 					    		<form action="${pageContext.request.contextPath}/controller" method="post" >
@@ -65,7 +63,8 @@
 							    <input type="submit" value="Remove" />
 						    </form>
 					    	</c:otherwise>
-					    </c:choose>  
+					    </c:choose> 
+					    ${errorChangeNationalityRemovedMessage } 
 					    </td>
 					    <td>
 					    <form action="${pageContext.request.contextPath}/controller" method="post" >
@@ -84,7 +83,7 @@
     	<c:url value="/controller" var="URL">
 			<c:param name="recordsPerPage" value="${sessionData.recordsPerPage}" />
 			<c:param name="currentPage" value="${sessionData.currentPage-1}" />
-			<c:param name="command" value="toAllRooms" />
+			<c:param name="command" value="toAllNationalities" />
 		</c:url> 
        <a href="${URL}">Previous</a>
     </c:if>
@@ -97,7 +96,7 @@
             	<c:url value="/controller" var="URL">
 					<c:param name="recordsPerPage" value="${sessionData.recordsPerPage}" />
 					<c:param name="currentPage" value="${i}" />
-					<c:param name="command" value="toAllRooms" />
+					<c:param name="command" value="toAllNationalities" />
 				</c:url> 
                 <a href="${URL}">${i}</a>
             </c:otherwise>
@@ -107,7 +106,7 @@
    		<c:url value="/controller" var="URL">
 			<c:param name="recordsPerPage" value="${sessionData.recordsPerPage}" />
 			<c:param name="currentPage" value="${sessionData.currentPage+1}" />
-			<c:param name="command" value="toAllRooms" />
+			<c:param name="command" value="toAllNationalities" />
 		</c:url> 
         <a href="${URL}">Next</a>
     </c:if>  

@@ -1,14 +1,12 @@
 package by.epam.hotel.dao.impl;
 
-import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
+import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,8 +16,6 @@ import org.apache.logging.log4j.Logger;
 import by.epam.hotel.dao.AbstractDao;
 import by.epam.hotel.dao.DaoFieldType;
 import by.epam.hotel.dao.entity.Account;
-import by.epam.hotel.dao.entity.Client;
-import by.epam.hotel.dao.entity.StatisticsData;
 import by.epam.hotel.exception.DaoException;
 
 public class AccountDao extends AbstractDao<Integer, Account> {
@@ -38,6 +34,7 @@ public class AccountDao extends AbstractDao<Integer, Account> {
 	private final String UPDATE_ACCOUNT = "UPDATE `account` SET `account`.`login` = ?,  `account`.`admin` = ? WHERE `account`.`id` = ? AND `account`.`removed` = 0;";
 	private final String CHANGE_REMOVED = "UPDATE `account` SET`account`.`removed` = ? WHERE `account`.`id` = ?;";
 	private final String FIND_PASSWORD_BY_ID = "SELECT `account`.`password` FROM `account` WHERE `account`.`id` = ?;";
+	
 
 	@Override
 	public List<Account> findAll(int start, int recordsPerPage) throws DaoException {
@@ -296,44 +293,47 @@ public class AccountDao extends AbstractDao<Integer, Account> {
 	}
 	
 ///////////////////////////////////////////////////////////////////////////////////////////////
-	
-	private final String CALCULATE_SUM_FOR_EACH_CLIENT = "SELECT `client`.`first_name`,"
-			+ "`client`.`last_name`, `client`.`passport`, `client`.`nationality_id`,"
-			+ " SUM(`order`.`cost`) AS 'sum'" 
-			+ "FROM `account` LEFT JOIN "
-			+ " (`order` INNER JOIN `client` ON `order`.`client_id` = `client`.`id`) "
-			+ "ON `account`.`id` = `order`.`account_id`" 
-			+ "WHERE `account`.`login` = ? AND `from`<= ? AND `to`>= ?"
-			+ "GROUP BY `client`.`id`;";
 
-	public List<StatisticsData> calculateSumForEachClient(String login, LocalDate from, LocalDate to) throws DaoException {
-		List<StatisticsData> resultList = new LinkedList<>();
+	
+	private final String COUNT_ACCOUNTS = "SELECT COUNT(`account`.`id`) AS `QUANTITY` FROM `account`;";
+	
+	public int countAccounts() throws DaoException {
+		int quantity = 0;
 		try {
-			try (PreparedStatement statement = connection.prepareStatement(CALCULATE_SUM_FOR_EACH_CLIENT)) {
-				statement.setString(1, login);
-				statement.setDate(2, Date.valueOf(to));
-				statement.setDate(3, Date.valueOf(from));
-				ResultSet result = statement.executeQuery();
-				while (result.next()) {
-					String firstName = result.getString(DaoFieldType.FIRST_NAME.getField());
-					String lastName = result.getString(DaoFieldType.LAST_NAME.getField());
-					String passport = result.getString(DaoFieldType.PASSPORT.getField());
-					String nationalityId = result.getString(DaoFieldType.NATIONALITY_ID.getField());
-					BigDecimal sum = result.getBigDecimal(DaoFieldType.SUM.getField());
-					Client client = new Client(firstName, lastName, passport, nationalityId);
-					StatisticsData statsData = new StatisticsData(client, sum);
-					resultList.add(statsData);
+			try (Statement statement = connection.createStatement()) {
+				ResultSet result = statement.executeQuery(COUNT_ACCOUNTS);
+				if (result.next()) {
+					quantity = result.getInt(DaoFieldType.QUANTITY.getField());
 				}
 			}
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
-				LOG.error("Calculating sum client for each account error: {}", exc);
-				throw new DaoException("Calculating sum client for each account error", exc);
+				LOG.error("Counting accounts error: {}", exc);
+				throw new DaoException("Counting accounts error", exc);
 			}
 		}
-		return resultList;
+		return quantity;
 	}
 	
+	private final String CHANGE_ADMIN_RIGHTS = "UPDATE `account` SET`account`.`admin` = ? WHERE `account`.`id` = ?;";
+	
+	public boolean changeAdminRights(Account entity) throws DaoException {
+		try {
+			try (PreparedStatement statement = connection.prepareStatement(CHANGE_ADMIN_RIGHTS)) {
+				statement.setInt(1, entity.isAdmin() ? 0 : 1);
+				statement.setInt(2, entity.getId());
+				if (statement.executeUpdate() > 0) {
+					return true;
+				}
+			}
+		} catch (SQLException e) {
+			for (Throwable exc : e) {
+				LOG.error("Change admin rights error: {}", exc);
+				throw new DaoException("Change admin rights error", exc);
+			}
+		}
+		return false;
+	}
 	
 
 }

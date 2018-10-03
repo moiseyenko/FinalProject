@@ -30,9 +30,20 @@ public class ToAccountOrdersCommand implements ActionCommand {
 		SessionData sessionData = (SessionData) session.getAttribute("sessionData");
 		if (sessionData.getRole() == RoleType.CLIENT) {
 			String currentLogin = sessionData.getLogin();
+			int currentPage = Integer.valueOf(request.getParameter("currentPage"));
+			int recordsPerPage = Integer.valueOf(request.getParameter("recordsPerPage"));
 			try {
-				List<FullInfoOrder> listAccountFullInfoOrder = ToAccountOrdersLogic.getFullInfoOrderList(currentLogin);
+				List<FullInfoOrder> listAccountFullInfoOrder = ToAccountOrdersLogic.getFullInfoOrderList(currentLogin,
+						currentPage, recordsPerPage);
 				sessionData.setListAccountFullInfoOrder(listAccountFullInfoOrder);
+				int rows = ToAccountOrdersLogic.getNumberOfRows(currentLogin);
+				int noOfPages = rows / recordsPerPage;
+				if (rows % recordsPerPage > 0) {
+					noOfPages++;
+				}
+				sessionData.setNoOfPages(noOfPages);
+				sessionData.setCurrentPage(currentPage);
+				sessionData.setRecordsPerPage(recordsPerPage);
 				page = ConfigurationManager.getProperty("path.page.accountorders");
 			} catch (ServiceException e) {
 				LOG.error(e);

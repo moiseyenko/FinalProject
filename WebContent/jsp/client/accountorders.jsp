@@ -88,6 +88,41 @@
 		</c:otherwise>
 	</c:choose> 
 	<hr/>
+	<c:if test="${sessionData.currentPage != 1}">
+        	<c:url value="/controller" var="URL">
+				<c:param name="recordsPerPage" value="${sessionData.recordsPerPage}" />
+				<c:param name="currentPage" value="${sessionData.currentPage-1}" />
+				<c:param name="command" value="toAccountOrders" />
+			</c:url> 
+           <a href="${URL}">Previous</a>
+           
+        </c:if>
+        <c:forEach begin="1" end="${sessionData.noOfPages}" var="i">
+            <c:choose>
+                <c:when test="${sessionData.currentPage eq i}">
+                    <a><span style="color:blue;font-weight:bold">${i}</span></a>
+                </c:when>
+                <c:otherwise>
+                	<c:url value="/controller" var="URL">
+						<c:param name="recordsPerPage" value="${sessionData.recordsPerPage}" />
+						<c:param name="currentPage" value="${i}" />
+						<c:param name="command" value="toAccountOrders" />
+					</c:url> 
+                    <a href="${URL}">${i}</a>
+                   
+                </c:otherwise>
+            </c:choose>
+        </c:forEach>
+        <c:if test="${sessionData.currentPage lt sessionData.noOfPages}">
+       		<c:url value="/controller" var="URL">
+				<c:param name="recordsPerPage" value="${sessionData.recordsPerPage}" />
+				<c:param name="currentPage" value="${sessionData.currentPage+1}" />
+				<c:param name="command" value="toAccountOrders" />
+			</c:url> 
+            <a href="${URL}">Next</a>
+        </c:if>      
+
+	<hr/>
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
 		<input type="hidden" name="command" value="backToClientmain" />

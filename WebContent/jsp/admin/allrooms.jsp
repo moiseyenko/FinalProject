@@ -35,8 +35,7 @@
 			    <th class="tg-88nc">Remove/Restore</th>
 			    <th class="tg-88nc"> </th>
 			  </tr>
-			   <jsp:useBean id = "localDateNow" class = "by.epam.hotel.dao.entity.LocalDateNow"/> 
-				<c:forEach var="room" items="${sessionData.roomList }" varStatus="status">
+			  <c:forEach var="room" items="${sessionData.roomList }" varStatus="status">
 					<tr>
 						<td class="tg-c3ow">${room.number }</td>
 					    <td class="tg-c3ow">${room.classRoom }</td>
@@ -60,7 +59,6 @@
 							    <input type="hidden" name="roomIndex" value="${status.count }" />
 							    <input type="submit" value="Restore" />
 						    </form>
-						    ${errorChangeRoomRemovedMessage }
 					    	</c:when>
 					    	<c:otherwise>
 					    		<form action="${pageContext.request.contextPath}/controller" method="post" >
@@ -69,7 +67,8 @@
 							    <input type="submit" value="Remove" />
 						    </form>
 					    	</c:otherwise>
-					    </c:choose>  
+					    </c:choose>
+						${errorChangeRoomRemovedMessage }  
 					    </td>
 					    <td>
 					    <form action="${pageContext.request.contextPath}/controller" method="post" >

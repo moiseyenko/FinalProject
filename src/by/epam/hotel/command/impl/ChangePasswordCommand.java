@@ -30,7 +30,7 @@ public class ChangePasswordCommand implements ActionCommand {
 		String page = null;
 		HttpSession session = request.getSession();
 		SessionData sessionData = (SessionData) session.getAttribute("sessionData");
-		if (sessionData.getRole() == RoleType.CLIENT) {
+		if (sessionData.getRole() == RoleType.CLIENT||sessionData.getRole() == RoleType.ADMIN) {
 			String newPassword = request.getParameter("newPassword");
 			String oldPassword = request.getParameter("oldPassword");
 			String currentLogin = sessionData.getLogin();

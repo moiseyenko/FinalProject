@@ -202,5 +202,25 @@ public class RoomClassDao extends AbstractDao<String, RoomClass> {
 		}
 		return null;
 	}
+	
+	private final String COUNT_ROOM_CLASSES = "SELECT COUNT(`class`.`id`) AS `QUANTITY` FROM `class`;";
+
+	public int countRoomClasses() throws DaoException {
+		int quantity = 0;
+		try {
+			try (Statement statement = connection.createStatement()) {
+				ResultSet result = statement.executeQuery(COUNT_ROOM_CLASSES);
+				if (result.next()) {
+					quantity = result.getInt(DaoFieldType.QUANTITY.getField());
+				}
+			}
+		} catch (SQLException e) {
+			for (Throwable exc : e) {
+				LOG.error("Counting room classes error: {}", exc);
+				throw new DaoException("Counting room classes error", exc);
+			}
+		}
+		return quantity;
+	}
 
 }

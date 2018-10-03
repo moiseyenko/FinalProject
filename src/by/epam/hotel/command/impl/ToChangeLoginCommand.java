@@ -18,7 +18,7 @@ public class ToChangeLoginCommand implements ActionCommand{
 		Router router = new Router();
 		String page = null;
 		SessionData sessionData = (SessionData) request.getSession().getAttribute("sessionData");
-		if (sessionData.getRole() == RoleType.CLIENT) {
+		if (sessionData.getRole() == RoleType.CLIENT||sessionData.getRole() == RoleType.ADMIN) {
 			page = ConfigurationManager.getProperty("path.page.changelogin");
 		} else {
 			page = ConfigurationManager.getProperty("path.page.login");

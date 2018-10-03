@@ -1,4 +1,4 @@
-package by.epam.hotel.command.impl.client;
+package by.epam.hotel.command.impl;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,7 +30,7 @@ public class ChangeLoginCommand implements ActionCommand {
 		String page = null;
 		HttpSession session = request.getSession();
 		SessionData sessionData = (SessionData) session.getAttribute("sessionData");
-		if (sessionData.getRole() == RoleType.CLIENT) {
+		if (sessionData.getRole() == RoleType.CLIENT||sessionData.getRole() == RoleType.ADMIN) {
 			String newLogin = request.getParameter("newLogin");
 			String tempPassword = request.getParameter("password");
 			String currentLogin = sessionData.getLogin();

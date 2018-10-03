@@ -35,8 +35,7 @@
 			    <th class="tg-88nc">Status</th>
 			    <th class="tg-88nc">Punish/Justify</th>
 			  </tr>
-			   <jsp:useBean id = "localDateNow" class = "by.epam.hotel.dao.entity.LocalDateNow"/> 
-				<c:forEach var="client" items="${sessionData.clientList }" varStatus="status">
+			  <c:forEach var="client" items="${sessionData.clientList }" varStatus="status">
 					<tr>
 						<td class="tg-c3ow">${client.id }</td>
 					    <td class="tg-c3ow">${client.firstName }</td>
@@ -61,7 +60,6 @@
 							    <input type="hidden" name="clientIndex" value="${status.count }" />
 							    <input type="submit" value="Remove from blacklist" />
 						    </form>
-						    ${errorChangeBlacklistClientMessage }
 					    	</c:when>
 					    	<c:otherwise>
 					    		<form action="${pageContext.request.contextPath}/controller" method="post" >
@@ -70,7 +68,8 @@
 							    <input type="submit" value="Add to blacklist" />
 						    </form>
 					    	</c:otherwise>
-					    </c:choose>  
+					    </c:choose> 
+					    ${errorChangeBlacklistClientMessage } 
 					    </td>
 					</tr>
 				</c:forEach>

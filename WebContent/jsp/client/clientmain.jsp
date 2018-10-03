@@ -20,32 +20,22 @@
 	</h3>
 	<hr />
 	${sessionData.login},<fmt:message key="hello" />!
-		
 	<hr />
-	
 	<form action="${pageContext.request.contextPath}/controller" method="post">
-		<input type="hidden" name="command" value="toAccountOrders" /> 
+		<input type="hidden" name="command" value="toSetRecordsPerPageAccountOrder" /> 
 		<input type="submit" value="Your orders" />
 	</form>
-	
-	
 	<hr />
 	<form action="${pageContext.request.contextPath}/controller" method="post">
 		<input type="hidden" name="command" value="order" /> <input
 			type="submit" value="<fmt:message key="makeorder" />" />
 	</form>
 	${errorRelogMessage} ${errorReSignupMessage}
-	
 	<hr />
-	
 	<form action="${pageContext.request.contextPath}/controller" method="post">
 		<input type="hidden" name="command" value="toChangePersonalData" /> 
 		<input type="submit" value="Change personal data" />
 	</form>
-	
-	
-	
-	
 </body>
 </html>
 </fmt:bundle>

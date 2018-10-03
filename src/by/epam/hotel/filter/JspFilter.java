@@ -31,7 +31,8 @@ public class JspFilter implements Filter {
 		System.out.println("!!!!!!!in filter!!!!!!!!");
 		HttpSession session = httpRequest.getSession();
 		SessionData sessionData = (SessionData) session.getAttribute("sessionData");
-		String referer = httpResponse.getHeader("Referer");
+		String referer = httpRequest.getHeader("Referer");
+		
 		if (referer == null) {
 			switch (sessionData.getRole()) {
 			case CLIENT:

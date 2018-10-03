@@ -35,9 +35,11 @@ public class ApproveOrderCancelCommand implements ActionCommand {
 			BigDecimal returnedSum = new BigDecimal(request.getParameter("returnedSum"));
 			int orderId = Integer.parseInt(request.getParameter("orderId"));
 			String login = sessionData.getLogin();
+			int recordsPerPage = sessionData.getRecordsPerPage();
+			int currentPage = sessionData.getCurrentPage();
 			try {
 				if (ApproveOrderCancelLogic.cancelOrder(login, returnedSum, orderId)) {
-					List<FullInfoOrder> listFullInfoOrder = ToAccountOrdersLogic.getFullInfoOrderList(login);
+					List<FullInfoOrder> listFullInfoOrder = ToAccountOrdersLogic.getFullInfoOrderList(login, currentPage, recordsPerPage);
 					sessionData.setListAccountFullInfoOrder(listFullInfoOrder);
 					page = ConfigurationManager.getProperty("path.page.accountorders");
 					router.setType(RouterType.REDIRECT);
@@ -50,7 +52,6 @@ public class ApproveOrderCancelCommand implements ActionCommand {
 				LOG.error(e);
 				throw new CommandException(e);
 			}
-
 		} else {
 			page = ConfigurationManager.getProperty("path.page.welcome");
 			router.setType(RouterType.FORWARD);

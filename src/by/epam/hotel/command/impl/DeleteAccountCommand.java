@@ -26,7 +26,7 @@ public class DeleteAccountCommand implements ActionCommand {
 		String page = null;
 		HttpSession session = request.getSession();
 		SessionData sessionData = (SessionData) session.getAttribute("sessionData");
-		if (sessionData.getRole() == RoleType.CLIENT) {
+		if (sessionData.getRole() == RoleType.CLIENT||sessionData.getRole() == RoleType.ADMIN) {
 			String password = request.getParameter("password");
 			String currentLogin = sessionData.getLogin();
 			try {

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+import by.epam.hotel.dao.entity.Account;
 import by.epam.hotel.dao.entity.Client;
 import by.epam.hotel.dao.entity.FullInfoOrder;
 import by.epam.hotel.dao.entity.Nationality;
@@ -30,6 +31,8 @@ public class SessionData {
 	private List<Client> clientList;
 	private List<Room> roomList;
 	private List<Nationality> nationalityList;
+	private List<RoomClass> roomClassList;
+	private List<Account> accountList;
 	private int currentPage;
 	private int recordsPerPage;
 	private int noOfPages;
@@ -226,6 +229,22 @@ public class SessionData {
 
 	public void setNationalityToChange(Nationality nationalityToChange) {
 		this.nationalityToChange = nationalityToChange;
+	}
+
+	public List<RoomClass> getRoomClassList() {
+		return roomClassList;
+	}
+
+	public void setRoomClassList(List<RoomClass> roomClassList) {
+		this.roomClassList = roomClassList;
+	}
+
+	public List<Account> getAccountList() {
+		return accountList;
+	}
+
+	public void setAccountList(List<Account> accountList) {
+		this.accountList = accountList;
 	}
 
 	@Override
