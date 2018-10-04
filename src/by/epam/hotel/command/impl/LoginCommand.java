@@ -3,10 +3,10 @@ package by.epam.hotel.command.impl;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import by.epam.hotel.command.ActionCommand;
+import by.epam.hotel.controller.AttributeConstant;
+import by.epam.hotel.controller.ParameterConstant;
+import by.epam.hotel.controller.PropertyConstant;
 import by.epam.hotel.controller.RoleType;
 import by.epam.hotel.controller.Router;
 import by.epam.hotel.controller.RouterType;
@@ -18,54 +18,52 @@ import by.epam.hotel.util.ConfigurationManager;
 import by.epam.hotel.util.MessageManager;
 
 public class LoginCommand implements ActionCommand {
-	private static final Logger LOG = LogManager.getLogger(LoginCommand.class);
-	private static final String PARAM_LOGIN = "login";
-	private static final String PARAM_PASSWORD = "password";
 
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {
 		Router router = new Router();
 		String page = null;
 		HttpSession session = request.getSession();
-		SessionData sessionData = (SessionData) session.getAttribute("sessionData");
-		//System.out.println("in LoginCommand " + sessionData.getRole());
+		SessionData sessionData = (SessionData) session.getAttribute(AttributeConstant.SESSION_DATA);
 
 		switch (sessionData.getRole()) {
 		case GUEST:
-			String login = request.getParameter(PARAM_LOGIN);
-			String password = request.getParameter(PARAM_PASSWORD);
+			String login = request.getParameter(ParameterConstant.LOGIN);
+			String password = request.getParameter(ParameterConstant.PASSWORD);
 			try {
 				if (LoginLogic.checkLogin(login, password)) {
 					RoleType role = LoginLogic.checkRights(login);
 					sessionData.setRole(role);
 					sessionData.setLogin(login);
 					if(role==RoleType.ADMIN) {
-						page = ConfigurationManager.getProperty("path.page.adminmain");
+						page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ADMIN_MAIN);
 					}else {
-						page = ConfigurationManager.getProperty("path.page.clientmain");	
+						page = ConfigurationManager.getProperty(PropertyConstant.PAGE_CLIENTMAIN);	
 					}
 					router.setPage(page);
 					router.setType(RouterType.REDIRECT);
 				} else {
-					request.setAttribute("errorLoginPassMessage", MessageManager.getProrerty("message.loginerror"));
-					page = ConfigurationManager.getProperty("path.page.login");
+					request.setAttribute(AttributeConstant.ERROR_LOGIN_PASS_MESSAGE, 
+							MessageManager.getProrerty(PropertyConstant.MESSAGE_LOGIN_ERROR));
+					page = ConfigurationManager.getProperty(PropertyConstant.PAGE_LOGIN);
 					router.setPage(page);
 					router.setType(RouterType.FORWARD);
 				}
 			} catch (ServiceException e) {
-				LOG.error(e);
 				throw new CommandException(e);
 			} 
 			break;
 		case CLIENT:
-			request.setAttribute("errorRelogMessage", MessageManager.getProrerty("message.relogerror"));
-			page = ConfigurationManager.getProperty("path.page.clientmain");
+			request.setAttribute(AttributeConstant.ERROR_RELOG_MESSAGE, 
+					MessageManager.getProrerty(PropertyConstant.MESSAGE_RE_LOGIN_ERROR));
+			page = ConfigurationManager.getProperty(PropertyConstant.PAGE_CLIENTMAIN);
 			router.setPage(page);
 			router.setType(RouterType.FORWARD);
 			break;
 		case ADMIN:
-			request.setAttribute("errorRelogMessage", MessageManager.getProrerty("message.relogerror"));
-			page = ConfigurationManager.getProperty("path.page.adminmain");
+			request.setAttribute(AttributeConstant.ERROR_RELOG_MESSAGE,
+					MessageManager.getProrerty(PropertyConstant.MESSAGE_RE_LOGIN_ERROR));
+			page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ADMIN_MAIN);
 			router.setPage(page);
 			router.setType(RouterType.FORWARD);
 			break;

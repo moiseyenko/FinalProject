@@ -3,6 +3,8 @@ package by.epam.hotel.command.impl.client;
 import javax.servlet.http.HttpServletRequest;
 
 import by.epam.hotel.command.ActionCommand;
+import by.epam.hotel.controller.AttributeConstant;
+import by.epam.hotel.controller.PropertyConstant;
 import by.epam.hotel.controller.RoleType;
 import by.epam.hotel.controller.Router;
 import by.epam.hotel.controller.RouterType;
@@ -14,14 +16,13 @@ public class ToReplenishCommand implements ActionCommand{
 
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {
-		System.out.println("in ToReplenishCommand " + request.getSession().getAttribute("sessionData"));
 		Router router = new Router();
 		String page = null;
-		SessionData sessionData = (SessionData) request.getSession().getAttribute("sessionData");
+		SessionData sessionData = (SessionData) request.getSession().getAttribute(AttributeConstant.SESSION_DATA);
 		if (sessionData.getRole() == RoleType.CLIENT) {
-			page = ConfigurationManager.getProperty("path.page.replenishpage");
+			page = ConfigurationManager.getProperty(PropertyConstant.PAGE_REPLENISH_PAGE);
 		} else {
-			page = ConfigurationManager.getProperty("path.page.login");
+			page = ConfigurationManager.getProperty(PropertyConstant.PAGE_LOGIN);
 		}
 		router.setPage(page);
 		router.setType(RouterType.FORWARD);

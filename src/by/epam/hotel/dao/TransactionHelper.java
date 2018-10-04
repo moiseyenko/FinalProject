@@ -12,7 +12,7 @@ import by.epam.hotel.exception.CloseTransactionException;
 import by.epam.hotel.pool.ConnectionPool;
 
 public class TransactionHelper implements AutoCloseable {
-	private static final Logger LOG = LogManager.getLogger(TransactionHelper.class);
+	private static final Logger LOG = LogManager.getLogger();
 	private Connection connection = ConnectionPool.getInstance().getConnection();
 	private List<AbstractDao<?, ?>> daoList = new LinkedList<>();
 
@@ -36,7 +36,7 @@ public class TransactionHelper implements AutoCloseable {
 	}
 
 	@Override
-	public void close() throws CloseTransactionException{
+	public void close() throws CloseTransactionException {
 		for (AbstractDao<?, ?> dao : daoList) {
 			dao.setConnection(null);
 		}

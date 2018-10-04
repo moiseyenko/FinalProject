@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 import by.epam.hotel.dao.AbstractDao;
 import by.epam.hotel.dao.DaoFieldType;
-import by.epam.hotel.dao.entity.BankAccount;
+import by.epam.hotel.entity.BankAccount;
 import by.epam.hotel.exception.DaoException;
 
 public class BankAccountDao extends AbstractDao<Integer, BankAccount>{

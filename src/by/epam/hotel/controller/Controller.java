@@ -19,7 +19,7 @@ import by.epam.hotel.pool.ConnectionPool;
 import by.epam.hotel.util.ConfigurationManager;
 
 public class Controller extends HttpServlet {
-	private static final Logger LOG = LogManager.getLogger(Controller.class);
+	private static final Logger LOG = LogManager.getLogger();
 	private static final long serialVersionUID = 1L;
 
 	public Controller() {
@@ -52,14 +52,15 @@ public class Controller extends HttpServlet {
 			response.sendRedirect(request.getContextPath() + ConfigurationManager.getProperty("path.page.welcome"));
 		} else {
 			Router router = null;
-			ActionFactory client = new ActionFactory();
-			ActionCommand command = client.defineCommand(request);
+			String action = request.getParameter("command");
+			ActionFactory user = new ActionFactory();
+			ActionCommand command = user.defineCommand(action);
 			try {
 				router = command.execute(request);
 				LOG.debug(router);
 			} catch (CommandException e) {
-				System.out.println("in 5000 error");
-				LOG.error(router);
+				System.out.println("in 500 error");
+				LOG.error(router, e);
 				response.sendError(500);
 			}
 			switch (router.getType()) {
@@ -70,9 +71,12 @@ public class Controller extends HttpServlet {
 			case FORWARD:
 				request.getRequestDispatcher(router.getPage()).forward(request, response);
 				System.out.println("!!!!!FORWARD!!!!!!");
-				System.out.println(request.getSession().getAttribute("login") + " page not null: "
+				System.out.println(request.getSession().getAttribute("login") + " " 
 						+ request.getSession().getAttribute("role"));
 				break;
+			// need change;
+			default:
+				LOG.error("You will never be here");
 			}
 		}
 	}

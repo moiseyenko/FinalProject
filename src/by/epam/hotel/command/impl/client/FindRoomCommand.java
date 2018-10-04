@@ -8,17 +8,18 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import by.epam.hotel.command.ActionCommand;
+import by.epam.hotel.controller.AttributeConstant;
+import by.epam.hotel.controller.ParameterConstant;
+import by.epam.hotel.controller.PropertyConstant;
 import by.epam.hotel.controller.RoleType;
 import by.epam.hotel.controller.Router;
 import by.epam.hotel.controller.RouterType;
 import by.epam.hotel.controller.SessionData;
-import by.epam.hotel.dao.entity.Client;
-import by.epam.hotel.dao.entity.Nationality;
-import by.epam.hotel.dao.entity.Room;
+import by.epam.hotel.controller.ValidationConstant;
+import by.epam.hotel.entity.Client;
+import by.epam.hotel.entity.Nationality;
+import by.epam.hotel.entity.Room;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
 import by.epam.hotel.logic.FindRoomLogic;
@@ -27,31 +28,22 @@ import by.epam.hotel.util.ConfigurationManager;
 import by.epam.hotel.util.MessageManager;
 
 public class FindRoomCommand implements ActionCommand {
-	private static final Logger LOG = LogManager.getLogger(FindRoomCommand.class);
-	private final String PARAM_FNAME = "fname";
-	private final String PARAM_LNAME = "lname";
-	private final String PARAM_PASSPORT = "passport";
-	private final String PARAM_NATIONATILY = "nationality";
-	private final String PARAM_CLASS = "class";
-	private final String PARAM_CAPACITY = "capacity";
-	private final String PARAM_FROM = "from";
-	private final String PARAM_TO = "to";
 
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {
 		Router router = new Router();
 		String page = null;
 		HttpSession session = request.getSession();
-		SessionData sessionData = (SessionData) session.getAttribute("sessionData");
+		SessionData sessionData = (SessionData) session.getAttribute(AttributeConstant.SESSION_DATA);
 		if (sessionData.getRole() == RoleType.CLIENT) {
-			String fname = request.getParameter(PARAM_FNAME);
-			String lname = request.getParameter(PARAM_LNAME);
-			String passport = request.getParameter(PARAM_PASSPORT);
-			String nationality = request.getParameter(PARAM_NATIONATILY);
-			String roomClass = request.getParameter(PARAM_CLASS);
-			String capacity = request.getParameter(PARAM_CAPACITY);
-			String from = request.getParameter(PARAM_FROM);
-			String to = request.getParameter(PARAM_TO);
+			String fname = request.getParameter(ParameterConstant.FISRT_NAME);
+			String lname = request.getParameter(ParameterConstant.LAST_NAME);
+			String passport = request.getParameter(ParameterConstant.PASSPORT);
+			String nationality = request.getParameter(ParameterConstant.NATIONATILY);
+			String roomClass = request.getParameter(ParameterConstant.CLASS);
+			String capacity = request.getParameter(ParameterConstant.CAPACITY);
+			String from = request.getParameter(ParameterConstant.FROM);
+			String to = request.getParameter(ParameterConstant.TO);
 			List<Nationality> nationalities = sessionData.getNationalities();
 			if (validateInputData(fname, lname, passport, nationality, nationalities, capacity, from, to, request)) {
 				try {
@@ -68,22 +60,21 @@ public class FindRoomCommand implements ActionCommand {
 								localFrom, localTo);
 						System.out.println(availableRoomList);
 						sessionData.setAvailableRoomList(availableRoomList);
-						page = ConfigurationManager.getProperty("path.page.availableroom");
+						page = ConfigurationManager.getProperty(PropertyConstant.PAGE_AVAILABLE_ROOM);
 					} else {
 						sessionData.setClients(OrderLogic.getClientList(sessionData.getLogin()));
-						request.setAttribute("errorBlackListClientMessage",
-								MessageManager.getProrerty("message.blacklistclient"));
-						page = ConfigurationManager.getProperty("path.page.order");
+						request.setAttribute(AttributeConstant.ERROR_BLACKLIST_CLIENT_MESSAGE,
+								MessageManager.getProrerty(PropertyConstant.MESSAGE_BLACKLIST_CLIENT_ERROR));
+						page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ORDER);
 					}
 				} catch (ServiceException e) {
-					LOG.error(e);
 					throw new CommandException(e);
 				}
 			} else {
-				page = ConfigurationManager.getProperty("path.page.order");
+				page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ORDER);
 			}
 		} else {
-			page = ConfigurationManager.getProperty("path.page.welcome");
+			page = ConfigurationManager.getProperty(PropertyConstant.PAGE_WELCOME);
 		}
 		router.setType(RouterType.FORWARD);
 		router.setPage(page);
@@ -94,49 +85,52 @@ public class FindRoomCommand implements ActionCommand {
 			List<Nationality> nationalities, String capacity, String from, String to, HttpServletRequest request) {
 		boolean result = true;
 		if (!validateFName(fname)) {
-			request.setAttribute("errorFNameMessage", MessageManager.getProrerty("message.fnameerror"));
+			request.setAttribute(AttributeConstant.ERROR_FIRST_NAME_MESSAGE,
+					MessageManager.getProrerty(PropertyConstant.MESSAGE_FIRST_NAME_ERROR));
 			result = false;
 		}
 		if (!validateLName(lname)) {
-			request.setAttribute("errorLNameMessage", MessageManager.getProrerty("message.lnameerror"));
+			request.setAttribute(AttributeConstant.ERROR_LAST_NAME_MESSAGE,
+					MessageManager.getProrerty(PropertyConstant.MESSAGE_LAST_NAME_ERROR));
 			result = false;
 		}
 		if (!validatePassport(passport)) {
-			request.setAttribute("errorPassportMessage", MessageManager.getProrerty("message.passporterror"));
+			request.setAttribute(AttributeConstant.ERROR_PASSPORT_MESSAGE,
+					MessageManager.getProrerty(PropertyConstant.MESSAGE_PASSPORT_ERROR));
 			result = false;
 		}
 		if (!validateNationality(nationality, nationalities)) {
-			request.setAttribute("errorNationalityMessage", MessageManager.getProrerty("message.nationalityerror"));
+			request.setAttribute(AttributeConstant.ERROR_NATIONALITY_MESSAGE,
+					MessageManager.getProrerty(PropertyConstant.MESSAGE_NATIONALITY_ERROR));
 			result = false;
 		}
 		if (!validateCapacity(capacity)) {
-			request.setAttribute("errorCapacityMessage", MessageManager.getProrerty("message.capacityerror"));
+			request.setAttribute(AttributeConstant.ERROR_CAPACITY_MESSAGE,
+					MessageManager.getProrerty(PropertyConstant.MESSAGE_CAPACITY_ERROR));
 			result = false;
 		}
 		if (!validateFromTo(from, to)) {
-			request.setAttribute("errorFromToMessage", MessageManager.getProrerty("message.fromtoerror"));
+			request.setAttribute(AttributeConstant.ERROR_FROM_TO_MESSAGE,
+					MessageManager.getProrerty(PropertyConstant.MESSAGE_FROM_TO_ERROR));
 			result = false;
 		}
 		return result;
 	}
 
 	private boolean validateFName(String fname) {
-		String LOGIN_PATTERN = "^[A-ZÀ-ß¨][a-zA-ZÀ-ßà-ÿ¨¸\\\\'.-]{1,44}$";
-		Pattern pattern = Pattern.compile(LOGIN_PATTERN);
+		Pattern pattern = Pattern.compile(ValidationConstant.FIRST_NAME_PATTERN);
 		Matcher matcher = pattern.matcher(fname);
 		return matcher.matches();
 	}
 
 	private boolean validateLName(String lname) {
-		String LOGIN_PATTERN = "^[a-zA-ZÀ-ßà-ÿ¨¸\\\\'.-]{1,45}$";
-		Pattern pattern = Pattern.compile(LOGIN_PATTERN);
+		Pattern pattern = Pattern.compile(ValidationConstant.LAST_NAME_PATTERN);
 		Matcher matcher = pattern.matcher(lname);
 		return matcher.matches();
 	}
 
 	private boolean validatePassport(String passport) {
-		String LOGIN_PATTERN = "^[a-zA-Z0-9]{1,15}$";
-		Pattern pattern = Pattern.compile(LOGIN_PATTERN);
+		Pattern pattern = Pattern.compile(ValidationConstant.PASSPORT_PATTERN);
 		Matcher matcher = pattern.matcher(passport);
 		return matcher.matches();
 	}
@@ -151,14 +145,13 @@ public class FindRoomCommand implements ActionCommand {
 	}
 
 	private boolean validateCapacity(String capacity) {
-		String LOGIN_PATTERN = "^[0-9]{1,5}$";
-		Pattern pattern = Pattern.compile(LOGIN_PATTERN);
+		Pattern pattern = Pattern.compile(ValidationConstant.CAPACITY_PATTERN);
 		Matcher matcher = pattern.matcher(capacity);
 		return matcher.matches();
 	}
 
 	private boolean validateFromTo(String from, String to) {
-		if ("".equals(from) || "".equals(to)) {
+		if (ValidationConstant.EMPTY_STRING.equals(from) || ValidationConstant.EMPTY_STRING.equals(to)) {
 			return false;
 		}
 		LocalDate localDateFrom = LocalDate.parse(from);

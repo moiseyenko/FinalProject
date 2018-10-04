@@ -21,6 +21,7 @@ import by.epam.hotel.command.impl.admin.BackToAdminClassesCommand;
 import by.epam.hotel.command.impl.admin.BackToAdminNationalitiesCommand;
 import by.epam.hotel.command.impl.admin.BackToAdminRoomsCommand;
 import by.epam.hotel.command.impl.admin.BackToAdminmainCommand;
+import by.epam.hotel.command.impl.admin.BackToAllNationalitiesCommand;
 import by.epam.hotel.command.impl.admin.BackToAllOrdersCommand;
 import by.epam.hotel.command.impl.admin.BackToAllRoomsCommand;
 import by.epam.hotel.command.impl.admin.CancelOrderAdminCommand;
@@ -81,11 +82,9 @@ public enum CommandType {
 	BACKTOORDER (new BackToOrderCommand()), CHOOSEROOM(new ChooseRoomCommand()), BACKTOROOMS(new BackToRoomsCommand()),
 	TOPAY(new ToPayCommand()), BACKTOINFOPAYMENT(new BackToInfoPaymentCommnamd()), TOREPLENISH(new ToReplenishCommand()),
 	BACKTOPAYPAGE(new BackToPayPageCommand()), REPLENISH(new ReplenishCommand()), PAY(new PayCommand()),
-	
 	TOSETRECORDSPERPAGEACCOUNTORDER(new ToSetRecordsPerPageAccountOrderCommand()), 
 	TOACCOUNTORDERS(new ToAccountOrdersCommand()), CANCELORDER(new CancelOrderCommand()), BACKTOACCOUNTORDERS(new BackToAccountOrdersCommand()),
 	APPROVEORDERCANCEL(new ApproveOrderCancelCommand()), 
-	
 	TOCHANGEPERSONALDATA(new ToChangePersonalDataCommand()),
 	TOCHANGELOGIN(new ToChangeLoginCommand()),TOCHANGEPASSWORD(new ToChangePasswordCommand()), TODELETEACCOUNT(new ToDeleteAccountCommand()),
 	CHANGELOGIN(new ChangeLoginCommand()), BACKTOCHANGEPERSONALDATA(new BackToChangePersonalDataCommand()), 

@@ -4,11 +4,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import by.epam.hotel.command.ActionCommand;
+import by.epam.hotel.controller.AttributeConstant;
+import by.epam.hotel.controller.ParameterConstant;
+import by.epam.hotel.controller.PropertyConstant;
 import by.epam.hotel.controller.RoleType;
 import by.epam.hotel.controller.Router;
 import by.epam.hotel.controller.RouterType;
 import by.epam.hotel.controller.SessionData;
-import by.epam.hotel.dao.entity.FullInfoOrder;
+import by.epam.hotel.entity.FullInfoOrder;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.util.ConfigurationManager;
 
@@ -19,14 +22,14 @@ public class CancelOrderAdminCommand implements ActionCommand {
 		Router router = new Router();
 		String page = null;
 		HttpSession session = request.getSession();
-		SessionData sessionData = (SessionData) session.getAttribute("sessionData");
+		SessionData sessionData = (SessionData) session.getAttribute(AttributeConstant.SESSION_DATA);
 		if (sessionData.getRole() == RoleType.ADMIN) {
-			int orderIndex = Integer.parseInt(request.getParameter("orderIndex"));
+			int orderIndex = Integer.parseInt(request.getParameter(ParameterConstant.ORDER_INDEX));
 			FullInfoOrder orderToCancel = sessionData.getListAdminFullInfoOrder().get(--orderIndex);
-			request.setAttribute("orderToCancel", orderToCancel);
-			page = ConfigurationManager.getProperty("path.page.approveadminordercancel");
+			request.setAttribute(AttributeConstant.ORDER_TO_CANCEL, orderToCancel);
+			page = ConfigurationManager.getProperty(PropertyConstant.PAGE_APPROVE_ADMIN_ORDER_CANCEL);
 		} else {
-			page = ConfigurationManager.getProperty("path.page.welcome");
+			page = ConfigurationManager.getProperty(PropertyConstant.PAGE_WELCOME);
 		}
 		router.setType(RouterType.FORWARD);
 		router.setPage(page);

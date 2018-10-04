@@ -6,77 +6,73 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import by.epam.hotel.command.ActionCommand;
+import by.epam.hotel.controller.AttributeConstant;
+import by.epam.hotel.controller.ParameterConstant;
+import by.epam.hotel.controller.PropertyConstant;
 import by.epam.hotel.controller.RoleType;
 import by.epam.hotel.controller.Router;
 import by.epam.hotel.controller.RouterType;
 import by.epam.hotel.controller.SessionData;
+import by.epam.hotel.controller.ValidationConstant;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
 import by.epam.hotel.logic.SignUpLogic;
 import by.epam.hotel.util.ConfigurationManager;
 import by.epam.hotel.util.MessageManager;
 
-public class SignUpCommand implements ActionCommand {
-	private static final Logger LOG = LogManager.getLogger(SignUpCommand.class);
-	private final String PARAM_LOGIN = "login";
-	private final String PARAM_PASSWORD = "password";
-	private final String PARAM_EMAIL = "email";
+public class SignUpCommand implements ActionCommand {	
 
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {
 		Router router = new Router();
 		String page = null;
 		HttpSession session = request.getSession();
-		SessionData sessionData = (SessionData) session.getAttribute("sessionData");
+		SessionData sessionData = (SessionData) session.getAttribute(AttributeConstant.SESSION_DATA);
 		RoleType role = sessionData.getRole();
 		switch (role) {
 		case GUEST:
-			String login = request.getParameter(PARAM_LOGIN);
-			String password = request.getParameter(PARAM_PASSWORD);
-			String email = request.getParameter(PARAM_EMAIL);
+			String login = request.getParameter(ParameterConstant.LOGIN);
+			String password = request.getParameter(ParameterConstant.PASSWORD);
+			String email = request.getParameter(ParameterConstant.EMAIL);
 
 			if (validateInputData(login, password, email, request)) {
 				try {
 					if (SignUpLogic.createAccount(login, email, password)) {
-						page = ConfigurationManager.getProperty("path.page.clientmain");
+						page = ConfigurationManager.getProperty(PropertyConstant.PAGE_CLIENTMAIN);
 						router.setPage(page);
 						router.setType(RouterType.REDIRECT);
 						// maybe need getSession(false)
 						sessionData.setLogin(login);
 						sessionData.setRole(RoleType.CLIENT);
 						sessionData.setInnerRedirect(true);
-						System.out.println("!!!!!!!!!");
-						System.out.println("!!!in signupcommmand!!!!!!");
-						System.out.println("!!!!!!!!!!!!");
 					} else {
-						request.setAttribute("errorSignupMessage", MessageManager.getProrerty("message.signuperror"));
-						page = ConfigurationManager.getProperty("path.page.signup");
+						request.setAttribute(AttributeConstant.ERROR_SIGHUP_MESSAGE,
+								MessageManager.getProrerty(PropertyConstant.MESSAGE_SIGNUP_ERROR));
+						page = ConfigurationManager.getProperty(PropertyConstant.PAGE_SIGNUP);
 						router.setPage(page);
 						router.setType(RouterType.FORWARD);
 					}
 				} catch (ServiceException e) {
-					LOG.error(e);
 					throw new CommandException(e);
 				}
 			} else {
-				page = ConfigurationManager.getProperty("path.page.signup");
+				page = ConfigurationManager.getProperty(PropertyConstant.PAGE_SIGNUP);
 				router.setPage(page);
 				router.setType(RouterType.FORWARD);
 			}
 			break;
 		case CLIENT:
-			request.setAttribute("errorReSignupMessage", MessageManager.getProrerty("message.resignuperror"));
-			page = ConfigurationManager.getProperty("path.page.clientmain");
+			request.setAttribute(AttributeConstant.ERROR_RE_SIGNUP_MESSAGE,
+					MessageManager.getProrerty(PropertyConstant.MESSAGE_RE_SIGHUP_ERROR));
+			page = ConfigurationManager.getProperty(PropertyConstant.PAGE_CLIENTMAIN);
 			router.setPage(page);
 			router.setType(RouterType.FORWARD);
 			break;
 		case ADMIN:
-			request.setAttribute("errorReSignupMessage", MessageManager.getProrerty("message.resignuperror"));
-			page = ConfigurationManager.getProperty("path.page.adminmain");
+			request.setAttribute(AttributeConstant.ERROR_RE_SIGNUP_MESSAGE,
+					MessageManager.getProrerty(PropertyConstant.MESSAGE_RE_SIGHUP_ERROR));
+			page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ADMIN_MAIN);
 			router.setPage(page);
 			router.setType(RouterType.FORWARD);
 			break;
@@ -87,31 +83,31 @@ public class SignUpCommand implements ActionCommand {
 	private boolean validateInputData(String login, String password, String email, HttpServletRequest request) {
 		boolean result = true;
 		if (!validateLogin(login)) {
-			request.setAttribute("errorLoginSignupMessage", MessageManager.getProrerty("message.loginsignuperror"));
+			request.setAttribute(AttributeConstant.ERROR_LOGIN_SIGNUP_MESSAGE, 
+					MessageManager.getProrerty(PropertyConstant.MESSAGE_LOGIN_SIGNUP_ERROR));
 			result = false;
 		}
 		if (!validateEmail(email)) {
-			request.setAttribute("errorEmailSignupMessage", MessageManager.getProrerty("message.emailsignuperror"));
+			request.setAttribute(AttributeConstant.ERROR_EMAIL_SIGHUP_MESSAGE,
+					MessageManager.getProrerty(PropertyConstant.MESSAGE_EMAIL_SIGHUP_ERROR));
 			result = false;
 		}
 		if (!validatePassword(password)) {
-			request.setAttribute("errorPasswordSignupMessage",
-					MessageManager.getProrerty("message.passwordsignuperror"));
+			request.setAttribute(AttributeConstant.ERROR_PASSWORD_SIGHUP_MESSAGE,
+					MessageManager.getProrerty(PropertyConstant.MESSAGE_PASSWORD_SIGNUP_ERROR));
 			result = false;
 		}
 		return result;
 	}
 
 	private boolean validateLogin(String login) {
-		String LOGIN_PATTERN = "^[a-zA-ZÀ-ßà-ÿ0-9_-]{3,25}$";
-		Pattern pattern = Pattern.compile(LOGIN_PATTERN);
+		Pattern pattern = Pattern.compile(ValidationConstant.LOGIN_PATTERN);
 		Matcher matcher = pattern.matcher(login);
 		return matcher.matches();
 	}
 
 	private boolean validateEmail(String email) {
-		String EMAIL_PATTERN = "^[A-Z0-9_.%+-]{1,30}@[A-Z0-9.-]{1,10}\\.[A-Z]{2,6}$";
-		Pattern pattern = Pattern.compile(EMAIL_PATTERN, Pattern.CASE_INSENSITIVE);
+		Pattern pattern = Pattern.compile(ValidationConstant.EMAIL_PATTERN, Pattern.CASE_INSENSITIVE);
 		Matcher matcher = pattern.matcher(email);
 		return matcher.matches();
 	}
@@ -125,8 +121,7 @@ public class SignUpCommand implements ActionCommand {
 	 * end-of-string
 	 */
 	private boolean validatePassword(String password) {
-		String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-zà-ÿ])(?=.*[A-ZÀ-ß])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
-		Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
+		Pattern pattern = Pattern.compile(ValidationConstant.PASSWORD_PATTERN);
 		Matcher matcher = pattern.matcher(password);
 		return matcher.matches();
 	}

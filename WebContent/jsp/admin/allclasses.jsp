@@ -16,7 +16,7 @@
 <title>All Room Classes</title>
 </head>
 <body>
-<jsp:include page="../loginlogout.jsp" />
+<jsp:include page="/loginlogout" />
 	<hr />
 
   

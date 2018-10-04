@@ -2,10 +2,9 @@ package by.epam.hotel.command.impl.admin;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import by.epam.hotel.command.ActionCommand;
+import by.epam.hotel.controller.AttributeConstant;
+import by.epam.hotel.controller.PropertyConstant;
 import by.epam.hotel.controller.RoleType;
 import by.epam.hotel.controller.Router;
 import by.epam.hotel.controller.RouterType;
@@ -16,24 +15,21 @@ import by.epam.hotel.logic.OrderLogic;
 import by.epam.hotel.util.ConfigurationManager;
 
 public class ToCreateRoomCommand implements ActionCommand{
-	private static final Logger LOG = LogManager.getLogger(ToCreateRoomCommand.class);
 	
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {
-		System.out.println("in ToCreateRoomCommand " + request.getSession().getAttribute("sessionData"));
 		Router router = new Router();
 		String page = null;
-		SessionData sessionData = (SessionData) request.getSession().getAttribute("sessionData");
+		SessionData sessionData = (SessionData) request.getSession().getAttribute(AttributeConstant.SESSION_DATA);
 		if (sessionData.getRole() == RoleType.ADMIN) {
 			try {
 				sessionData.setRoomClasses(OrderLogic.getRoomClassList());
-				page = ConfigurationManager.getProperty("path.page.createroom");
+				page = ConfigurationManager.getProperty(PropertyConstant.PAGE_CREATE_ROOM);
 			} catch (ServiceException e) {
-				LOG.error(e);
 				throw new CommandException(e);
 			}
 		} else {
-			page = ConfigurationManager.getProperty("path.page.login");
+			page = ConfigurationManager.getProperty(PropertyConstant.PAGE_LOGIN);
 		}
 		router.setPage(page);
 		router.setType(RouterType.FORWARD);

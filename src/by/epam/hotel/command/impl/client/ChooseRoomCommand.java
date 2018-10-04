@@ -9,31 +9,30 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import by.epam.hotel.command.ActionCommand;
+import by.epam.hotel.controller.AttributeConstant;
+import by.epam.hotel.controller.ParameterConstant;
+import by.epam.hotel.controller.PropertyConstant;
 import by.epam.hotel.controller.RoleType;
 import by.epam.hotel.controller.Router;
 import by.epam.hotel.controller.RouterType;
 import by.epam.hotel.controller.SessionData;
-import by.epam.hotel.dao.entity.Room;
+import by.epam.hotel.entity.Room;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
 import by.epam.hotel.logic.FindRoomLogic;
 import by.epam.hotel.util.ConfigurationManager;
 
 public class ChooseRoomCommand implements ActionCommand {
-	private static final Logger LOG = LogManager.getLogger(ChooseRoomCommand.class);
 
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {
 		Router router = new Router();
 		String page = null;
 		HttpSession session = request.getSession();
-		SessionData sessionData = (SessionData) session.getAttribute("sessionData");
+		SessionData sessionData = (SessionData) session.getAttribute(AttributeConstant.SESSION_DATA);
 		if (sessionData.getRole() == RoleType.CLIENT) {
-			int chosenRoomNumber = Integer.parseInt(request.getParameter("number"));
+			int chosenRoomNumber = Integer.parseInt(request.getParameter(ParameterConstant.NUMBER));
 			List<Room> chachedAvailableRoomList = sessionData.getAvailableRoomList();
 			Room chosenRoom = findChosenRoom(chachedAvailableRoomList, chosenRoomNumber);
 			LocalDate from = sessionData.getFrom();
@@ -46,17 +45,16 @@ public class ChooseRoomCommand implements ActionCommand {
 					double toPay = (timeStampDiff!=0?timeStampDiff:1)*chosenRoom.getPrice().doubleValue();
 					BigDecimal toPayBigDecimal = new BigDecimal(toPay).setScale(2, RoundingMode.HALF_UP);
 					sessionData.setToPay(toPayBigDecimal);
-					page = ConfigurationManager.getProperty("path.page.infoforpayment");
+					page = ConfigurationManager.getProperty(PropertyConstant.PAGE_INFO_FOR_PAYMENT);
 				} else {
 					sessionData.setAvailableRoomList(updatedAvailableRoomList);
-					page = ConfigurationManager.getProperty("path.page.alreadyorderedroom");
+					page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ALREADY_ORDERED_ROOM);
 				}
 			} catch (ServiceException e) {
-				LOG.error(e);
 				throw new CommandException(e);
 			}
 		} else {
-			page = ConfigurationManager.getProperty("path.page.welcome");
+			page = ConfigurationManager.getProperty(PropertyConstant.PAGE_WELCOME);
 		}
 		router.setType(RouterType.FORWARD);
 		router.setPage(page);

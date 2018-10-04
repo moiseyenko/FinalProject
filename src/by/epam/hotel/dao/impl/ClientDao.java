@@ -13,7 +13,7 @@ import org.apache.logging.log4j.Logger;
 
 import by.epam.hotel.dao.AbstractDao;
 import by.epam.hotel.dao.DaoFieldType;
-import by.epam.hotel.dao.entity.Client;
+import by.epam.hotel.entity.Client;
 import by.epam.hotel.exception.DaoException;
 
 public class ClientDao extends AbstractDao<Integer, Client> {

@@ -13,7 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class ConnectionPool implements Cloneable {
-	private static final Logger LOG = LogManager.getLogger(ConnectionPool.class);
+	private static final Logger LOG = LogManager.getLogger();
 	private final int DEFUALT_POOL_SIZE = 10;
 	private LinkedBlockingQueue<ProxyConnection> blockingConnections;
 	private LinkedBlockingQueue<ProxyConnection> usedConnections;
@@ -31,7 +31,7 @@ public class ConnectionPool implements Cloneable {
 			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
 		} catch (SQLException e) {
 			LOG.fatal("Database access error occurs: {}", e);
-			throw new RuntimeException();
+			throw new RuntimeException("Database access error occurs: {}", e);
 
 		}
 		blockingConnections = new LinkedBlockingQueue<>();
@@ -66,7 +66,6 @@ public class ConnectionPool implements Cloneable {
 				} catch (InterruptedException e) {
 					LOG.fatal("Interrupted while waiting: {}", e);
 					Thread.currentThread().interrupt();
-					// whether message needs?
 					throw new RuntimeException("Interrupted while waiting: {}", e);
 				} catch (SQLException e) {
 					LOG.fatal("Database access error occurs: {}", e);
@@ -106,7 +105,7 @@ public class ConnectionPool implements Cloneable {
 		} catch (InterruptedException e) {
 			LOG.error("Interrupted while waiting: {}", e);
 			Thread.currentThread().interrupt();
-			throw new RuntimeException("kjgjkgujggugkug", e);
+			throw new RuntimeException("Interrupted while waiting: {}", e);
 		}
 		return connection;
 	}

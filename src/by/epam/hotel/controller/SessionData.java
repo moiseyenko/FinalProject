@@ -4,12 +4,12 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-import by.epam.hotel.dao.entity.Account;
-import by.epam.hotel.dao.entity.Client;
-import by.epam.hotel.dao.entity.FullInfoOrder;
-import by.epam.hotel.dao.entity.Nationality;
-import by.epam.hotel.dao.entity.Room;
-import by.epam.hotel.dao.entity.RoomClass;
+import by.epam.hotel.entity.Account;
+import by.epam.hotel.entity.Client;
+import by.epam.hotel.entity.FullInfoOrder;
+import by.epam.hotel.entity.Nationality;
+import by.epam.hotel.entity.Room;
+import by.epam.hotel.entity.RoomClass;
 
 public class SessionData {
 	private String login;

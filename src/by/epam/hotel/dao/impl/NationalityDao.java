@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 import by.epam.hotel.dao.AbstractDao;
 import by.epam.hotel.dao.DaoFieldType;
-import by.epam.hotel.dao.entity.Nationality;
+import by.epam.hotel.entity.Nationality;
 import by.epam.hotel.exception.DaoException;
 
 public class NationalityDao extends AbstractDao<String, Nationality> {

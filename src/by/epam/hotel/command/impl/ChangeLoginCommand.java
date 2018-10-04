@@ -6,14 +6,15 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import by.epam.hotel.command.ActionCommand;
+import by.epam.hotel.controller.AttributeConstant;
+import by.epam.hotel.controller.ParameterConstant;
+import by.epam.hotel.controller.PropertyConstant;
 import by.epam.hotel.controller.RoleType;
 import by.epam.hotel.controller.Router;
 import by.epam.hotel.controller.RouterType;
 import by.epam.hotel.controller.SessionData;
+import by.epam.hotel.controller.ValidationConstant;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
 import by.epam.hotel.logic.ChangeLoginLogic;
@@ -22,49 +23,48 @@ import by.epam.hotel.util.ConfigurationManager;
 import by.epam.hotel.util.MessageManager;
 
 public class ChangeLoginCommand implements ActionCommand {
-	private static final Logger LOG = LogManager.getLogger(ChangeLoginCommand.class);
 
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {
 		Router router = new Router();
 		String page = null;
 		HttpSession session = request.getSession();
-		SessionData sessionData = (SessionData) session.getAttribute("sessionData");
+		SessionData sessionData = (SessionData) session.getAttribute(AttributeConstant.SESSION_DATA);
 		if (sessionData.getRole() == RoleType.CLIENT||sessionData.getRole() == RoleType.ADMIN) {
-			String newLogin = request.getParameter("newLogin");
-			String tempPassword = request.getParameter("password");
+			String newLogin = request.getParameter(ParameterConstant.NEW_LOGIN);
+			String tempPassword = request.getParameter(ParameterConstant.PASSWORD);
 			String currentLogin = sessionData.getLogin();
 			if (validateLogin(newLogin)) {
 				try {
 					if (LoginLogic.checkLogin(currentLogin, tempPassword)) {
 						if (ChangeLoginLogic.changeLogin(newLogin, currentLogin, tempPassword)) {
 							sessionData.setLogin(newLogin);
-							page = ConfigurationManager.getProperty("path.page.successchangelogin");
+							page = ConfigurationManager.getProperty(PropertyConstant.PAGE_SUCCESS_CHANGE_LOGIN);
 							router.setType(RouterType.REDIRECT);
 						} else {
-							request.setAttribute("errorChangeLoginMessage",
-									MessageManager.getProrerty("message.changeloginerror"));
-							page = ConfigurationManager.getProperty("path.page.changelogin");
+							request.setAttribute(AttributeConstant.ERROR_CHANGE_LOGIN_MESSAGE,
+									MessageManager.getProrerty(PropertyConstant.MESSAGE_CHANGE_LOGIN_ERROR));
+							page = ConfigurationManager.getProperty(PropertyConstant.PAGE_CHANGE_LOGIN);
 							router.setType(RouterType.FORWARD);
 						}
 					} else {
-						request.setAttribute("errorCheckLoginPasswordMessage", MessageManager.getProrerty("message.checkloginpassworderror"));
-						page = ConfigurationManager.getProperty("path.page.changelogin");
+						request.setAttribute(AttributeConstant.ERROR_CHECK_LOGIN_PASSWORD_MESSAGE, 
+								MessageManager.getProrerty(PropertyConstant.MESSAGE_CHECK_LOGIN_PASSWORD_ERROR));
+						page = ConfigurationManager.getProperty(PropertyConstant.PAGE_CHANGE_LOGIN);
 						router.setPage(page);
 						router.setType(RouterType.FORWARD);
 					}
 				} catch (ServiceException e) {
-					LOG.error(e);
 					throw new CommandException(e);
 				}
 			} else {
-				request.setAttribute("errorLoginValidateMessage",
-						MessageManager.getProrerty("message.loginvalidateerror"));
-				page = ConfigurationManager.getProperty("path.page.changelogin");
+				request.setAttribute(AttributeConstant.ERROR_LOGIN_VALIDATE_MESSAGE,
+						MessageManager.getProrerty(PropertyConstant.MESSAGE_LOGIN_VALIDATE_ERROR));
+				page = ConfigurationManager.getProperty(PropertyConstant.PAGE_CHANGE_LOGIN);
 				router.setType(RouterType.FORWARD);
 			}
 		} else {
-			page = ConfigurationManager.getProperty("path.page.welcome");
+			page = ConfigurationManager.getProperty(PropertyConstant.PAGE_WELCOME);
 			router.setType(RouterType.FORWARD);
 		}
 		router.setPage(page);
@@ -72,8 +72,7 @@ public class ChangeLoginCommand implements ActionCommand {
 	}
 
 	private boolean validateLogin(String login) {
-		String LOGIN_PATTERN = "^[a-zA-ZР-пр-џ0-9_-]{3,25}$";
-		Pattern pattern = Pattern.compile(LOGIN_PATTERN);
+		Pattern pattern = Pattern.compile(ValidationConstant.LOGIN_PATTERN);
 		Matcher matcher = pattern.matcher(login);
 		return matcher.matches();
 	}

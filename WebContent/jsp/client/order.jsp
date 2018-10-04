@@ -7,7 +7,7 @@
 <title>Order</title>
 </head>
 <body>
-	<jsp:include page="../loginlogout.jsp" />
+	<jsp:include page="/loginlogout" />
 	<hr />
 	Your clients:
 	<div style="height:80;width:300px; border:1px solid #ccc;overflow:auto;">
@@ -16,7 +16,7 @@
 				<tr>
 					<td>
 						<c:url value="/controller" var="clientsURL">
-							<c:param name="index" value="${status.count}" />
+							<c:param name="clientIndex" value="${status.count}" />
 							<c:param name="command" value="fillorderform" />
 						</c:url> 
 						<a href="${clientsURL}"> ${client.firstName} ${client.lastName} ${client.passport} (${client.nationality}) </a> 

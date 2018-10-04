@@ -4,14 +4,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import by.epam.hotel.dao.TransactionHelper;
-import by.epam.hotel.dao.entity.Nationality;
 import by.epam.hotel.dao.impl.NationalityDao;
+import by.epam.hotel.entity.Nationality;
 import by.epam.hotel.exception.CloseTransactionException;
 import by.epam.hotel.exception.DaoException;
 import by.epam.hotel.exception.ServiceException;
 
 public class CreateNationalityLogic {
-	private static final Logger LOG = LogManager.getLogger(CreateNationalityLogic.class);
+	private static final Logger LOG = LogManager.getLogger();
 	
 	public static boolean createNationality(Nationality newNationality) throws ServiceException {
 		boolean flag = false;
@@ -23,7 +23,6 @@ public class CreateNationalityLogic {
 					flag = nationalityDao.create(newNationality);		
 				}
 			} catch (DaoException e) {
-				LOG.error(e);
 				throw new ServiceException(e);
 			}
 		} catch (CloseTransactionException e) {

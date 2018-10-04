@@ -7,15 +7,16 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import by.epam.hotel.command.ActionCommand;
+import by.epam.hotel.controller.AttributeConstant;
+import by.epam.hotel.controller.ParameterConstant;
+import by.epam.hotel.controller.PropertyConstant;
 import by.epam.hotel.controller.RoleType;
 import by.epam.hotel.controller.Router;
 import by.epam.hotel.controller.RouterType;
 import by.epam.hotel.controller.SessionData;
-import by.epam.hotel.dao.entity.Nationality;
+import by.epam.hotel.controller.ValidationConstant;
+import by.epam.hotel.entity.Nationality;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
 import by.epam.hotel.logic.ApproveChangeNationalityLogic;
@@ -24,17 +25,16 @@ import by.epam.hotel.util.ConfigurationManager;
 import by.epam.hotel.util.MessageManager;
 
 public class ApproveChangeNationalityCommand implements ActionCommand{
-	private static final Logger LOG = LogManager.getLogger(ApproveChangeNationalityCommand.class);
 	
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {
 		Router router = new Router();
 		String page = null;
 		HttpSession session = request.getSession();
-		SessionData sessionData = (SessionData) session.getAttribute("sessionData");
+		SessionData sessionData = (SessionData) session.getAttribute(AttributeConstant.SESSION_DATA);
 		if (sessionData.getRole() == RoleType.ADMIN) {
 			String countryId = sessionData.getNationalityToChange().getCountryId();
-			String country = request.getParameter("country");
+			String country = request.getParameter(ParameterConstant.COUNTRY);
 			int recordsPerPage = sessionData.getRecordsPerPage();
 			int currentPage = sessionData.getCurrentPage();
 			if(validateCountry(country)) {
@@ -44,24 +44,25 @@ public class ApproveChangeNationalityCommand implements ActionCommand{
 							List<Nationality> nationalityList = ToAllNationalitiesLogic.getNationalitiesList(currentPage,
 									recordsPerPage);
 							sessionData.setNationalityList(nationalityList);
-							page = ConfigurationManager.getProperty("path.page.allnationalities");
+							page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ALL_NATIONALITIES);
 							router.setType(RouterType.REDIRECT);
 						}else {
-							request.setAttribute("errorChangeNationalityMessage", MessageManager.getProrerty("message.changenationalityerror"));
-							page = ConfigurationManager.getProperty("path.page.changenationality");
+							request.setAttribute(AttributeConstant.ERROR_CHANGE_NATIONALITY_MESSAGE,
+									MessageManager.getProrerty(PropertyConstant.MESSAGE_CHANGE_NATIONALITY_ERROR));
+							page = ConfigurationManager.getProperty(PropertyConstant.PAGE_CHANGE_NATIONALITY);
 							router.setType(RouterType.FORWARD);
 						}
 					} catch (ServiceException e) {
-						LOG.error(e);
 						throw new CommandException(e);
 					}
 			}else {
-				request.setAttribute("errorCountryMessage", MessageManager.getProrerty("message.countryerror"));
-				page = ConfigurationManager.getProperty("path.page.changenationality");
+				request.setAttribute(AttributeConstant.ERROR_COUNTRY_MESSAGE, 
+						MessageManager.getProrerty(PropertyConstant.MESSAGE_COUNTRY_ERROR));
+				page = ConfigurationManager.getProperty(PropertyConstant.PAGE_CHANGE_NATIONALITY);
 				router.setType(RouterType.FORWARD);
 			}	
 		} else {
-			page = ConfigurationManager.getProperty("path.page.welcome");
+			page = ConfigurationManager.getProperty(PropertyConstant.PAGE_WELCOME);
 			router.setType(RouterType.FORWARD);
 		}
 		router.setPage(page);
@@ -69,8 +70,7 @@ public class ApproveChangeNationalityCommand implements ActionCommand{
 	}
 	
 	private boolean validateCountry(String country) {
-		String LOGIN_PATTERN = "^[A-Za-zÀ-ÿà-ÿ ¨¸'-]{1,80}$";
-		Pattern pattern = Pattern.compile(LOGIN_PATTERN);
+		Pattern pattern = Pattern.compile(ValidationConstant.COUNTRY_PATTERN);
 		Matcher matcher = pattern.matcher(country);
 		return matcher.matches();
 	}

@@ -5,33 +5,32 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import by.epam.hotel.command.ActionCommand;
+import by.epam.hotel.controller.AttributeConstant;
+import by.epam.hotel.controller.ParameterConstant;
+import by.epam.hotel.controller.PropertyConstant;
 import by.epam.hotel.controller.RoleType;
 import by.epam.hotel.controller.Router;
 import by.epam.hotel.controller.RouterType;
 import by.epam.hotel.controller.SessionData;
-import by.epam.hotel.dao.entity.FullInfoOrder;
+import by.epam.hotel.entity.FullInfoOrder;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
 import by.epam.hotel.logic.ToAccountOrdersLogic;
 import by.epam.hotel.util.ConfigurationManager;
 
 public class ToAccountOrdersCommand implements ActionCommand {
-	private static final Logger LOG = LogManager.getLogger(ToPayCommand.class);
 
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {
 		Router router = new Router();
 		String page = null;
 		HttpSession session = request.getSession();
-		SessionData sessionData = (SessionData) session.getAttribute("sessionData");
+		SessionData sessionData = (SessionData) session.getAttribute(AttributeConstant.SESSION_DATA);
 		if (sessionData.getRole() == RoleType.CLIENT) {
 			String currentLogin = sessionData.getLogin();
-			int currentPage = Integer.valueOf(request.getParameter("currentPage"));
-			int recordsPerPage = Integer.valueOf(request.getParameter("recordsPerPage"));
+			int currentPage = Integer.valueOf(request.getParameter(ParameterConstant.CURRENT_PAGE));
+			int recordsPerPage = Integer.valueOf(request.getParameter(ParameterConstant.RECORDS_PER_PAGE));
 			try {
 				List<FullInfoOrder> listAccountFullInfoOrder = ToAccountOrdersLogic.getFullInfoOrderList(currentLogin,
 						currentPage, recordsPerPage);
@@ -44,13 +43,12 @@ public class ToAccountOrdersCommand implements ActionCommand {
 				sessionData.setNoOfPages(noOfPages);
 				sessionData.setCurrentPage(currentPage);
 				sessionData.setRecordsPerPage(recordsPerPage);
-				page = ConfigurationManager.getProperty("path.page.accountorders");
+				page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ACCOUNT_ORDERS);
 			} catch (ServiceException e) {
-				LOG.error(e);
 				throw new CommandException(e);
 			}
 		} else {
-			page = ConfigurationManager.getProperty("path.page.welcome");
+			page = ConfigurationManager.getProperty(PropertyConstant.PAGE_WELCOME);
 		}
 		router.setType(RouterType.FORWARD);
 		router.setPage(page);

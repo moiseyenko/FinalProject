@@ -3,7 +3,7 @@ package by.epam.hotel.dao;
 import java.sql.Connection;
 import java.util.List;
 
-import by.epam.hotel.dao.entity.Entity;
+import by.epam.hotel.entity.Entity;
 import by.epam.hotel.exception.DaoException;
 
 public abstract class AbstractDao<K, T extends Entity> {

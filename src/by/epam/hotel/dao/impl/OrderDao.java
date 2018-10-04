@@ -16,12 +16,12 @@ import org.apache.logging.log4j.Logger;
 
 import by.epam.hotel.dao.AbstractDao;
 import by.epam.hotel.dao.DaoFieldType;
-import by.epam.hotel.dao.entity.Account;
-import by.epam.hotel.dao.entity.Client;
-import by.epam.hotel.dao.entity.FullInfoOrder;
-import by.epam.hotel.dao.entity.Nationality;
-import by.epam.hotel.dao.entity.Order;
-import by.epam.hotel.dao.entity.Room;
+import by.epam.hotel.entity.Account;
+import by.epam.hotel.entity.Client;
+import by.epam.hotel.entity.FullInfoOrder;
+import by.epam.hotel.entity.Nationality;
+import by.epam.hotel.entity.Order;
+import by.epam.hotel.entity.Room;
 import by.epam.hotel.exception.DaoException;
 
 public class OrderDao extends AbstractDao<Integer, Order> {

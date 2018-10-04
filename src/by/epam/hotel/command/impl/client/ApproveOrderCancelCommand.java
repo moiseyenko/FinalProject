@@ -6,15 +6,15 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import by.epam.hotel.command.ActionCommand;
+import by.epam.hotel.controller.AttributeConstant;
+import by.epam.hotel.controller.ParameterConstant;
+import by.epam.hotel.controller.PropertyConstant;
 import by.epam.hotel.controller.RoleType;
 import by.epam.hotel.controller.Router;
 import by.epam.hotel.controller.RouterType;
 import by.epam.hotel.controller.SessionData;
-import by.epam.hotel.dao.entity.FullInfoOrder;
+import by.epam.hotel.entity.FullInfoOrder;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
 import by.epam.hotel.logic.ApproveOrderCancelLogic;
@@ -23,17 +23,16 @@ import by.epam.hotel.util.ConfigurationManager;
 import by.epam.hotel.util.MessageManager;
 
 public class ApproveOrderCancelCommand implements ActionCommand {
-	private static final Logger LOG = LogManager.getLogger(ApproveOrderCancelCommand.class);
 
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {
 		Router router = new Router();
 		String page = null;
 		HttpSession session = request.getSession();
-		SessionData sessionData = (SessionData) session.getAttribute("sessionData");
+		SessionData sessionData = (SessionData) session.getAttribute(AttributeConstant.SESSION_DATA);
 		if (sessionData.getRole() == RoleType.CLIENT) {
-			BigDecimal returnedSum = new BigDecimal(request.getParameter("returnedSum"));
-			int orderId = Integer.parseInt(request.getParameter("orderId"));
+			BigDecimal returnedSum = new BigDecimal(request.getParameter(ParameterConstant.RETURNED_SUM));
+			int orderId = Integer.parseInt(request.getParameter(ParameterConstant.ORDER_ID));
 			String login = sessionData.getLogin();
 			int recordsPerPage = sessionData.getRecordsPerPage();
 			int currentPage = sessionData.getCurrentPage();
@@ -41,19 +40,19 @@ public class ApproveOrderCancelCommand implements ActionCommand {
 				if (ApproveOrderCancelLogic.cancelOrder(login, returnedSum, orderId)) {
 					List<FullInfoOrder> listFullInfoOrder = ToAccountOrdersLogic.getFullInfoOrderList(login, currentPage, recordsPerPage);
 					sessionData.setListAccountFullInfoOrder(listFullInfoOrder);
-					page = ConfigurationManager.getProperty("path.page.accountorders");
+					page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ACCOUNT_ORDERS);
 					router.setType(RouterType.REDIRECT);
 				}else {
-					request.setAttribute("errorOrderCancelMessage", MessageManager.getProrerty("message.ordercancelerror"));
-					page = ConfigurationManager.getProperty("path.page.approveordercancel");
+					request.setAttribute(AttributeConstant.ERROR_ORDER_CANCEL_MESSAGE,
+							MessageManager.getProrerty(PropertyConstant.MESSAGE_ORDER_CANCEL_ERROR));
+					page = ConfigurationManager.getProperty(PropertyConstant.PAGE_APPROVE_ORDER_CANCEL);
 					router.setType(RouterType.FORWARD);
 				}
 			} catch (ServiceException e) {
-				LOG.error(e);
 				throw new CommandException(e);
 			}
 		} else {
-			page = ConfigurationManager.getProperty("path.page.welcome");
+			page = ConfigurationManager.getProperty(PropertyConstant.PAGE_WELCOME);
 			router.setType(RouterType.FORWARD);
 		}
 		router.setPage(page);

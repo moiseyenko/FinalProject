@@ -16,7 +16,7 @@
 <title>All Orders</title>
 </head>
 <body>
-<jsp:include page="../loginlogout.jsp" />
+<jsp:include page="/loginlogout" />
 	<hr />
 
   
@@ -45,7 +45,7 @@
 			    <th class="tg-88nc">Cost</th>
 			    <th class="tg-88nc">Status</th>
 			  </tr>
-			   <jsp:useBean id = "localDateNow" class = "by.epam.hotel.dao.entity.LocalDateNow"/> 
+			   <jsp:useBean id = "localDateNow" class = "by.epam.hotel.entity.LocalDateNow"/> 
 				<c:forEach var="order" items="${sessionData.listAdminFullInfoOrder }" varStatus="status">
 					<tr>
 						<td class="tg-c3ow">${order.id }</td>

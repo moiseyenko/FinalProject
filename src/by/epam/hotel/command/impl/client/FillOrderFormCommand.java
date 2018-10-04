@@ -3,11 +3,14 @@ package by.epam.hotel.command.impl.client;
 import javax.servlet.http.HttpServletRequest;
 
 import by.epam.hotel.command.ActionCommand;
+import by.epam.hotel.controller.AttributeConstant;
+import by.epam.hotel.controller.ParameterConstant;
+import by.epam.hotel.controller.PropertyConstant;
 import by.epam.hotel.controller.RoleType;
 import by.epam.hotel.controller.Router;
 import by.epam.hotel.controller.RouterType;
 import by.epam.hotel.controller.SessionData;
-import by.epam.hotel.dao.entity.Client;
+import by.epam.hotel.entity.Client;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.util.ConfigurationManager;
 
@@ -17,18 +20,18 @@ public class FillOrderFormCommand implements ActionCommand{
 	public Router execute(HttpServletRequest request) throws CommandException {
 		Router router = new Router();
 		String page = null;
-		SessionData sessionData = (SessionData) request.getSession().getAttribute("sessionData");
+		SessionData sessionData = (SessionData) request.getSession().getAttribute(AttributeConstant.SESSION_DATA);
 		if (sessionData.getRole() == RoleType.CLIENT) {
-			int index = Integer.parseInt(request.getParameter("index"));
-			Client client = sessionData.getClients().get(--index);
-			request.setAttribute("tempFName", client.getFirstName());
-			request.setAttribute("tempLName", client.getLastName());
-			request.setAttribute("tempPassport", client.getPassport());
-			request.setAttribute("tempNationality", client.getNationality());
-			page = ConfigurationManager.getProperty("path.page.order");
+			int clientIndex = Integer.parseInt(request.getParameter(ParameterConstant.CLIENT_INDEX));
+			Client client = sessionData.getClients().get(--clientIndex);
+			request.setAttribute(AttributeConstant.TEMP_FIRST_NAME, client.getFirstName());
+			request.setAttribute(AttributeConstant.TEMP_LAST_NAME, client.getLastName());
+			request.setAttribute(AttributeConstant.TEMP_PASSPORT, client.getPassport());
+			request.setAttribute(AttributeConstant.TEMP_NATIONALITY, client.getNationality());
+			page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ORDER);
 			System.out.println(page);
 		} else {
-			page = ConfigurationManager.getProperty("path.page.welcome");
+			page = ConfigurationManager.getProperty(PropertyConstant.PAGE_WELCOME);
 		}
 		router.setType(RouterType.FORWARD);
 		router.setPage(page);

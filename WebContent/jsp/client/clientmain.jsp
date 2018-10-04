@@ -9,10 +9,10 @@
 <title><fmt:message key="title" /></title>
 </head>
 <body>
-	<jsp:include page="../local.jsp" />
+	<jsp:include page="/locale" />
 	<br />
 	<hr />
-	<jsp:include page="../loginlogout.jsp" />
+	<jsp:include page="/loginlogout" />
 	<br />
 	<hr />
 	<h3>

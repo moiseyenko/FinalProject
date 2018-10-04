@@ -7,7 +7,7 @@
 <title>Replenish Page</title>
 </head>
 <body>
-	<jsp:include page="../local.jsp" />
+	<jsp:include page="/locale" />
 	<br />
 	<hr />
 	<form action="${pageContext.request.contextPath}/controller" method="post">

@@ -7,8 +7,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import by.epam.hotel.dao.TransactionHelper;
-import by.epam.hotel.dao.entity.Client;
 import by.epam.hotel.dao.impl.ClientDao;
+import by.epam.hotel.entity.Client;
 import by.epam.hotel.exception.CloseTransactionException;
 import by.epam.hotel.exception.DaoException;
 import by.epam.hotel.exception.ServiceException;
