@@ -15,7 +15,7 @@ import by.epam.hotel.exception.CloseTransactionException;
 import by.epam.hotel.exception.ServiceException;
 
 public class SignUpLogic {
-	private static final Logger LOG = LogManager.getLogger(SignUpLogic.class);
+	private static final Logger LOG = LogManager.getLogger();
 
 	public static boolean createAccount(String login, String email, String password) throws ServiceException {
 		boolean flag = false;
@@ -31,7 +31,6 @@ public class SignUpLogic {
 					helper.commit();
 				}
 			} catch (DaoException e) {
-				LOG.error(e);
 				helper.rollback();
 				throw new ServiceException(e);
 			}

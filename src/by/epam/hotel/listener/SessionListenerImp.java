@@ -7,9 +7,9 @@ import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
-import by.epam.hotel.controller.LanguageType;
-import by.epam.hotel.controller.RoleType;
 import by.epam.hotel.controller.SessionData;
+import by.epam.hotel.util.apptype.LanguageType;
+import by.epam.hotel.util.apptype.RoleType;
 
 /**
  * Application Lifecycle Listener implementation class SessionListenerImp

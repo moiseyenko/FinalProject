@@ -1,4 +1,4 @@
-package by.epam.hotel.controller;
+package by.epam.hotel.util.apptype;
 
 public enum RouterType{
 	FORWARD, REDIRECT

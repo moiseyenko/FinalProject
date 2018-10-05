@@ -1,4 +1,4 @@
-package by.epam.hotel.controller;
+package by.epam.hotel.util.constant;
 
 public interface ParameterConstant {
 	String PASSWORD = "password";

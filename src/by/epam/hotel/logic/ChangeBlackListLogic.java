@@ -19,7 +19,7 @@ public class ChangeBlackListLogic {
 		try (TransactionHelper helper = new TransactionHelper()) {
 			helper.doOperation(clientDao);
 			try {
-				flag = clientDao.changeBlackList(clientToChangeBlacklist);
+				flag = clientDao.changeRemoved(clientToChangeBlacklist);
 			} catch (DaoException e) {
 				LOG.error(e);
 				throw new ServiceException(e);

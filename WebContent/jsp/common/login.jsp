@@ -6,9 +6,6 @@
 <fmt:bundle basename="resource.i18n.i18n" prefix="login.">
 <html>
 <head>
-<!-- <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0"> -->
 <title><fmt:message key="title" /></title>
 </head>
 <body>
@@ -17,10 +14,9 @@
 	<hr />
 
 	<h2><fmt:message key="hello" /></h2>
-	<c:url var="controllerUrl" value="/controller" />
 	<form action="${pageContext.request.contextPath}/controller" name="LoginForm"  autocomplete="off" method="post">
 		<input type="hidden" name="command" value="login" />
-		<table border="0">
+		<table>
 			<tr>
 				<td valign="top"><fmt:message key="loginalabel" />:</td>
 				<td valign="top"><input type="text" name="login" size="40"  /></td>

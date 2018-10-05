@@ -55,6 +55,11 @@
 		<input type="hidden" name="command" value="toChangePersonalData" /> 
 		<input type="submit" value="Change personal data" />
 	</form>
+	<hr />
+	<form action="${pageContext.request.contextPath}/controller" method="post">
+		<input type="hidden" name="command" value="toSetRecordsPerPageEmail" /> 
+		<input type="submit" value="Send Message" />
+	</form>
 </body>
 </html>
 </fmt:bundle>

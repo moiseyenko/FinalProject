@@ -33,6 +33,7 @@ import by.epam.hotel.entity.Room;
 import by.epam.hotel.exception.CloseTransactionException;
 import by.epam.hotel.exception.DaoException;
 import by.epam.hotel.exception.ServiceException;
+import by.epam.hotel.util.Encoder;
 
 public class Runner {
 	public static void main(String[] args) throws ParseException, ServiceException, CloseTransactionException {
@@ -46,8 +47,11 @@ public class Runner {
 		BankAccountDao bankdao = new BankAccountDao();
 
 		List<Room> rooms = null;
+		
+		
+		System.out.println(Encoder.generateEmailKey("ustasgame@mail.ru"));
 
-		NationalityDao nationalityDao = new NationalityDao();
+		/*NationalityDao nationalityDao = new NationalityDao();
 		try (TransactionHelper helper = new TransactionHelper()) {
 			helper.doOperation(nationalityDao);
 			try {
@@ -56,7 +60,7 @@ public class Runner {
 				
 				throw new ServiceException(e);
 			}
-		}
+		}*/
 
 		/*
 		 * try (TransactionHelper helper = new TransactionHelper()) {

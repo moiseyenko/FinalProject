@@ -1,4 +1,4 @@
-package by.epam.hotel.controller;
+package by.epam.hotel.util.apptype;
 
 public enum LanguageType {
 	RUSSIAN("ru_RU"), ENGLISH("en_US");

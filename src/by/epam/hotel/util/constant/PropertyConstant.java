@@ -1,10 +1,10 @@
-package by.epam.hotel.controller;
+package by.epam.hotel.util.constant;
 
 public interface PropertyConstant {
 	
 	String PAGE_INDEX = "path.page.index";
 	String PAGE_LOGIN = "path.page.login";
-	String PAGE_CLIENTMAIN = "path.page.login";
+	String PAGE_CLIENTMAIN = "path.page.clientmain";
 	String PAGE_ERROR = "path.page.error";
 	String PAGE_SIGNUP = "path.page.signup";
 	String PAGE_WELCOME = "path.page.welcome";

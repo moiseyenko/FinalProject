@@ -1,4 +1,4 @@
-package by.epam.hotel.controller;
+package by.epam.hotel.util.constant;
 
 public interface ValidationConstant {
 	String LOGIN_PATTERN = "^[a-zA-ZР-пр-џ0-9_-]{3,25}$";

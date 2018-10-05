@@ -1,13 +1,10 @@
 package by.epam.hotel.dao.impl;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -17,6 +14,7 @@ import by.epam.hotel.dao.AbstractDao;
 import by.epam.hotel.dao.DaoFieldType;
 import by.epam.hotel.entity.Account;
 import by.epam.hotel.exception.DaoException;
+import by.epam.hotel.util.Encoder;
 
 public class AccountDao extends AbstractDao<Integer, Account> {
 	private static final Logger LOG = LogManager.getLogger(AccountDao.class);
@@ -38,7 +36,7 @@ public class AccountDao extends AbstractDao<Integer, Account> {
 
 	@Override
 	public List<Account> findAll(int start, int recordsPerPage) throws DaoException {
-		List<Account> accounts = new LinkedList<>();
+		List<Account> accounts = new ArrayList<>();
 		try {
 			try (PreparedStatement statement = connection.prepareStatement(FIND_ALL)) {
 				statement.setInt(1, start);
@@ -199,7 +197,7 @@ public class AccountDao extends AbstractDao<Integer, Account> {
 	}
 
 	public boolean checkPassword(int accountID, String password) throws DaoException {
-		String encodedPassword = encodePassword(password, String.valueOf(accountID));
+		String encodedPassword = Encoder.encodePassword(password, String.valueOf(accountID));
 		try {
 			try (PreparedStatement statement = connection.prepareStatement(FIND_PASSWORD_BY_ID)) {
 				statement.setInt(1, accountID);
@@ -218,7 +216,7 @@ public class AccountDao extends AbstractDao<Integer, Account> {
 	}
 
 	public boolean changeAccountPassword(Account account, String newPassword) throws DaoException {
-		String encodedPassword = encodePassword(newPassword, String.valueOf(account.getId()));
+		String encodedPassword = Encoder.encodePassword(newPassword, String.valueOf(account.getId()));
 		try {
 			try (PreparedStatement statement = connection.prepareStatement(UPDATE_PASSWORD)) {
 				statement.setString(1, encodedPassword);
@@ -236,22 +234,7 @@ public class AccountDao extends AbstractDao<Integer, Account> {
 		return false;
 	}
 
-	private String encodePassword(String password, String salt) {
-		try {
-			MessageDigest md = MessageDigest.getInstance("SHA-512");
-			md.update(salt.getBytes(StandardCharsets.UTF_8));
-			byte[] bytes = md.digest(password.getBytes(StandardCharsets.UTF_8));
-			StringBuilder sb = new StringBuilder();
-			for (int i = 0; i < bytes.length; i++) {
-				sb.append(Integer.toString((bytes[i] & 0xff), 16));
-			}
-			return sb.toString();
-		} catch (NoSuchAlgorithmException e) {
-			LOG.fatal("No Provider supports a MessageDigestSpi implementation for the specified algorithm: {}", e);
-			throw new RuntimeException();
-		}
-
-	}
+	
 
 	@Override
 	public boolean update(Account entity) throws DaoException {

@@ -3,6 +3,7 @@ package by.epam.hotel.controller;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 import by.epam.hotel.entity.Account;
 import by.epam.hotel.entity.Client;
@@ -10,6 +11,8 @@ import by.epam.hotel.entity.FullInfoOrder;
 import by.epam.hotel.entity.Nationality;
 import by.epam.hotel.entity.Room;
 import by.epam.hotel.entity.RoomClass;
+import by.epam.hotel.util.apptype.LanguageType;
+import by.epam.hotel.util.apptype.RoleType;
 
 public class SessionData {
 	private String login;
@@ -38,6 +41,11 @@ public class SessionData {
 	private int noOfPages;
 	private Room roomToChange;
 	private Nationality nationalityToChange;
+	private String tempLogin;
+	private String tempPassword;
+	private String tempEmail;
+	private String tempEmailKey;
+	private Set<Account> sendList;
 	
 	public String getLogin() {
 		return login;
@@ -245,6 +253,46 @@ public class SessionData {
 
 	public void setAccountList(List<Account> accountList) {
 		this.accountList = accountList;
+	}
+
+	public String getTempLogin() {
+		return tempLogin;
+	}
+
+	public void setTempLogin(String tempLogin) {
+		this.tempLogin = tempLogin;
+	}
+
+	public String getTempPassword() {
+		return tempPassword;
+	}
+
+	public void setTempPassword(String tempPassword) {
+		this.tempPassword = tempPassword;
+	}
+
+	public String getTempEmail() {
+		return tempEmail;
+	}
+
+	public void setTempEmail(String tempEmail) {
+		this.tempEmail = tempEmail;
+	}
+
+	public String getTempEmailKey() {
+		return tempEmailKey;
+	}
+
+	public void setTempEmailKey(String tempEmailKey) {
+		this.tempEmailKey = tempEmailKey;
+	}
+
+	public Set<Account> getSendList() {
+		return sendList;
+	}
+
+	public void setSendList(Set<Account> sendList) {
+		this.sendList = sendList;
 	}
 
 	@Override

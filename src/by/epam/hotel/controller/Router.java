@@ -1,5 +1,7 @@
 package by.epam.hotel.controller;
 
+import by.epam.hotel.util.apptype.RouterType;
+
 public class Router {
 	private String page;
 	private RouterType type;

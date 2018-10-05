@@ -4,12 +4,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import by.epam.hotel.command.ActionCommand;
-import by.epam.hotel.controller.AttributeConstant;
-import by.epam.hotel.controller.LanguageType;
-import by.epam.hotel.controller.ParameterConstant;
 import by.epam.hotel.controller.Router;
-import by.epam.hotel.controller.RouterType;
 import by.epam.hotel.controller.SessionData;
+import by.epam.hotel.util.apptype.LanguageType;
+import by.epam.hotel.util.apptype.RouterType;
+import by.epam.hotel.util.constant.AttributeConstant;
+import by.epam.hotel.util.constant.ParameterConstant;
 
 public class ChangeLocaleCommand implements ActionCommand {
 

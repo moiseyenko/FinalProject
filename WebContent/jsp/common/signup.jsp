@@ -12,7 +12,7 @@
 		Email: <input type="text" name="email" size="40" />${errorEmailSignupMessage }<br />
 		Password: <input type="password" name="password" size="40" />${errorPasswordSignupMessage }<br />
 		<input type="submit" value="Create account" size="20" />
-		${errorSignupMessage }
+		${errorSignupMessage }${errorSendConfirmationEmailMessage }
 	</form>
 	<form action="${pageContext.request.contextPath}/controller" method="post">
 		<input type="hidden" name="command" value="signupBack" />

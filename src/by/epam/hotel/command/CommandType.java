@@ -1,8 +1,10 @@
 package by.epam.hotel.command;
 
+import by.epam.hotel.command.impl.BackToSignupCommand;
 import by.epam.hotel.command.impl.ChangeLocaleCommand;
 import by.epam.hotel.command.impl.ChangeLoginCommand;
 import by.epam.hotel.command.impl.ChangePasswordCommand;
+import by.epam.hotel.command.impl.CheckKeyAndSignUpCommand;
 import by.epam.hotel.command.impl.ToChangePersonalDataCommand;
 import by.epam.hotel.command.impl.ToDeleteAccountCommand;
 import by.epam.hotel.command.impl.DeleteAccountCommand;
@@ -14,6 +16,7 @@ import by.epam.hotel.command.impl.SignupBackCommand;
 import by.epam.hotel.command.impl.ToChangeLoginCommand;
 import by.epam.hotel.command.impl.ToLoginCommand;
 import by.epam.hotel.command.impl.ToSighUpCommand;
+import by.epam.hotel.command.impl.admin.AddRemoveToSendListCommand;
 import by.epam.hotel.command.impl.admin.ApproveAdminOrderCancelCommand;
 import by.epam.hotel.command.impl.admin.ApproveChangeNationalityCommand;
 import by.epam.hotel.command.impl.admin.ApproveChangeRoomCommand;
@@ -21,6 +24,7 @@ import by.epam.hotel.command.impl.admin.BackToAdminClassesCommand;
 import by.epam.hotel.command.impl.admin.BackToAdminNationalitiesCommand;
 import by.epam.hotel.command.impl.admin.BackToAdminRoomsCommand;
 import by.epam.hotel.command.impl.admin.BackToAdminmainCommand;
+import by.epam.hotel.command.impl.admin.BackToAllEmailsCommand;
 import by.epam.hotel.command.impl.admin.BackToAllNationalitiesCommand;
 import by.epam.hotel.command.impl.admin.BackToAllOrdersCommand;
 import by.epam.hotel.command.impl.admin.BackToAllRoomsCommand;
@@ -35,9 +39,12 @@ import by.epam.hotel.command.impl.admin.ChangeRoomRemovedCommand;
 import by.epam.hotel.command.impl.admin.CreateClassCommand;
 import by.epam.hotel.command.impl.admin.CreateNationalityCommand;
 import by.epam.hotel.command.impl.admin.CreateRoomCommand;
+import by.epam.hotel.command.impl.admin.SendMessageCommand;
+import by.epam.hotel.command.impl.admin.ToAddSubjectAndTextCommand;
 import by.epam.hotel.command.impl.admin.ToAdminClassesCommand;
 import by.epam.hotel.command.impl.admin.ToAdminNationalitiesCommand;
 import by.epam.hotel.command.impl.admin.ToAllClientsCommand;
+import by.epam.hotel.command.impl.admin.ToAllEmailsCommand;
 import by.epam.hotel.command.impl.admin.ToAllNationalitiesCommand;
 import by.epam.hotel.command.impl.admin.ToAllOrdersCommand;
 import by.epam.hotel.command.impl.admin.ToAllRoomsCommand;
@@ -50,6 +57,7 @@ import by.epam.hotel.command.impl.admin.ToAdminRoomsCommand;
 import by.epam.hotel.command.impl.admin.ToAllAccountsCommand;
 import by.epam.hotel.command.impl.admin.ToAllClassesCommand;
 import by.epam.hotel.command.impl.admin.ToSetRecordsPerPageClientCommand;
+import by.epam.hotel.command.impl.admin.ToSetRecordsPerPageEmailCommand;
 import by.epam.hotel.command.impl.admin.ToSetRecordsPerPageOrderCommand;
 import by.epam.hotel.command.impl.admin.ToSetRecordsPerPageRoomCommand;
 import by.epam.hotel.command.impl.admin.ToSetRecordsPerPageNationalityCommand;
@@ -105,7 +113,11 @@ public enum CommandType {
 	TOSETRECORDSPERPAGECLASS(new ToSetRecordsPerPageClassCommand()), BACKTOADMINCLASSES(new BackToAdminClassesCommand()), 
 	TOALLCLASSES(new ToAllClassesCommand()), CHANGECLASSREMOVED(new ChangeClassRemovedCommand()), TOCREATECLASS(new ToCreateClassCommand()),
 	CREATECLASS(new CreateClassCommand()), TOSETRECORDSPERPAGEACCOUNT(new ToSetRecordsPerPageAccountCommand()),
-	TOALLACCOUNTS(new ToAllAccountsCommand()), CHANGEADMINRIGHTS(new ChangeAdminRightsCommand());
+	TOALLACCOUNTS(new ToAllAccountsCommand()), CHANGEADMINRIGHTS(new ChangeAdminRightsCommand()), BACKTOSIGNUP(new BackToSignupCommand()),
+	CHECKKEYANDSIGNUP(new CheckKeyAndSignUpCommand()), TOSETRECORDSPERPAGEEMAIL(new ToSetRecordsPerPageEmailCommand()),
+	TOALLEMAILS(new ToAllEmailsCommand()), ADDREMOVETOSENDLIST(new AddRemoveToSendListCommand()), 
+	TOADDSUBJECTANDTEXT(new ToAddSubjectAndTextCommand()), SENDMESSAGE(new SendMessageCommand()), BACKTOALLEMAILS(new BackToAllEmailsCommand());
+	
 	
 	private CommandType(ActionCommand command) {
 		this.command = command;

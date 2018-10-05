@@ -173,10 +173,6 @@ public class ClientDao extends AbstractDao<Integer, Client> {
 
 	@Override
 	public boolean changeRemoved(Client entity) throws DaoException {
-		throw new UnsupportedOperationException("Client class doesn't support specified method");
-	}
-	
-	public boolean changeBlackList(Client entity) throws DaoException {
 		try {
 			try (PreparedStatement statement = connection.prepareStatement(CHANGE_BLACKLIST)) {
 				statement.setInt(1, entity.isBlacklist() ? 0 : 1);
@@ -193,7 +189,6 @@ public class ClientDao extends AbstractDao<Integer, Client> {
 		}
 		return false;
 	}
-	
 	
 	public Client findClient(Client entity) throws DaoException {
 		try {

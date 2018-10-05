@@ -7,19 +7,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import by.epam.hotel.command.ActionCommand;
-import by.epam.hotel.controller.AttributeConstant;
-import by.epam.hotel.controller.ParameterConstant;
-import by.epam.hotel.controller.PropertyConstant;
-import by.epam.hotel.controller.RoleType;
 import by.epam.hotel.controller.Router;
-import by.epam.hotel.controller.RouterType;
 import by.epam.hotel.controller.SessionData;
-import by.epam.hotel.controller.ValidationConstant;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
-import by.epam.hotel.logic.SignUpLogic;
+import by.epam.hotel.logic.NewSignUpLogic;
 import by.epam.hotel.util.ConfigurationManager;
+import by.epam.hotel.util.Encoder;
+import by.epam.hotel.util.MailException;
+import by.epam.hotel.util.MailSender;
 import by.epam.hotel.util.MessageManager;
+import by.epam.hotel.util.apptype.RoleType;
+import by.epam.hotel.util.apptype.RouterType;
+import by.epam.hotel.util.constant.AttributeConstant;
+import by.epam.hotel.util.constant.ParameterConstant;
+import by.epam.hotel.util.constant.PropertyConstant;
+import by.epam.hotel.util.constant.ValidationConstant;
 
 public class SignUpCommand implements ActionCommand {	
 
@@ -38,15 +41,28 @@ public class SignUpCommand implements ActionCommand {
 
 			if (validateInputData(login, password, email, request)) {
 				try {
-					if (SignUpLogic.createAccount(login, email, password)) {
-						page = ConfigurationManager.getProperty(PropertyConstant.PAGE_CLIENTMAIN);
-						router.setPage(page);
-						router.setType(RouterType.REDIRECT);
-						// maybe need getSession(false)
-						sessionData.setLogin(login);
-						sessionData.setRole(RoleType.CLIENT);
-						sessionData.setInnerRedirect(true);
-					} else {
+					String emailKey = Encoder.generateEmailKey(email);
+					if(!NewSignUpLogic.checkAccount(login, email)) {
+						try {
+							if(MailSender.sendSingUpConfirmationEmail(email, emailKey)) {
+								sessionData.setTempLogin(login);
+								sessionData.setTempPassword(password);
+								sessionData.setTempEmail(email);
+								sessionData.setTempEmailKey(emailKey);
+								page = ConfigurationManager.getProperty("path.page.confirmationemail");
+								router.setPage(page);
+								router.setType(RouterType.REDIRECT);
+							}else {
+								request.setAttribute("errorSendConfirmationEmailMessage",
+										MessageManager.getProrerty("message.sendconfirmationemailerror"));
+								page = ConfigurationManager.getProperty(PropertyConstant.PAGE_SIGNUP);
+								router.setPage(page);
+								router.setType(RouterType.FORWARD);
+							}
+						} catch (MailException e) {
+							throw new CommandException(e);
+						}
+					}else {
 						request.setAttribute(AttributeConstant.ERROR_SIGHUP_MESSAGE,
 								MessageManager.getProrerty(PropertyConstant.MESSAGE_SIGNUP_ERROR));
 						page = ConfigurationManager.getProperty(PropertyConstant.PAGE_SIGNUP);
