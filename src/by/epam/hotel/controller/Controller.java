@@ -59,7 +59,6 @@ public class Controller extends HttpServlet {
 				router = command.execute(request);
 				LOG.debug(router);
 			} catch (CommandException e) {
-				System.out.println("in 500 error");
 				LOG.error(router, e);
 				response.sendError(500);
 			}

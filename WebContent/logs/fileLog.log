@@ -1,31 +1,53 @@
-2018-10-06 01:02:43,564 DEBUG controller.Controller [http-nio-8080-exec-188] Router: page=/jsp/common/welcome.jsp, type=REDIRECT
-2018-10-06 01:02:44,359 DEBUG controller.Controller [http-nio-8080-exec-183] Router: page=/jsp/common/login.jsp, type=FORWARD
-2018-10-06 01:02:49,362 DEBUG pool.ConnectionPool [http-nio-8080-exec-186] by.epam.hotel.pool.ProxyConnection@45effff4 got FROM pool
-2018-10-06 01:02:49,405 DEBUG pool.ConnectionPool [http-nio-8080-exec-186] true
-2018-10-06 01:02:49,406 DEBUG pool.ConnectionPool [http-nio-8080-exec-186] by.epam.hotel.pool.ProxyConnection@45effff4 returned IN pool
-2018-10-06 01:02:49,406 DEBUG pool.ConnectionPool [http-nio-8080-exec-186] by.epam.hotel.pool.ProxyConnection@408c634a got FROM pool
-2018-10-06 01:02:49,408 DEBUG pool.ConnectionPool [http-nio-8080-exec-186] true
-2018-10-06 01:02:49,409 DEBUG pool.ConnectionPool [http-nio-8080-exec-186] by.epam.hotel.pool.ProxyConnection@408c634a returned IN pool
-2018-10-06 01:02:49,409 DEBUG controller.Controller [http-nio-8080-exec-186] Router: page=/jsp/admin/adminmain.jsp, type=REDIRECT
-2018-10-06 01:02:51,118 DEBUG controller.Controller [http-nio-8080-exec-184] Router: page=/jsp/admin/setrecordsperpageemail.jsp, type=FORWARD
-2018-10-06 01:02:52,072 DEBUG pool.ConnectionPool [http-nio-8080-exec-185] by.epam.hotel.pool.ProxyConnection@258665bb got FROM pool
-2018-10-06 01:02:52,075 DEBUG pool.ConnectionPool [http-nio-8080-exec-185] true
-2018-10-06 01:02:52,076 DEBUG pool.ConnectionPool [http-nio-8080-exec-185] by.epam.hotel.pool.ProxyConnection@258665bb returned IN pool
-2018-10-06 01:02:52,076 DEBUG pool.ConnectionPool [http-nio-8080-exec-185] by.epam.hotel.pool.ProxyConnection@51dfbeff got FROM pool
-2018-10-06 01:02:52,079 DEBUG pool.ConnectionPool [http-nio-8080-exec-185] true
-2018-10-06 01:02:52,079 DEBUG pool.ConnectionPool [http-nio-8080-exec-185] by.epam.hotel.pool.ProxyConnection@51dfbeff returned IN pool
-2018-10-06 01:02:52,080 DEBUG controller.Controller [http-nio-8080-exec-185] Router: page=/jsp/admin/allemails.jsp, type=FORWARD
-2018-10-06 01:02:54,150 DEBUG pool.ConnectionPool [http-nio-8080-exec-192] by.epam.hotel.pool.ProxyConnection@41de9fe7 got FROM pool
-2018-10-06 01:02:54,154 DEBUG pool.ConnectionPool [http-nio-8080-exec-192] true
-2018-10-06 01:02:54,155 DEBUG pool.ConnectionPool [http-nio-8080-exec-192] by.epam.hotel.pool.ProxyConnection@41de9fe7 returned IN pool
-2018-10-06 01:02:54,155 DEBUG pool.ConnectionPool [http-nio-8080-exec-192] by.epam.hotel.pool.ProxyConnection@e246397 got FROM pool
-2018-10-06 01:02:54,158 DEBUG pool.ConnectionPool [http-nio-8080-exec-192] true
-2018-10-06 01:02:54,158 DEBUG pool.ConnectionPool [http-nio-8080-exec-192] by.epam.hotel.pool.ProxyConnection@e246397 returned IN pool
-2018-10-06 01:02:54,158 DEBUG controller.Controller [http-nio-8080-exec-192] Router: page=/jsp/admin/allemails.jsp, type=FORWARD
-2018-10-06 01:02:55,663 DEBUG controller.Controller [http-nio-8080-exec-193] Router: page=/jsp/admin/allemails.jsp, type=REDIRECT
-2018-10-06 01:02:56,670 DEBUG controller.Controller [http-nio-8080-exec-183] Router: page=/jsp/admin/allemails.jsp, type=REDIRECT
-2018-10-06 01:03:01,143 DEBUG controller.Controller [http-nio-8080-exec-181] Router: page=/jsp/admin/addsubjectandtextandsend.jsp, type=FORWARD
-2018-10-06 01:03:04,263 DEBUG controller.Controller [http-nio-8080-exec-187] Router: page=/jsp/admin/allemails.jsp, type=FORWARD
-2018-10-06 01:03:08,025 DEBUG controller.Controller [http-nio-8080-exec-196] Router: page=/jsp/admin/addsubjectandtextandsend.jsp, type=FORWARD
-2018-10-06 01:03:13,033 DEBUG controller.Controller [http-nio-8080-exec-192] Router: page=/jsp/admin/successsendmessage.jsp, type=REDIRECT
-2018-10-06 01:03:15,599 DEBUG controller.Controller [http-nio-8080-exec-183] Router: page=/jsp/admin/adminmain.jsp, type=FORWARD
+2018-10-07 12:35:29,386 DEBUG controller.Controller [http-nio-8080-exec-109] Router: page=jsp/common/welcome.jsp, type=FORWARD
+2018-10-07 12:35:30,348 DEBUG controller.Controller [http-nio-8080-exec-110] Router: page=/jsp/common/login.jsp, type=FORWARD
+2018-10-07 12:35:34,973 DEBUG pool.ConnectionPool [http-nio-8080-exec-111] by.epam.hotel.pool.ProxyConnection@3ab9fb3e got FROM pool
+2018-10-07 12:35:34,999 DEBUG pool.ConnectionPool [http-nio-8080-exec-111] true
+2018-10-07 12:35:35,034 DEBUG pool.ConnectionPool [http-nio-8080-exec-111] by.epam.hotel.pool.ProxyConnection@3ab9fb3e returned IN pool
+2018-10-07 12:35:35,034 DEBUG pool.ConnectionPool [http-nio-8080-exec-111] by.epam.hotel.pool.ProxyConnection@48f33b25 got FROM pool
+2018-10-07 12:35:35,036 DEBUG pool.ConnectionPool [http-nio-8080-exec-111] true
+2018-10-07 12:35:35,036 DEBUG pool.ConnectionPool [http-nio-8080-exec-111] by.epam.hotel.pool.ProxyConnection@48f33b25 returned IN pool
+2018-10-07 12:35:35,037 DEBUG controller.Controller [http-nio-8080-exec-111] Router: page=/jsp/admin/adminmain.jsp, type=REDIRECT
+2018-10-07 12:35:39,725 DEBUG controller.Controller [http-nio-8080-exec-114] Router: page=/jsp/admin/setrecordsperpageaccounts.jsp, type=FORWARD
+2018-10-07 12:35:40,931 DEBUG pool.ConnectionPool [http-nio-8080-exec-115] by.epam.hotel.pool.ProxyConnection@5009287f got FROM pool
+2018-10-07 12:35:40,976 DEBUG pool.ConnectionPool [http-nio-8080-exec-115] true
+2018-10-07 12:35:40,976 DEBUG pool.ConnectionPool [http-nio-8080-exec-115] by.epam.hotel.pool.ProxyConnection@5009287f returned IN pool
+2018-10-07 12:35:40,976 DEBUG pool.ConnectionPool [http-nio-8080-exec-115] by.epam.hotel.pool.ProxyConnection@5af1430f got FROM pool
+2018-10-07 12:35:40,979 DEBUG pool.ConnectionPool [http-nio-8080-exec-115] true
+2018-10-07 12:35:40,979 DEBUG pool.ConnectionPool [http-nio-8080-exec-115] by.epam.hotel.pool.ProxyConnection@5af1430f returned IN pool
+2018-10-07 12:35:40,979 DEBUG controller.Controller [http-nio-8080-exec-115] Router: page=/jsp/admin/allaccounts.jsp, type=FORWARD
+2018-10-07 12:35:43,267 DEBUG controller.Controller [http-nio-8080-exec-116] Router: page=jsp/admin/allaccounts.jsp, type=FORWARD
+2018-10-07 12:35:44,651 DEBUG controller.Controller [http-nio-8080-exec-107] Router: page=jsp/admin/allaccounts.jsp, type=FORWARD
+2018-10-07 12:35:46,939 DEBUG controller.Controller [http-nio-8080-exec-108] Router: page=jsp/admin/allaccounts.jsp, type=FORWARD
+2018-10-07 12:35:48,827 DEBUG controller.Controller [http-nio-8080-exec-109] Router: page=jsp/admin/allaccounts.jsp, type=FORWARD
+2018-10-07 12:35:51,260 DEBUG pool.ConnectionPool [http-nio-8080-exec-111] by.epam.hotel.pool.ProxyConnection@79bbb97c got FROM pool
+2018-10-07 12:35:51,268 DEBUG pool.ConnectionPool [http-nio-8080-exec-111] true
+2018-10-07 12:35:51,269 DEBUG pool.ConnectionPool [http-nio-8080-exec-111] by.epam.hotel.pool.ProxyConnection@79bbb97c returned IN pool
+2018-10-07 12:35:51,270 DEBUG pool.ConnectionPool [http-nio-8080-exec-111] by.epam.hotel.pool.ProxyConnection@d60da2a got FROM pool
+2018-10-07 12:35:51,272 DEBUG pool.ConnectionPool [http-nio-8080-exec-111] true
+2018-10-07 12:35:51,272 DEBUG pool.ConnectionPool [http-nio-8080-exec-111] by.epam.hotel.pool.ProxyConnection@d60da2a returned IN pool
+2018-10-07 12:35:51,273 DEBUG controller.Controller [http-nio-8080-exec-111] Router: page=/jsp/admin/allaccounts.jsp, type=FORWARD
+2018-10-07 12:35:52,903 DEBUG controller.Controller [http-nio-8080-exec-112] Router: page=jsp/admin/allaccounts.jsp, type=FORWARD
+2018-10-07 12:35:55,027 DEBUG controller.Controller [http-nio-8080-exec-113] Router: page=jsp/admin/allaccounts.jsp, type=FORWARD
+2018-10-07 12:35:57,364 DEBUG controller.Controller [http-nio-8080-exec-114] Router: page=jsp/admin/allaccounts.jsp, type=FORWARD
+2018-10-07 12:35:59,267 DEBUG controller.Controller [http-nio-8080-exec-115] Router: page=jsp/admin/allaccounts.jsp, type=FORWARD
+2018-10-07 12:36:00,269 DEBUG controller.Controller [http-nio-8080-exec-116] Router: page=jsp/admin/allaccounts.jsp, type=FORWARD
+2018-10-07 12:36:00,899 DEBUG controller.Controller [http-nio-8080-exec-107] Router: page=jsp/admin/allaccounts.jsp, type=FORWARD
+2018-10-07 12:36:01,308 DEBUG controller.Controller [http-nio-8080-exec-109] Router: page=jsp/admin/allaccounts.jsp, type=FORWARD
+2018-10-07 12:36:01,779 DEBUG controller.Controller [http-nio-8080-exec-110] Router: page=jsp/admin/allaccounts.jsp, type=FORWARD
+2018-10-07 12:36:04,523 DEBUG controller.Controller [http-nio-8080-exec-111] Router: page=jsp/admin/allaccounts.jsp, type=FORWARD
+2018-10-07 12:36:06,355 DEBUG controller.Controller [http-nio-8080-exec-112] Router: page=jsp/admin/allaccounts.jsp, type=FORWARD
+2018-10-07 12:36:08,267 DEBUG controller.Controller [http-nio-8080-exec-113] Router: page=jsp/admin/allaccounts.jsp, type=FORWARD
+2018-10-07 12:36:10,604 DEBUG controller.Controller [http-nio-8080-exec-114] Router: page=jsp/admin/allaccounts.jsp, type=FORWARD
+2018-10-07 12:36:33,782 DEBUG controller.Controller [http-nio-8080-exec-107] Router: page=/jsp/common/welcome.jsp, type=REDIRECT
+2018-10-07 12:36:35,060 DEBUG controller.Controller [http-nio-8080-exec-109] Router: page=jsp/common/welcome.jsp, type=FORWARD
+2018-10-07 12:39:53,568 DEBUG pool.ConnectionPool [ContainerBackgroundProcessor[StandardEngine[Catalina]]] Connection closed
+2018-10-07 12:39:53,568 DEBUG pool.ConnectionPool [ContainerBackgroundProcessor[StandardEngine[Catalina]]] Connection closed
+2018-10-07 12:39:53,568 DEBUG pool.ConnectionPool [ContainerBackgroundProcessor[StandardEngine[Catalina]]] Connection closed
+2018-10-07 12:39:53,568 DEBUG pool.ConnectionPool [ContainerBackgroundProcessor[StandardEngine[Catalina]]] Connection closed
+2018-10-07 12:39:53,568 DEBUG pool.ConnectionPool [ContainerBackgroundProcessor[StandardEngine[Catalina]]] Connection closed
+2018-10-07 12:39:53,568 DEBUG pool.ConnectionPool [ContainerBackgroundProcessor[StandardEngine[Catalina]]] Connection closed
+2018-10-07 12:39:53,568 DEBUG pool.ConnectionPool [ContainerBackgroundProcessor[StandardEngine[Catalina]]] Connection closed
+2018-10-07 12:39:53,568 DEBUG pool.ConnectionPool [ContainerBackgroundProcessor[StandardEngine[Catalina]]] Connection closed
+2018-10-07 12:39:53,568 DEBUG pool.ConnectionPool [ContainerBackgroundProcessor[StandardEngine[Catalina]]] Connection closed
+2018-10-07 12:39:53,568 DEBUG pool.ConnectionPool [ContainerBackgroundProcessor[StandardEngine[Catalina]]] Connection closed
+2018-10-07 12:39:53,568 DEBUG pool.ConnectionPool [ContainerBackgroundProcessor[StandardEngine[Catalina]]] Connection closed

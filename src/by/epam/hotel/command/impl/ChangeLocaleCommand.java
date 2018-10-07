@@ -1,5 +1,7 @@
 package by.epam.hotel.command.impl;
 
+import java.util.Locale;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -15,7 +17,8 @@ public class ChangeLocaleCommand implements ActionCommand {
 
 	@Override
 	public Router execute(HttpServletRequest request) {
-		LanguageType locale = LanguageType.valueOf(request.getParameter(ParameterConstant.LOCALE).toUpperCase());
+		LanguageType localeType = LanguageType.valueOf(request.getParameter(ParameterConstant.LOCALE).toUpperCase());
+		Locale locale = localeType.getValue();
 		HttpSession session = request.getSession();
 		SessionData sessionData = (SessionData) session.getAttribute(AttributeConstant.SESSION_DATA);
 		sessionData.setLocale(locale);

@@ -11,29 +11,34 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<fmt:setLocale value="${sessionData.locale}" scope="session" />
+<fmt:bundle basename="resource.i18n.interface" prefix="allclients.">
 <html>
 <head>
-<title>All Clients</title>
+<title><fmt:message key="title" /></title>
 </head>
 <body>
+<jsp:include page="/locale" />
+	<br />
+	<hr />
 <jsp:include page="/loginlogout" />
 	<hr />
 
-  
   <c:choose>
 		<c:when test="${fn:length(sessionData.clientList)==0}">
-			No order was found
+			<fmt:message key="noclientmessage" />
 		</c:when>
 		<c:otherwise>
 			<table class="tg">
 			  <tr>
-			    <th class="tg-88nc">Id</th>
-			    <th class="tg-88nc">First name</th>
-			    <th class="tg-88nc">Last name</th>
-			    <th class="tg-88nc">Passport</th>
-			    <th class="tg-88nc">Nationality code</th>
-			    <th class="tg-88nc">Status</th>
-			    <th class="tg-88nc">Punish/Justify</th>
+			    <th class="tg-88nc"><fmt:message key="id" /></th>
+			    <th class="tg-88nc"><fmt:message key="fname" /></th>
+			    <th class="tg-88nc"><fmt:message key="lname" /></th>
+			    <th class="tg-88nc"><fmt:message key="passport" /></th>
+			    <th class="tg-88nc"><fmt:message key="nationality" /></th>
+			    <th class="tg-88nc"><fmt:message key="status" /></th>
+			    <th class="tg-88nc"><fmt:message key="punishjustify" /></th>
 			  </tr>
 			  <c:forEach var="client" items="${sessionData.clientList }" varStatus="status">
 					<tr>
@@ -45,7 +50,7 @@
 					    <td>   
 					    <c:choose>
 					    	<c:when test="${client.blacklist }">
-					    		IN BLACKLIST
+					    		<fmt:message key="inblacklist" />
 					    	</c:when>
 					    	<c:otherwise>
 					    		
@@ -58,14 +63,14 @@
 						    <form action="${pageContext.request.contextPath}/controller" method="post" >
 					    		<input type="hidden" name=command value="changeBlackList" />
 							    <input type="hidden" name="clientIndex" value="${status.count }" />
-							    <input type="submit" value="Remove from blacklist" />
+							    <input type="submit" value="<fmt:message key="removefrombl" />" />
 						    </form>
 					    	</c:when>
 					    	<c:otherwise>
 					    		<form action="${pageContext.request.contextPath}/controller" method="post" >
 					    		<input type="hidden" name=command value="changeBlackList" />
 							    <input type="hidden" name="clientIndex" value="${status.count }" />
-							    <input type="submit" value="Add to blacklist" />
+							    <input type="submit" value="<fmt:message key="addtobl" />" />
 						    </form>
 					    	</c:otherwise>
 					    </c:choose> 
@@ -83,7 +88,7 @@
 			<c:param name="currentPage" value="${sessionData.currentPage-1}" />
 			<c:param name="command" value="toAllClients" />
 		</c:url> 
-       <a href="${URL}">Previous</a>
+       <a href="${URL}"><fmt:message key="previous" /></a>
     </c:if>
     <c:forEach begin="1" end="${sessionData.noOfPages}" var="i">
         <c:choose>
@@ -106,13 +111,14 @@
 			<c:param name="currentPage" value="${sessionData.currentPage+1}" />
 			<c:param name="command" value="toAllClients" />
 		</c:url> 
-        <a href="${URL}">Next</a>
+        <a href="${URL}"><fmt:message key="next" /></a>
     </c:if>  
 	<hr/>
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
 		<input type="hidden" name="command" value="backToAdminmain" />
-		<input type="submit" value="Back" size="20" />
+		<input type="submit" value="<fmt:message key="backbutton" />" size="20" />
 	</form>
 </body>
 </html>
+</fmt:bundle>

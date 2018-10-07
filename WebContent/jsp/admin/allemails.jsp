@@ -11,31 +11,37 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<fmt:setLocale value="${sessionData.locale}" scope="session" />
+<fmt:bundle basename="resource.i18n.interface" prefix="allemails.">
 <html>
 <head>
-<title>All Emails</title>
+<title><fmt:message key="title" /></title>
 </head>
 <body>
+<jsp:include page="/locale" />
+	<br />
+	<hr />
 <jsp:include page="/loginlogout" />
 	<hr />
 	<form action="${pageContext.request.contextPath}/controller" method="post" >
-   		<input type="hidden" name="command" value="toAddSubjectAndText" />
-	    <input type="submit" value="Further" />
+   		<input type="hidden" name="command" value="SubjectTextSend" />
+	    <input type="submit" value="<fmt:message key="futher" />" />
     </form>
   	<hr />
   <c:choose>
 		<c:when test="${fn:length(sessionData.accountList)==0}">
-			No order was found
+			<fmt:message key="title" />No email was found
 		</c:when>
 		<c:otherwise>
 			<table class="tg">
 			  <tr>
-			    <th class="tg-88nc">Login</th>
-			    <th class="tg-88nc">Email</th>
-			    <th class="tg-88nc">Admin</th>
-			    <th class="tg-88nc">Status</th>
-			    <th class="tg-88nc">Added to send</th>
-			    <th class="tg-88nc">Mark</th>
+			    <th class="tg-88nc"><fmt:message key="login" /></th>
+			    <th class="tg-88nc"><fmt:message key="email" /></th>
+			    <th class="tg-88nc"><fmt:message key="admin" /></th>
+			    <th class="tg-88nc"><fmt:message key="status" /></th>
+			    <th class="tg-88nc"><fmt:message key="addtosend" /></th>
+			    <th class="tg-88nc"><fmt:message key="mark" /></th>
 			  </tr>
 			  <c:forEach var="account" items="${sessionData.accountList }" varStatus="status">
 					<tr>
@@ -44,7 +50,7 @@
 						<td>  
 					    	<c:choose>
 						    	<c:when test="${account.admin }">
-						    		ADMIN
+						    		<fmt:message key="adminmessage" />
 						    	</c:when>
 						    	<c:otherwise>
 						    		
@@ -54,7 +60,7 @@
 					    <td>   
 					    	<c:choose>
 						    	<c:when test="${account.removed }">
-						    		REMOVED
+						    		<fmt:message key="removedmessage" />
 						    	</c:when>
 						    	<c:otherwise>
 						    		
@@ -64,7 +70,7 @@
 					    <td>   
 					    	<c:choose>
 						    	<c:when test="${sessionData.sendList.contains(account) }">
-						    		ADDED
+						    		<fmt:message key="addedmessage" />
 						    	</c:when>
 						    	<c:otherwise>
 						    		
@@ -78,14 +84,14 @@
 						    <form action="${pageContext.request.contextPath}/controller" method="post" >
 					    		<input type="hidden" name="command" value="addremoveToSendList" />
 							    <input type="hidden" name="accountIndex" value="${status.count }" />
-							    <input type="submit" value="Remove from Send List" />
+							    <input type="submit" value="<fmt:message key="removefromsl" />" />
 						    </form>
 					    	</c:when>
 					    	<c:otherwise>
 				    		<form action="${pageContext.request.contextPath}/controller" method="post" >
 					    		<input type="hidden" name="command" value="addremoveToSendList" />
 							    <input type="hidden" name="accountIndex" value="${status.count }" />
-							    <input type="submit" value="Add to Send List" />
+							    <input type="submit" value="<fmt:message key="addtosl" />" />
 						    </form>
 					    	</c:otherwise>
 					    </c:choose>  
@@ -96,15 +102,13 @@
 		</c:otherwise>
 	</c:choose> 
 	<hr/>
-
-	
         <c:if test="${sessionData.currentPage != 1}">
         	<c:url value="/controller" var="URL">
 				<c:param name="recordsPerPage" value="${sessionData.recordsPerPage}" />
 				<c:param name="currentPage" value="${sessionData.currentPage-1}" />
 				<c:param name="command" value="toAllEmails" />
 			</c:url> 
-           <a href="${URL}">Previous</a>
+           <a href="${URL}"><fmt:message key="previous" /></a>
            
         </c:if>
         <c:forEach begin="1" end="${sessionData.noOfPages}" var="i">
@@ -129,16 +133,14 @@
 				<c:param name="currentPage" value="${sessionData.currentPage+1}" />
 				<c:param name="command" value="toAllEmails" />
 			</c:url> 
-            <a href="${URL}">Next</a>
+            <a href="${URL}"><fmt:message key="next" /></a>
         </c:if>      
-	
-
-
 	<hr/>
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
 		<input type="hidden" name="command" value="backToAdminmain" />
-		<input type="submit" value="Back" size="20" />
+		<input type="submit" value="<fmt:message key="backbutton" />" size="20" />
 	</form>
 </body>
 </html>
+</fmt:bundle>

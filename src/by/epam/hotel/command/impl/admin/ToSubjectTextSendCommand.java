@@ -12,7 +12,7 @@ import by.epam.hotel.util.apptype.RouterType;
 import by.epam.hotel.util.constant.AttributeConstant;
 import by.epam.hotel.util.constant.PropertyConstant;
 
-public class ToAddSubjectAndTextCommand implements ActionCommand{
+public class ToSubjectTextSendCommand implements ActionCommand{
 
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {
@@ -20,7 +20,7 @@ public class ToAddSubjectAndTextCommand implements ActionCommand{
 		String page = null;
 		SessionData sessionData = (SessionData) request.getSession().getAttribute(AttributeConstant.SESSION_DATA);
 		if (sessionData.getRole() == RoleType.ADMIN) {
-			page = ConfigurationManager.getProperty("path.page.addsubjectandtextandsend");
+			page = ConfigurationManager.getProperty("path.page.subjecttextsend");
 		} else {
 			page = ConfigurationManager.getProperty(PropertyConstant.PAGE_LOGIN);
 		}

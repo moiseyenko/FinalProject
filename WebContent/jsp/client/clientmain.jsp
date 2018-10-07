@@ -2,8 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<fmt:setLocale value="${sessionData.locale.value}" scope="session" />
-<fmt:bundle basename="resource.i18n.i18n" prefix="clientmain.">
+<fmt:setLocale value="${sessionData.locale}" scope="session" />
+<fmt:bundle basename="resource.i18n.interface" prefix="clientmain.">
 <html>
 <head>
 <title><fmt:message key="title" /></title>

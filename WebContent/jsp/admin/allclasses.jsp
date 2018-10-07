@@ -11,25 +11,29 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<fmt:setLocale value="${sessionData.locale}" scope="session" />
+<fmt:bundle basename="resource.i18n.interface" prefix="allclasses.">
 <html>
 <head>
-<title>All Room Classes</title>
+<title><fmt:message key="title" /></title>
 </head>
 <body>
+<jsp:include page="/locale" />
+	<br />
+	<hr />
 <jsp:include page="/loginlogout" />
 	<hr />
-
-  
   <c:choose>
 		<c:when test="${fn:length(sessionData.roomClassList)==0}">
-			No order was found
+			<fmt:message key="noclassmessage" />
 		</c:when>
 		<c:otherwise>
 			<table class="tg">
 			  <tr>
-			    <th class="tg-88nc">ClassId</th>
-			    <th class="tg-88nc">Status</th>
-			    <th class="tg-88nc">Remove/Restore</th>
+			    <th class="tg-88nc"><fmt:message key="classid" /></th>
+			    <th class="tg-88nc"><fmt:message key="status" /></th>
+			    <th class="tg-88nc"><fmt:message key="removerestore" /></th>
 			  </tr>
 				<c:forEach var="roomclass" items="${sessionData.roomClassList }" varStatus="status">
 					<tr>
@@ -37,7 +41,7 @@
 					    <td>   
 					    <c:choose>
 					    	<c:when test="${roomclass.removed }">
-					    		REMOVED
+					    		<fmt:message key="removed" />
 					    	</c:when>
 					    	<c:otherwise>
 					    		
@@ -50,14 +54,14 @@
 						    <form action="${pageContext.request.contextPath}/controller" method="post" >
 					    		<input type="hidden" name="command" value="changeClassRemoved" />
 							    <input type="hidden" name="classIndex" value="${status.count }" />
-							    <input type="submit" value="Restore" />
+							    <input type="submit" value="<fmt:message key="restore" />" />
 						    </form>
 					    	</c:when>
 					    	<c:otherwise>
 					    		<form action="${pageContext.request.contextPath}/controller" method="post" >
 					    		<input type="hidden" name="command" value="changeClassRemoved" />
 							    <input type="hidden" name="classIndex" value="${status.count }" />
-							    <input type="submit" value="Remove" />
+							    <input type="submit" value="<fmt:message key="remove" />" />
 						    </form>
 					    	</c:otherwise>
 					    </c:choose> 
@@ -75,7 +79,7 @@
 			<c:param name="currentPage" value="${sessionData.currentPage-1}" />
 			<c:param name="command" value="toAllClasses" />
 		</c:url> 
-       <a href="${URL}">Previous</a>
+       <a href="${URL}"><fmt:message key="previous" /></a>
     </c:if>
     <c:forEach begin="1" end="${sessionData.noOfPages}" var="i">
         <c:choose>
@@ -98,13 +102,14 @@
 			<c:param name="currentPage" value="${sessionData.currentPage+1}" />
 			<c:param name="command" value="toAllClasses" />
 		</c:url> 
-        <a href="${URL}">Next</a>
+        <a href="${URL}"><fmt:message key="next" /></a>
     </c:if>  
 	<hr/>
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
 		<input type="hidden" name="command" value="backToAdminClasses" />
-		<input type="submit" value="Back" size="20" />
+		<input type="submit" value="<fmt:message key="backbutton" />" size="20" />
 	</form>
 </body>
 </html>
+</fmt:bundle>

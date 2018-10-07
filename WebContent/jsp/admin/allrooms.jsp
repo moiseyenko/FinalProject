@@ -11,28 +11,32 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<fmt:setLocale value="${sessionData.locale}" scope="session" />
+<fmt:bundle basename="resource.i18n.interface" prefix="allrooms.">
 <html>
 <head>
-<title>All Rooms</title>
+<title><fmt:message key="title" /></title>
 </head>
 <body>
+<jsp:include page="/locale" />
+	<br />
+	<hr />
 <jsp:include page="/loginlogout" />
 	<hr />
-
-  
   <c:choose>
 		<c:when test="${fn:length(sessionData.roomList)==0}">
-			No order was found
+			<fmt:message key="noroommessage" />
 		</c:when>
 		<c:otherwise>
 			<table class="tg">
 			  <tr>
-			    <th class="tg-88nc">Number</th>
-			    <th class="tg-88nc">Room Class</th>
-			    <th class="tg-88nc">Capacity</th>
-			    <th class="tg-88nc">Price</th>
-			    <th class="tg-88nc">Status</th>
-			    <th class="tg-88nc">Remove/Restore</th>
+			    <th class="tg-88nc"><fmt:message key="number" /></th>
+			    <th class="tg-88nc"><fmt:message key="roomclass" /></th>
+			    <th class="tg-88nc"><fmt:message key="capacity" /></th>
+			    <th class="tg-88nc"><fmt:message key="price" /></th>
+			    <th class="tg-88nc"><fmt:message key="status" /></th>
+			    <th class="tg-88nc"><fmt:message key="removerestore" /></th>
 			    <th class="tg-88nc"> </th>
 			  </tr>
 			  <c:forEach var="room" items="${sessionData.roomList }" varStatus="status">
@@ -44,7 +48,7 @@
 					    <td>   
 					    <c:choose>
 					    	<c:when test="${room.removed }">
-					    		REMOVED
+					    		<fmt:message key="removed" />
 					    	</c:when>
 					    	<c:otherwise>
 					    		
@@ -57,14 +61,14 @@
 						    <form action="${pageContext.request.contextPath}/controller" method="post" >
 					    		<input type="hidden" name=command value="changeRoomRemoved" />
 							    <input type="hidden" name="roomIndex" value="${status.count }" />
-							    <input type="submit" value="Restore" />
+							    <input type="submit" value="<fmt:message key="restore" />" />
 						    </form>
 					    	</c:when>
 					    	<c:otherwise>
 					    		<form action="${pageContext.request.contextPath}/controller" method="post" >
 					    		<input type="hidden" name=command value="changeRoomRemoved" />
 							    <input type="hidden" name="roomIndex" value="${status.count }" />
-							    <input type="submit" value="Remove" />
+							    <input type="submit" value="<fmt:message key="remove" />" />
 						    </form>
 					    	</c:otherwise>
 					    </c:choose>
@@ -74,7 +78,7 @@
 					    <form action="${pageContext.request.contextPath}/controller" method="post" >
 				    		<input type="hidden" name=command value="changeRoom" />
 						    <input type="hidden" name="roomIndex" value="${status.count }" />
-						    <input type="submit" value="Change" />
+						    <input type="submit" value="<fmt:message key="change" />" />
 					    </form>
 					    </td>
 					</tr>
@@ -89,7 +93,7 @@
 			<c:param name="currentPage" value="${sessionData.currentPage-1}" />
 			<c:param name="command" value="toAllRooms" />
 		</c:url> 
-       <a href="${URL}">Previous</a>
+       <a href="${URL}"><fmt:message key="previous" /></a>
     </c:if>
     <c:forEach begin="1" end="${sessionData.noOfPages}" var="i">
         <c:choose>
@@ -112,13 +116,14 @@
 			<c:param name="currentPage" value="${sessionData.currentPage+1}" />
 			<c:param name="command" value="toAllRooms" />
 		</c:url> 
-        <a href="${URL}">Next</a>
+        <a href="${URL}"><fmt:message key="next" /></a>
     </c:if>  
 	<hr/>
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
 		<input type="hidden" name="command" value="backToAdminRooms" />
-		<input type="submit" value="Back" size="20" />
+		<input type="submit" value="<fmt:message key="backbutton" />" size="20" />
 	</form>
 </body>
 </html>
+</fmt:bundle>

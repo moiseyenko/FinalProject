@@ -1,26 +1,28 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<fmt:setLocale value="${sessionData.locale}" scope="session" />
+<fmt:bundle basename="resource.i18n.interface" prefix="confirmationemail.">
 <html>
 <head>
-<title></title>
+<title><fmt:message key="title" /></title>
 </head>
 <body>
-	<jsp:include page="local.jsp" />
+	<jsp:include page="/locale" />
 	<br />
 	<hr />
-	<h2>Confirmation code has been sent to your email. Please, enter this code in field</h2>
+	<h2><fmt:message key="message" /></h2>
 	<hr />
 	<form action="${pageContext.request.contextPath}/controller" autocomplete="off" method="post">
 		<input type="hidden" name="command" value="checkKeyAndSignUp" />
 		<input type="text" name="emailConfirmationKey" /> 
-		<input type="submit" value="OK" size="20" />
+		<input type="submit" value="<fmt:message key="submit" />" size="20" />
 		${errorKeyConfirmationMessage }
 	</form>
 	<form action="${pageContext.request.contextPath}/controller" method="post">
 		<input type="hidden" name="command" value="backToSignup" />
-		<input type="submit" value="Back" size="20" />
+		<input type="submit" value="<fmt:message key="backbutton" />" size="20" />
 	</form>
-
 </body>
 </html>
+</fmt:bundle>

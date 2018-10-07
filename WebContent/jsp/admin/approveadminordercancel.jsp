@@ -9,29 +9,35 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<fmt:setLocale value="${sessionData.locale}" scope="session" />
+<fmt:bundle basename="resource.i18n.interface" prefix="approveadminordercancel.">
 <html>
 <head>
-<title>Approve Cancel</title>
+<title><fmt:message key="title" /></title>
 </head>
 <body>
+<jsp:include page="/locale" />
+	<br />
+	<hr />
 	<table class="tg">
 		<tr>
-			<th class="tg-88nc">Id</th>
-			<th class="tg-88nc">Login</th>
-		    <th class="tg-88nc">Email</th>
-		    <th class="tg-88nc">Admin</th>
-			<th class="tg-88nc">First name</th>
-			<th class="tg-88nc">Last name</th>
-			<th class="tg-88nc">Passport</th>
-			<th class="tg-88nc">Nationality code</th>
-			<th class="tg-88nc">Country</th>
-			<th class="tg-88nc">Room number</th>
-			<th class="tg-88nc">Room class</th>
-			<th class="tg-88nc">Room capacity</th>
-			<th class="tg-88nc">Price</th>
-			<th class="tg-88nc">From</th>
-			<th class="tg-88nc">To</th>
-			<th class="tg-88nc">Cost</th>
+			 <th class="tg-88nc"><fmt:message key="id" /></th>
+			    <th class="tg-88nc"><fmt:message key="login" /></th>
+			    <th class="tg-88nc"><fmt:message key="email" /></th>
+			    <th class="tg-88nc"><fmt:message key="admin" /></th>
+			    <th class="tg-88nc"><fmt:message key="fname" /></th>
+			    <th class="tg-88nc"><fmt:message key="lname" /></th>
+			    <th class="tg-88nc"><fmt:message key="passport" /></th>
+			    <th class="tg-88nc"><fmt:message key="nationalitycode" /></th>
+			    <th class="tg-88nc"><fmt:message key="country" /></th>
+			    <th class="tg-88nc"><fmt:message key="roomnumber" /></th>
+			    <th class="tg-88nc"><fmt:message key="roomclass" /></th>
+			    <th class="tg-88nc"><fmt:message key="roomcapacity" /></th>
+			    <th class="tg-88nc"><fmt:message key="price" /></th>
+			    <th class="tg-88nc"><fmt:message key="from" /></th>
+			    <th class="tg-88nc"><fmt:message key="to" /></th>
+			    <th class="tg-88nc"><fmt:message key="cost" /></th>
 		</tr>
 		<tr>
 			<td class="tg-c3ow">${orderToCancel.id }</td>
@@ -54,7 +60,7 @@
 	</table>
 	<br />
 	<hr />
-	SUM TO RETURN: <c:out value="${orderToCancel.cost }" />
+	<fmt:message key="sumtoreturnmessage" />: <c:out value="${orderToCancel.cost }" />
 	<br />
 	<br />
 	<form action="${pageContext.request.contextPath}/controller"
@@ -63,14 +69,15 @@
 		<input type="hidden" name="accountId" value="${orderToCancel.account.id }" />
 		<input type="hidden" name="orderId" value="${orderToCancel.id }" />
 		<input type="hidden" name="command" value="approveAdminOrderCancel" />
-		<input type="submit" value="approve CANCEL" size="20" />
+		<input type="submit" value="<fmt:message key="approvecancel" />" />
 	</form>
 	${errorAdminOrderCancelMessage }
 	<br />
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
 		<input type="hidden" name="command" value="backToAllOrders" />
-		<input type="submit" value="Back" size="20" />
+		<input type="submit" value="<fmt:message key="backbutton" />" size="20" />
 	</form>
 </body>
 </html>
+</fmt:bundle>

@@ -11,11 +11,17 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<fmt:setLocale value="${sessionData.locale}" scope="session" />
+<fmt:bundle basename="resource.i18n.interface" prefix="allorders.">
 <html>
 <head>
-<title>All Orders</title>
+<title><fmt:message key="title" />All Orders</title>
 </head>
 <body>
+<jsp:include page="/locale" />
+	<br />
+	<hr />
 <jsp:include page="/loginlogout" />
 	<hr />
 
@@ -27,23 +33,23 @@
 		<c:otherwise>
 			<table class="tg">
 			  <tr>
-			    <th class="tg-88nc">Id</th>
-			    <th class="tg-88nc">Login</th>
-			    <th class="tg-88nc">Email</th>
-			    <th class="tg-88nc">Admin</th>
-			    <th class="tg-88nc">First name</th>
-			    <th class="tg-88nc">Last name</th>
-			    <th class="tg-88nc">Passport</th>
-			    <th class="tg-88nc">Nationality code</th>
-			    <th class="tg-88nc">Country</th>
-			    <th class="tg-88nc">Room number</th>
-			    <th class="tg-88nc">Room class</th>
-			    <th class="tg-88nc">Room capacity</th>
-			    <th class="tg-88nc">Price</th>
-			    <th class="tg-88nc">From</th>
-			    <th class="tg-88nc">To</th>
-			    <th class="tg-88nc">Cost</th>
-			    <th class="tg-88nc">Status</th>
+			    <th class="tg-88nc"><fmt:message key="id" /></th>
+			    <th class="tg-88nc"><fmt:message key="login" /></th>
+			    <th class="tg-88nc"><fmt:message key="email" /></th>
+			    <th class="tg-88nc"><fmt:message key="admin" /></th>
+			    <th class="tg-88nc"><fmt:message key="fname" /></th>
+			    <th class="tg-88nc"><fmt:message key="lname" /></th>
+			    <th class="tg-88nc"><fmt:message key="passport" /></th>
+			    <th class="tg-88nc"><fmt:message key="nationalitycode" /></th>
+			    <th class="tg-88nc"><fmt:message key="country" /></th>
+			    <th class="tg-88nc"><fmt:message key="roomnumber" /></th>
+			    <th class="tg-88nc"><fmt:message key="roomclass" /></th>
+			    <th class="tg-88nc"><fmt:message key="roomcapacity" /></th>
+			    <th class="tg-88nc"><fmt:message key="price" /></th>
+			    <th class="tg-88nc"><fmt:message key="from" /></th>
+			    <th class="tg-88nc"><fmt:message key="to" /></th>
+			    <th class="tg-88nc"><fmt:message key="cost" /></th>
+			    <th class="tg-88nc"><fmt:message key="status" /></th>
 			  </tr>
 			   <jsp:useBean id = "localDateNow" class = "by.epam.hotel.entity.LocalDateNow"/> 
 				<c:forEach var="order" items="${sessionData.listAdminFullInfoOrder }" varStatus="status">
@@ -70,21 +76,21 @@
 						    <form action="${pageContext.request.contextPath}/controller">
 					    		<input type="hidden" name=command value="cancelorderadmin" />
 							    <input type="hidden" name="orderIndex" value="${status.count }" />
-							    <input type="submit" value="Cancel" />
+							    <input type="submit" value="<fmt:message key="cancel" />" />
 						    </form>
 					    	</c:when>
 					    	<c:when test="${order.from.isEqual(localDateNow.now) && order.removed=='false' }">
 					    	<form action="${pageContext.request.contextPath}/controller">
 					    		<input type="hidden" name=command value="cancelorderadmin" />
 							    <input type="hidden" name="orderIndex" value="${status.count }" />
-							    <input type="submit" value="Cancel" />
+							    <input type="submit" value="<fmt:message key="cancel" />" />
 						    </form>
 					    	</c:when>
 					    	<c:when test="${order.removed }">
-					    		CANCELLED
+					    		<fmt:message key="cancelled" />
 					    	</c:when>
 					    	<c:otherwise>
-					    		SUCCESSED
+					    		<fmt:message key="successed" />
 					    	</c:otherwise>
 					    </c:choose>  
 					    </td>
@@ -94,15 +100,13 @@
 		</c:otherwise>
 	</c:choose> 
 	<hr/>
-
-	
         <c:if test="${sessionData.currentPage != 1}">
         	<c:url value="/controller" var="URL">
 				<c:param name="recordsPerPage" value="${sessionData.recordsPerPage}" />
 				<c:param name="currentPage" value="${sessionData.currentPage-1}" />
 				<c:param name="command" value="toAllOrders" />
 			</c:url> 
-           <a href="${URL}">Previous</a>
+           <a href="${URL}"><fmt:message key="previous" /></a>
            
         </c:if>
         <c:forEach begin="1" end="${sessionData.noOfPages}" var="i">
@@ -127,16 +131,14 @@
 				<c:param name="currentPage" value="${sessionData.currentPage+1}" />
 				<c:param name="command" value="toAllOrders" />
 			</c:url> 
-            <a href="${URL}">Next</a>
+            <a href="${URL}"><fmt:message key="next" /></a>
         </c:if>      
-	
-
-
 	<hr/>
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
 		<input type="hidden" name="command" value="backToAdminmain" />
-		<input type="submit" value="Back" size="20" />
+		<input type="submit" value="<fmt:message key="backbutton" />" size="20" />
 	</form>
 </body>
 </html>
+</fmt:bundle>

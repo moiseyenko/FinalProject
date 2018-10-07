@@ -2,17 +2,16 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<fmt:setLocale value="${sessionData.locale.value}" scope="session" />
-<fmt:bundle basename="resource.i18n.i18n" prefix="login.">
+<fmt:setLocale value="${sessionData.locale}" scope="session" />
+<fmt:bundle basename="resource.i18n.interface" prefix="login.">
 <html>
 <head>
 <title><fmt:message key="title" /></title>
 </head>
 <body>
-<jsp:include page="local.jsp" />
+<jsp:include page="/locale" />
 	<br />
 	<hr />
-
 	<h2><fmt:message key="hello" /></h2>
 	<form action="${pageContext.request.contextPath}/controller" name="LoginForm"  autocomplete="off" method="post">
 		<input type="hidden" name="command" value="login" />
@@ -37,9 +36,8 @@
 	</form>
 	<form action="${pageContext.request.contextPath}/controller" method="post">
 		<input type="hidden" name="command" value="loginBack" />
-		<input type="submit" value=<fmt:message key="back" /> size="20" />
+		<input type="submit" value=<fmt:message key="backbutton" /> size="20" />
 	</form>
-	
 </body>
 </html>
 </fmt:bundle>

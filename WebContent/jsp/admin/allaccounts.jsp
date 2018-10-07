@@ -11,28 +11,32 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<fmt:setLocale value="${sessionData.locale}" scope="session" />
+<fmt:bundle basename="resource.i18n.interface" prefix="allaccounts.">
 <html>
 <head>
-<title>All Accounts</title>
+<title><fmt:message key="title" /></title>
 </head>
 <body>
+<jsp:include page="/locale" />
+	<br />
+	<hr />
 <jsp:include page="/loginlogout" />
 	<hr />
-
-  
   <c:choose>
 		<c:when test="${fn:length(sessionData.accountList)==0}">
-			No order was found
+			<fmt:message key="noordermessage" />
 		</c:when>
 		<c:otherwise>
 			<table class="tg">
 			  <tr>
-			    <th class="tg-88nc">Id</th>
-			    <th class="tg-88nc">Login</th>
-			    <th class="tg-88nc">Email</th>
-			    <th class="tg-88nc">Admin</th>
-			    <th class="tg-88nc">Status</th>
-			    <th class="tg-88nc">Add/Remove Admin Rights</th>
+			    <th class="tg-88nc"><fmt:message key="id" /></th>
+			    <th class="tg-88nc"><fmt:message key="login" /></th>
+			    <th class="tg-88nc"><fmt:message key="email" /></th>
+			    <th class="tg-88nc"><fmt:message key="admin" /></th>
+			    <th class="tg-88nc"><fmt:message key="status" /></th>
+			    <th class="tg-88nc"><fmt:message key="addremove" /></th>
 			  </tr>
 			  <c:forEach var="account" items="${sessionData.accountList }" varStatus="status">
 					<tr>
@@ -42,7 +46,7 @@
 						<td>   
 					    	<c:choose>
 						    	<c:when test="${account.admin }">
-						    		ADMIN
+						    		<fmt:message key="adminmessage" />
 						    	</c:when>
 						    	<c:otherwise>
 						    		
@@ -52,7 +56,7 @@
 					    <td>   
 					    	<c:choose>
 						    	<c:when test="${account.removed }">
-						    		REMOVED
+						    		<fmt:message key="removedmessage" />
 						    	</c:when>
 						    	<c:otherwise>
 						    		
@@ -65,14 +69,14 @@
 						    <form action="${pageContext.request.contextPath}/controller" method="post" >
 					    		<input type="hidden" name="command" value="changeAdminRights" />
 							    <input type="hidden" name="accountIndex" value="${status.count }" />
-							    <input type="submit" value="Remove Admin Rights" />
+							    <input type="submit" value="<fmt:message key="removerightsbutton" />" />
 						    </form>
 					    	</c:when>
 					    	<c:otherwise>
 					    		<form action="${pageContext.request.contextPath}/controller" method="post" >
 					    		<input type="hidden" name="command" value="changeAdminRights" />
 							    <input type="hidden" name="accountIndex" value="${status.count }" />
-							    <input type="submit" value="Add Admin Rights" />
+							    <input type="submit" value="<fmt:message key="addrightsbutton" />" />
 						    </form>
 					    	</c:otherwise>
 					    </c:choose>  
@@ -92,7 +96,7 @@
 				<c:param name="currentPage" value="${sessionData.currentPage-1}" />
 				<c:param name="command" value="toAllAccounts" />
 			</c:url> 
-           <a href="${URL}">Previous</a>
+           <a href="${URL}"><fmt:message key="previousbutton" /></a>
            
         </c:if>
         <c:forEach begin="1" end="${sessionData.noOfPages}" var="i">
@@ -117,7 +121,7 @@
 				<c:param name="currentPage" value="${sessionData.currentPage+1}" />
 				<c:param name="command" value="toAllAccounts" />
 			</c:url> 
-            <a href="${URL}">Next</a>
+            <a href="${URL}"><fmt:message key="nextbutton" /></a>
         </c:if>      
 	
 
@@ -126,7 +130,8 @@
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
 		<input type="hidden" name="command" value="backToAdminmain" />
-		<input type="submit" value="Back" size="20" />
+		<input type="submit" value="<fmt:message key="backbutton" />" size="20" />
 	</form>
 </body>
 </html>
+</fmt:bundle>

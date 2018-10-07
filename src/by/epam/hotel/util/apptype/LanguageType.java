@@ -1,23 +1,17 @@
 package by.epam.hotel.util.apptype;
 
+import java.util.Locale;
+
 public enum LanguageType {
-	RUSSIAN("ru_RU"), ENGLISH("en_US");
+	RUSSIAN(new Locale("ru", "RU")), ENGLISH(new Locale("en", "US"));
 	
-	private String value;
+	private Locale value;
 	
-	private LanguageType(String value) {
+	private LanguageType(Locale value) {
 		this.value = value;
 	}
 	
-	public String getValue() {
+	public Locale getValue() {
 		return value;
-	}
-	
-	public String getCountry() {
-		return value.substring(3);
-	}
-	
-	public String getLanguage() {
-		return value.substring(0, 2);
 	}
 }

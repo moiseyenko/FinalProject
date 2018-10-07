@@ -2,13 +2,11 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-
 <html>
 <head>
-<title>Insert title here</title>
+<title>Locale</title>
 </head>
 <body>
-	<fmt:setBundle basename="resource.localtest" var="rb"  />
 	<c:url value="/controller" var="russianURL" >
 		<c:param name="locale" value="Russian" />
 		<c:param name="command" value="changeLocale" />

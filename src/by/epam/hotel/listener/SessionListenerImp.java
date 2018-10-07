@@ -28,7 +28,7 @@ public class SessionListenerImp implements HttpSessionListener,  HttpSessionAttr
 		if(sessionData == null) {
 			sessionData = new SessionData();
 			sessionData.setRole(RoleType.GUEST);
-			sessionData.setLocale(LanguageType.RUSSIAN);
+			sessionData.setLocale(LanguageType.RUSSIAN.getValue());
 			session.setAttribute("sessionData", sessionData);
 		}
 		session.setMaxInactiveInterval(60*10);

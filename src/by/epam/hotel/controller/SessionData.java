@@ -3,6 +3,7 @@ package by.epam.hotel.controller;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import by.epam.hotel.entity.Account;
@@ -11,13 +12,12 @@ import by.epam.hotel.entity.FullInfoOrder;
 import by.epam.hotel.entity.Nationality;
 import by.epam.hotel.entity.Room;
 import by.epam.hotel.entity.RoomClass;
-import by.epam.hotel.util.apptype.LanguageType;
 import by.epam.hotel.util.apptype.RoleType;
 
 public class SessionData {
 	private String login;
 	private RoleType role;
-	private LanguageType locale;
+	private Locale locale;
 	private boolean innerRedirect;
 	private List<Client> clients;
 	private List<Nationality> nationalities;
@@ -62,12 +62,12 @@ public class SessionData {
 	public void setRole(RoleType role) {
 		this.role = role;
 	}
-
-	public LanguageType getLocale() {
+	
+	public Locale getLocale() {
 		return locale;
 	}
 
-	public void setLocale(LanguageType locale) {
+	public void setLocale(Locale locale) {
 		this.locale = locale;
 	}
 

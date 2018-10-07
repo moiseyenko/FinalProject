@@ -16,7 +16,8 @@ import javax.servlet.http.HttpSession;
 
 import by.epam.hotel.controller.SessionData;
 
-@WebFilter(urlPatterns = { "/jsp/*" }, initParams = { @WebInitParam(name = "INDEX_PATH", value = "/index.jsp") })
+@WebFilter(urlPatterns = { "/jsp/admin/*", "/jsp/client/*", "/jsp/common/*", "/jsp/error/*" }, 
+initParams = { @WebInitParam(name = "INDEX_PATH", value = "/index.jsp") })
 public class JspFilter implements Filter {
 	private String indexPath;
 

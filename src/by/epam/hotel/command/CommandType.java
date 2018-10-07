@@ -40,7 +40,7 @@ import by.epam.hotel.command.impl.admin.CreateClassCommand;
 import by.epam.hotel.command.impl.admin.CreateNationalityCommand;
 import by.epam.hotel.command.impl.admin.CreateRoomCommand;
 import by.epam.hotel.command.impl.admin.SendMessageCommand;
-import by.epam.hotel.command.impl.admin.ToAddSubjectAndTextCommand;
+import by.epam.hotel.command.impl.admin.ToSubjectTextSendCommand;
 import by.epam.hotel.command.impl.admin.ToAdminClassesCommand;
 import by.epam.hotel.command.impl.admin.ToAdminNationalitiesCommand;
 import by.epam.hotel.command.impl.admin.ToAllClientsCommand;
@@ -116,7 +116,7 @@ public enum CommandType {
 	TOALLACCOUNTS(new ToAllAccountsCommand()), CHANGEADMINRIGHTS(new ChangeAdminRightsCommand()), BACKTOSIGNUP(new BackToSignupCommand()),
 	CHECKKEYANDSIGNUP(new CheckKeyAndSignUpCommand()), TOSETRECORDSPERPAGEEMAIL(new ToSetRecordsPerPageEmailCommand()),
 	TOALLEMAILS(new ToAllEmailsCommand()), ADDREMOVETOSENDLIST(new AddRemoveToSendListCommand()), 
-	TOADDSUBJECTANDTEXT(new ToAddSubjectAndTextCommand()), SENDMESSAGE(new SendMessageCommand()), BACKTOALLEMAILS(new BackToAllEmailsCommand());
+	SUBJECTTEXTSEND(new ToSubjectTextSendCommand()), SENDMESSAGE(new SendMessageCommand()), BACKTOALLEMAILS(new BackToAllEmailsCommand());
 	
 	
 	private CommandType(ActionCommand command) {
