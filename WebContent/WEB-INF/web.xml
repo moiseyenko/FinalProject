@@ -9,11 +9,6 @@
 		<servlet-class>by.epam.hotel.controller.Controller</servlet-class>
 	</servlet>
 	<servlet>
-		<servlet-name>SuperAdmin</servlet-name>
-		<jsp-file>/jsp/superadminmain.jsp</jsp-file>
-	</servlet>
-	
-	<servlet>
 		<servlet-name>Locale</servlet-name>
 		<jsp-file>/jsp/common/local.jsp</jsp-file>
 	</servlet>
@@ -21,9 +16,6 @@
 		<servlet-name>Loginlogout</servlet-name>
 		<jsp-file>/jsp/common/loginlogout.jsp</jsp-file>
 	</servlet>
-	
-	
-	
 	<servlet-mapping>
 		<servlet-name>JavaServlet</servlet-name>
 		<url-pattern>/controller</url-pattern>
@@ -36,9 +28,6 @@
 		<servlet-name>Loginlogout</servlet-name>
 		<url-pattern>/loginlogout</url-pattern>
 	</servlet-mapping>
-	
-	
-	
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
@@ -62,25 +51,4 @@
 		<exception-type>javax.servlet.ServletException</exception-type>
 		<location>/jsp/error/error.jsp</location>
 	</error-page>
-	
-	<security-constraint>
-		<web-resource-collection>
-			<web-resource-name>SuperAdmin</web-resource-name>
-			<url-pattern>/jsp/superadminmain.jsp</url-pattern>
-		</web-resource-collection>
-		<auth-constraint>
-			<role-name>superuser</role-name>
-		</auth-constraint>
-		<user-data-constraint>
-			<transport-guarantee>NONE</transport-guarantee>
-		</user-data-constraint>
-	</security-constraint>
-	<login-config>
-		<auth-method>DIGEST</auth-method>
-	</login-config>
-	<security-role>
-		<role-name>superuser</role-name>
-	</security-role>
-	
-	
 </web-app>

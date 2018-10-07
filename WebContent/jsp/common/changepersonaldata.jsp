@@ -3,7 +3,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <fmt:setLocale value="${sessionData.locale}" scope="session" />
-<fmt:bundle basename="resource.i18n.interface" prefix="login.">
+<fmt:bundle basename="resource.i18n.interface" prefix="changepersonaldata.">
 <html>
 <head>
 <title><fmt:message key="title" /></title>

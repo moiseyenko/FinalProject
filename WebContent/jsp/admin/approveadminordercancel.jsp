@@ -22,22 +22,22 @@
 	<hr />
 	<table class="tg">
 		<tr>
-			 <th class="tg-88nc"><fmt:message key="id" /></th>
-			    <th class="tg-88nc"><fmt:message key="login" /></th>
-			    <th class="tg-88nc"><fmt:message key="email" /></th>
-			    <th class="tg-88nc"><fmt:message key="admin" /></th>
-			    <th class="tg-88nc"><fmt:message key="fname" /></th>
-			    <th class="tg-88nc"><fmt:message key="lname" /></th>
-			    <th class="tg-88nc"><fmt:message key="passport" /></th>
-			    <th class="tg-88nc"><fmt:message key="nationalitycode" /></th>
-			    <th class="tg-88nc"><fmt:message key="country" /></th>
-			    <th class="tg-88nc"><fmt:message key="roomnumber" /></th>
-			    <th class="tg-88nc"><fmt:message key="roomclass" /></th>
-			    <th class="tg-88nc"><fmt:message key="roomcapacity" /></th>
-			    <th class="tg-88nc"><fmt:message key="price" /></th>
-			    <th class="tg-88nc"><fmt:message key="from" /></th>
-			    <th class="tg-88nc"><fmt:message key="to" /></th>
-			    <th class="tg-88nc"><fmt:message key="cost" /></th>
+		 	<th class="tg-88nc"><fmt:message key="id" /></th>
+		    <th class="tg-88nc"><fmt:message key="login" /></th>
+		    <th class="tg-88nc"><fmt:message key="email" /></th>
+		    <th class="tg-88nc"><fmt:message key="admin" /></th>
+		    <th class="tg-88nc"><fmt:message key="fname" /></th>
+		    <th class="tg-88nc"><fmt:message key="lname" /></th>
+		    <th class="tg-88nc"><fmt:message key="passport" /></th>
+		    <th class="tg-88nc"><fmt:message key="nationalitycode" /></th>
+		    <th class="tg-88nc"><fmt:message key="country" /></th>
+		    <th class="tg-88nc"><fmt:message key="roomnumber" /></th>
+		    <th class="tg-88nc"><fmt:message key="roomclass" /></th>
+		    <th class="tg-88nc"><fmt:message key="roomcapacity" /></th>
+		    <th class="tg-88nc"><fmt:message key="price" /></th>
+		    <th class="tg-88nc"><fmt:message key="from" /></th>
+		    <th class="tg-88nc"><fmt:message key="to" /></th>
+		    <th class="tg-88nc"><fmt:message key="cost" /></th>
 		</tr>
 		<tr>
 			<td class="tg-c3ow">${orderToCancel.id }</td>

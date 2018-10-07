@@ -1,17 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<fmt:setLocale value="${sessionData.locale}" scope="session" />
+<fmt:bundle basename="resource.i18n.interface" prefix="successcreateclass.">
 <html>
 <head>
-<title>Successfull Room Class Creation</title>
+<title><fmt:message key="title" /></title>
 </head>
 <body>
-
- Room Class has been successfully added.
+<jsp:include page="/locale" />
+	<br />
+	<hr />
+ <fmt:message key="successmesage" />
 	<br/>
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
 		<input type="hidden" name="command" value="backToAdminClasses" /> <input
-			type="submit" value="OK" />
+			type="submit" value="<fmt:message key="okbutton" />" />
 	</form>
 </body>
 </html>
+</fmt:bundle>

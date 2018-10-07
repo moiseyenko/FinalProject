@@ -2,17 +2,23 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<fmt:setLocale value="${sessionData.locale}" scope="session" />
+<fmt:bundle basename="resource.i18n.interface" prefix="availableroom.">
 <html>
 <head>
-<title>Available Rooms</title>
+<title><fmt:message key="title" /></title>
 </head>
 <body>
+<jsp:include page="/locale" />
+	<br />
+	<hr />
 	<jsp:include page="/loginlogout" />
 	<hr />
-	Available rooms:
+	<fmt:message key="availroomsmsg" />:
 	<c:choose>
 		<c:when test="${fn:length(sessionData.availableRoomList)==0}">
-			Sorry, room not found. Try to change criteria
+			<fmt:message key="sorrymsg" />
 		</c:when>
 		<c:otherwise>
 			<table>
@@ -23,7 +29,7 @@
 								<c:param name="number" value="${room.number}" />
 								<c:param name="command" value="chooseroom" />
 							</c:url> 
-							<a href="${roomsURL}"> ${room.number}:Capacity-${room.capacity};Price-${room.price};</a> 
+							<a href="${roomsURL}"> ${room.number}:<fmt:message key="capacity" />-${room.capacity};<fmt:message key="price" />-${room.price};</a> 
 						</td>
 					</tr>
 				</c:forEach>
@@ -34,12 +40,13 @@
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
 		<input type="hidden" name="command" value="backToOrder" />
-		<input type="submit" value="Back" size="20" />
+		<input type="submit" value="<fmt:message key="backbutton" />" size="20" />
 	</form>
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
 		<input type="hidden" name="command" value="backToClientmain" />
-		<input type="submit" value="Back to main" size="20" />
+		<input type="submit" value="<fmt:message key="backtomainbutton" />" size="20" />
 	</form>
 </body>
 </html>
+</fmt:bundle>

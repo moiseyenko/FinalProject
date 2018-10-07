@@ -23,7 +23,7 @@
 	<hr />
 	<form action="${pageContext.request.contextPath}/controller" method="post">
 		<input type="hidden" name="command" value="toSetRecordsPerPageAccountOrder" /> 
-		<input type="submit" value="Your orders" />
+		<input type="submit" value="<fmt:message key="orders" />" />
 	</form>
 	<hr />
 	<form action="${pageContext.request.contextPath}/controller" method="post">
@@ -34,7 +34,7 @@
 	<hr />
 	<form action="${pageContext.request.contextPath}/controller" method="post">
 		<input type="hidden" name="command" value="toChangePersonalData" /> 
-		<input type="submit" value="Change personal data" />
+		<input type="submit" value="<fmt:message key="changepersonaldata" />" />
 	</form>
 </body>
 </html>

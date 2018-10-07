@@ -16,7 +16,7 @@
 <fmt:bundle basename="resource.i18n.interface" prefix="allorders.">
 <html>
 <head>
-<title><fmt:message key="title" />All Orders</title>
+<title><fmt:message key="title" /></title>
 </head>
 <body>
 <jsp:include page="/locale" />
@@ -24,8 +24,6 @@
 	<hr />
 <jsp:include page="/loginlogout" />
 	<hr />
-
-  
   <c:choose>
 		<c:when test="${fn:length(sessionData.listAdminFullInfoOrder)==0}">
 			No order was found
