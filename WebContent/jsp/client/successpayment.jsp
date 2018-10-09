@@ -11,7 +11,7 @@
 <jsp:include page="/locale" />
 	<br />
 	<hr />
- <fmt:message key="successmsg" />SUCCESS PAYMENT
+ <fmt:message key="successmsg" />
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
 		<input type="hidden" name="command" value="backToOrder" /> <input

@@ -9,7 +9,8 @@
 	<br /> Servlet name or type: ${pageContext.errorData.servletName }
 	<br /> Status code: ${pageContext.errorData.statusCode }
 	<br /> Exception: ${pageContext.errorData.throwable }
-	<form action="${pageContext.request.contextPath}/jsp/login.jsp" method="post">
+	<form action="${pageContext.request.contextPath}/controller" method="post">
+	<input type="hidden" name="command" value="ErrorBack" />
 		<input type="submit" value="Back" />
 	</form>
 </body>

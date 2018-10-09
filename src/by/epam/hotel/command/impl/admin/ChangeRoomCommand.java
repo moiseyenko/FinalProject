@@ -9,13 +9,13 @@ import by.epam.hotel.controller.SessionData;
 import by.epam.hotel.entity.Room;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
-import by.epam.hotel.logic.OrderLogic;
+import by.epam.hotel.service.CommonService;
 import by.epam.hotel.util.ConfigurationManager;
-import by.epam.hotel.util.apptype.RoleType;
-import by.epam.hotel.util.apptype.RouterType;
 import by.epam.hotel.util.constant.AttributeConstant;
 import by.epam.hotel.util.constant.ParameterConstant;
 import by.epam.hotel.util.constant.PropertyConstant;
+import by.epam.hotel.util.type.RoleType;
+import by.epam.hotel.util.type.RouterType;
 
 public class ChangeRoomCommand implements ActionCommand{
 	@Override
@@ -29,7 +29,7 @@ public class ChangeRoomCommand implements ActionCommand{
 			int roomIndex = Integer.parseInt(request.getParameter(ParameterConstant.ROOM_INDEX));
 			Room roomToChange = sessionData.getRoomList().get(--roomIndex);
 			try {
-				sessionData.setRoomClasses(OrderLogic.getRoomClassList());
+				sessionData.setRoomClasses(CommonService.getRoomClassList());
 				sessionData.setRoomToChange(roomToChange);
 				page = ConfigurationManager.getProperty(PropertyConstant.PAGE_CHANGE_ROOM);
 			} catch (ServiceException e) {

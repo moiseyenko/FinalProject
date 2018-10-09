@@ -11,7 +11,7 @@
 <jsp:include page="/locale" />
 	<br />
 	<hr />
-<h1><fmt:message key="showaccounts" /></h1>
+<h1><fmt:message key="showemails" /></h1>
 <form action="${pageContext.request.contextPath}/controller" method="post">
 	<input type="hidden" name="command" value="toAllEmails" /> 
     <input type="hidden" name="currentPage" value="1">

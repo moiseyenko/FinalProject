@@ -11,13 +11,14 @@ import by.epam.hotel.controller.SessionData;
 import by.epam.hotel.entity.Account;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
-import by.epam.hotel.logic.SendMessageLogic;
+import by.epam.hotel.service.AdminService;
 import by.epam.hotel.util.ConfigurationManager;
 import by.epam.hotel.util.MessageManager;
-import by.epam.hotel.util.apptype.RoleType;
-import by.epam.hotel.util.apptype.RouterType;
 import by.epam.hotel.util.constant.AttributeConstant;
+import by.epam.hotel.util.constant.ParameterConstant;
 import by.epam.hotel.util.constant.PropertyConstant;
+import by.epam.hotel.util.type.RoleType;
+import by.epam.hotel.util.type.RouterType;
 
 public class SendMessageCommand implements ActionCommand{
 
@@ -28,18 +29,19 @@ public class SendMessageCommand implements ActionCommand{
 		HttpSession session = request.getSession();
 		SessionData sessionData = (SessionData) session.getAttribute(AttributeConstant.SESSION_DATA);
 		if (sessionData.getRole() == RoleType.ADMIN) {
-			String subject = request.getParameter("subject");
+			String subject = request.getParameter(ParameterConstant.SUBJECT);
 			String text = request.getParameter("text");
 			Set<Account> sendList = sessionData.getSendList();
 			try {
-				if (SendMessageLogic.sendMessage(sendList, subject, text)) {
+				if (AdminService.sendMessage(sendList, subject, text)) {
 					sessionData.setSendList(null);
-					page = ConfigurationManager.getProperty("path.page.successsendmessage");
+					page = ConfigurationManager.getProperty(PropertyConstant.PAGE_SUCCESS_SEND_MSG);
 					router.setType(RouterType.REDIRECT);
 				}else {
-					request.setAttribute("errorSendMessageMessage",
-							MessageManager.getProrerty("message.sendmessageerror"));
-					page = ConfigurationManager.getProperty("path.page.addsubjectandtextandsend");
+					request.setAttribute(AttributeConstant.ERROR_SEND_MSG_MESSAGE,
+							MessageManager.getProrerty(PropertyConstant.MESSAGE_SEND_MSG_ERROR,
+									sessionData.getLocale()));
+					page = ConfigurationManager.getProperty(PropertyConstant.PAGE_SUBJECT_TEXT_SEND);
 					router.setType(RouterType.FORWARD);
 				}
 			} catch (ServiceException e) {

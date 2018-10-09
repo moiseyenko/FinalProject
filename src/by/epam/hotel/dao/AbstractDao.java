@@ -13,10 +13,6 @@ public abstract class AbstractDao<K, T extends Entity> {
 
 	public abstract T findEntityById(K id) throws DaoException;
 
-	public abstract boolean delete(K id) throws DaoException;
-
-	public abstract boolean delete(T entity) throws DaoException;
-
 	public abstract boolean create(T entity) throws DaoException;
 
 	public abstract boolean update(T entity) throws DaoException;

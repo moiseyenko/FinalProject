@@ -15,15 +15,15 @@ import by.epam.hotel.controller.SessionData;
 import by.epam.hotel.entity.Room;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
-import by.epam.hotel.logic.CreateRoomLogic;
+import by.epam.hotel.service.AdminService;
 import by.epam.hotel.util.ConfigurationManager;
 import by.epam.hotel.util.MessageManager;
-import by.epam.hotel.util.apptype.RoleType;
-import by.epam.hotel.util.apptype.RouterType;
 import by.epam.hotel.util.constant.AttributeConstant;
 import by.epam.hotel.util.constant.ParameterConstant;
 import by.epam.hotel.util.constant.PropertyConstant;
 import by.epam.hotel.util.constant.ValidationConstant;
+import by.epam.hotel.util.type.RoleType;
+import by.epam.hotel.util.type.RouterType;
 
 public class CreateRoomCommand implements ActionCommand{
 	
@@ -38,19 +38,19 @@ public class CreateRoomCommand implements ActionCommand{
 			String capacity = request.getParameter(ParameterConstant.CAPACITY);
 			String roomClass = request.getParameter(ParameterConstant.CLASS);
 			String price = request.getParameter(ParameterConstant.PRICE);
-			if(validateInputData(number, capacity, price, request)) {
+			if(validateInputData(number, capacity, price, request, sessionData)) {
 				try {
 					int newNumber = Integer.parseInt(number);
 					int newCapacity = Integer.parseInt(capacity);
 					BigDecimal newPrice = parseToBigDecimal(price);
 					Room newRoom = new Room(newNumber, roomClass, newCapacity, newPrice);
 					try {
-						if(CreateRoomLogic.createRoom(newRoom)) {
+						if(AdminService.createRoom(newRoom)) {
 							page = ConfigurationManager.getProperty(PropertyConstant.PAGE_SUCCESS_CREATE_ROOM);
 							router.setType(RouterType.REDIRECT);
 						}else {
 							request.setAttribute(AttributeConstant.ERROR_CREATE_ROOM_MESSAGE,
-									MessageManager.getProrerty(PropertyConstant.MESSAGE_CREATE_ROOM_ERROR));
+									MessageManager.getProrerty(PropertyConstant.MESSAGE_CREATE_ROOM_ERROR, sessionData.getLocale()));
 							page = ConfigurationManager.getProperty(PropertyConstant.PAGE_CREATE_ROOM);
 							router.setType(RouterType.FORWARD);
 						}
@@ -73,22 +73,22 @@ public class CreateRoomCommand implements ActionCommand{
 	}
 	
 	
-	private boolean validateInputData(String number, String capacity, String price, HttpServletRequest request) {
+	private boolean validateInputData(String number, String capacity, String price, HttpServletRequest request, SessionData sessionData) {
 		boolean result = true;
 		
 		if (!validateNumber(number)) {
 			request.setAttribute(AttributeConstant.ERROR_NUMBER_MESSAGE, 
-					MessageManager.getProrerty(PropertyConstant.MESSAGE_NUMBER_ERROR));
+					MessageManager.getProrerty(PropertyConstant.MESSAGE_NUMBER_ERROR, sessionData.getLocale()));
 			result = false;
 		}
 		if (!validateCapacity(capacity)) {
 			request.setAttribute(AttributeConstant.ERROR_CAPACITY_MESSAGE,
-					MessageManager.getProrerty(PropertyConstant.MESSAGE_CAPACITY_ERROR));
+					MessageManager.getProrerty(PropertyConstant.MESSAGE_CAPACITY_ERROR, sessionData.getLocale()));
 			result = false;
 		}
 		if (!validatePrice(price)) {
 			request.setAttribute(AttributeConstant.WRONG_INPUT_AMOUNT,
-					MessageManager.getProrerty(PropertyConstant.MESSAGE_INPUT_AMOUNT_ERROR));
+					MessageManager.getProrerty(PropertyConstant.MESSAGE_INPUT_AMOUNT_ERROR, sessionData.getLocale()));
 			result = false;
 		}
 		return result;

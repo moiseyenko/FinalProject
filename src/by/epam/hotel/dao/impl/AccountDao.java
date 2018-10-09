@@ -22,7 +22,6 @@ public class AccountDao extends AbstractDao<Integer, Account> {
 			+ "FROM `account` LIMIT ?, ?;";
 	private final String FIND_ACCOUNT_BY_ID = "SELECT `account`.`id`, `account`.`login`,`account`.`email`, `account`.`admin`, `account`.`removed` "
 			+ "FROM `account` " + "WHERE `account`.`id` = ?;";
-	private final String DELETE_ACCOUNT = "DELETE FROM `account` WHERE `account`.`id` = ?;";
 	private final String INSERT_ACCOUNT_WITHOUT_PASSWORD = "INSERT INTO`hotel`.`account`(`login`,`email`, `admin`) VALUES (?,?, 0);";
 	private final String FIND_ACCOUNT_BY_LOGIN = "SELECT `account`.`id`, `account`.`login`, `account`.`email`, `account`.`admin`, `account`.`removed`"
 			+ "FROM `account` WHERE `account`.`login` = ? AND `account`.`removed` = 0;";
@@ -32,6 +31,8 @@ public class AccountDao extends AbstractDao<Integer, Account> {
 	private final String UPDATE_ACCOUNT = "UPDATE `account` SET `account`.`login` = ?,  `account`.`admin` = ? WHERE `account`.`id` = ? AND `account`.`removed` = 0;";
 	private final String CHANGE_REMOVED = "UPDATE `account` SET`account`.`removed` = ? WHERE `account`.`id` = ?;";
 	private final String FIND_PASSWORD_BY_ID = "SELECT `account`.`password` FROM `account` WHERE `account`.`id` = ?;";
+	private final String COUNT_ACCOUNTS = "SELECT COUNT(`account`.`id`) AS `QUANTITY` FROM `account`;";
+	private final String CHANGE_ADMIN_RIGHTS = "UPDATE `account` SET`account`.`admin` = ? WHERE `account`.`id` = ?;";
 	
 
 	@Override
@@ -55,8 +56,8 @@ public class AccountDao extends AbstractDao<Integer, Account> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Finding all accounts error: {}", exc);
-				throw new DaoException("Finding all accounts error", exc);
 			}
+			throw new DaoException("Finding all accounts error", e);
 		}
 		return accounts;
 	}
@@ -79,46 +80,10 @@ public class AccountDao extends AbstractDao<Integer, Account> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Finding account error: {}", exc);
-				throw new DaoException("Finding account error", exc);
 			}
+			throw new DaoException("Finding account error", e);
 		}
 		return null;
-	}
-
-	@Override
-	public boolean delete(Integer id) throws DaoException {
-		try {
-			try (PreparedStatement statement = connection.prepareStatement(DELETE_ACCOUNT)) {
-				statement.setInt(1, id);
-				if (statement.executeUpdate() > 0) {
-					return true;
-				}
-			}
-		} catch (SQLException e) {
-			for (Throwable exc : e) {
-				LOG.error("Deletion account error: {}", exc);
-				throw new DaoException("Deletion account error", exc);
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public boolean delete(Account entity) throws DaoException {
-		try {
-			try (PreparedStatement statement = connection.prepareStatement(DELETE_ACCOUNT)) {
-				statement.setInt(1, entity.getId());
-				if (statement.executeUpdate() > 0) {
-					return true;
-				}
-			}
-		} catch (SQLException e) {
-			for (Throwable exc : e) {
-				LOG.error("Deletion account error: {}", exc);
-				throw new DaoException("Deletion account error", exc);
-			}
-		}
-		return false;
 	}
 
 	@Override
@@ -135,8 +100,8 @@ public class AccountDao extends AbstractDao<Integer, Account> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Creation account error: {}", exc);
-				throw new DaoException("Creation account error", exc);
 			}
+			throw new DaoException("Creation account error", e);
 		}
 		return false;
 	}
@@ -166,8 +131,8 @@ public class AccountDao extends AbstractDao<Integer, Account> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Finding account by login error: {}", exc);
-				throw new DaoException("Finding account by login error", exc);
 			}
+			throw new DaoException("Finding account by login error", e);
 		}
 		return false;
 	}
@@ -190,8 +155,8 @@ public class AccountDao extends AbstractDao<Integer, Account> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Finding account by login error: {}", exc);
-				throw new DaoException("Finding account by login error", exc);
 			}
+			throw new DaoException("Finding account by login error", e);
 		}
 		return null;
 	}
@@ -209,10 +174,9 @@ public class AccountDao extends AbstractDao<Integer, Account> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Finding account password error: {}", exc);
-				throw new DaoException("Finding account password error", exc);
 			}
+			throw new DaoException("Finding account password error", e);
 		}
-		return false;
 	}
 
 	public boolean changeAccountPassword(Account account, String newPassword) throws DaoException {
@@ -228,8 +192,8 @@ public class AccountDao extends AbstractDao<Integer, Account> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Changing account password error: {}", exc);
-				throw new DaoException("Changing account password error", exc);
 			}
+			throw new DaoException("Changing account password error", e);
 		}
 		return false;
 	}
@@ -250,8 +214,8 @@ public class AccountDao extends AbstractDao<Integer, Account> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Update account error: {}", exc);
-				throw new DaoException("Update account error", exc);
 			}
+			throw new DaoException("Update account error", e);
 		}
 		return false;
 	}
@@ -269,16 +233,11 @@ public class AccountDao extends AbstractDao<Integer, Account> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Change removed flag error: {}", exc);
-				throw new DaoException("Change removed flag error", exc);
 			}
+			throw new DaoException("Change removed flag error", e);
 		}
 		return false;
 	}
-	
-///////////////////////////////////////////////////////////////////////////////////////////////
-
-	
-	private final String COUNT_ACCOUNTS = "SELECT COUNT(`account`.`id`) AS `QUANTITY` FROM `account`;";
 	
 	public int countAccounts() throws DaoException {
 		int quantity = 0;
@@ -292,13 +251,11 @@ public class AccountDao extends AbstractDao<Integer, Account> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Counting accounts error: {}", exc);
-				throw new DaoException("Counting accounts error", exc);
 			}
+			throw new DaoException("Counting accounts error", e);
 		}
 		return quantity;
 	}
-	
-	private final String CHANGE_ADMIN_RIGHTS = "UPDATE `account` SET`account`.`admin` = ? WHERE `account`.`id` = ?;";
 	
 	public boolean changeAdminRights(Account entity) throws DaoException {
 		try {
@@ -312,8 +269,8 @@ public class AccountDao extends AbstractDao<Integer, Account> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Change admin rights error: {}", exc);
-				throw new DaoException("Change admin rights error", exc);
 			}
+			throw new DaoException("Change admin rights error", e);
 		}
 		return false;
 	}

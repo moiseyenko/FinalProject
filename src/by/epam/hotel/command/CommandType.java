@@ -1,21 +1,5 @@
 package by.epam.hotel.command;
 
-import by.epam.hotel.command.impl.BackToSignupCommand;
-import by.epam.hotel.command.impl.ChangeLocaleCommand;
-import by.epam.hotel.command.impl.ChangeLoginCommand;
-import by.epam.hotel.command.impl.ChangePasswordCommand;
-import by.epam.hotel.command.impl.CheckKeyAndSignUpCommand;
-import by.epam.hotel.command.impl.ToChangePersonalDataCommand;
-import by.epam.hotel.command.impl.ToDeleteAccountCommand;
-import by.epam.hotel.command.impl.DeleteAccountCommand;
-import by.epam.hotel.command.impl.LoginBackCommand;
-import by.epam.hotel.command.impl.LoginCommand;
-import by.epam.hotel.command.impl.LogoutCommand;
-import by.epam.hotel.command.impl.SignUpCommand;
-import by.epam.hotel.command.impl.SignupBackCommand;
-import by.epam.hotel.command.impl.ToChangeLoginCommand;
-import by.epam.hotel.command.impl.ToLoginCommand;
-import by.epam.hotel.command.impl.ToSighUpCommand;
 import by.epam.hotel.command.impl.admin.AddRemoveToSendListCommand;
 import by.epam.hotel.command.impl.admin.ApproveAdminOrderCancelCommand;
 import by.epam.hotel.command.impl.admin.ApproveChangeNationalityCommand;
@@ -80,7 +64,24 @@ import by.epam.hotel.command.impl.client.ToAccountOrdersCommand;
 import by.epam.hotel.command.impl.client.ToPayCommand;
 import by.epam.hotel.command.impl.client.ToReplenishCommand;
 import by.epam.hotel.command.impl.client.ToSetRecordsPerPageAccountOrderCommand;
-import by.epam.hotel.command.impl.ToChangePasswordCommand;
+import by.epam.hotel.command.impl.common.BackToSignupCommand;
+import by.epam.hotel.command.impl.common.ChangeLocaleCommand;
+import by.epam.hotel.command.impl.common.ChangeLoginCommand;
+import by.epam.hotel.command.impl.common.ChangePasswordCommand;
+import by.epam.hotel.command.impl.common.CheckKeyAndSignUpCommand;
+import by.epam.hotel.command.impl.common.DeleteAccountCommand;
+import by.epam.hotel.command.impl.common.ErrorBackCommand;
+import by.epam.hotel.command.impl.common.LoginBackCommand;
+import by.epam.hotel.command.impl.common.LoginCommand;
+import by.epam.hotel.command.impl.common.LogoutCommand;
+import by.epam.hotel.command.impl.common.SignUpCommand;
+import by.epam.hotel.command.impl.common.SignupBackCommand;
+import by.epam.hotel.command.impl.common.ToChangeLoginCommand;
+import by.epam.hotel.command.impl.common.ToChangePasswordCommand;
+import by.epam.hotel.command.impl.common.ToChangePersonalDataCommand;
+import by.epam.hotel.command.impl.common.ToDeleteAccountCommand;
+import by.epam.hotel.command.impl.common.ToLoginCommand;
+import by.epam.hotel.command.impl.common.ToSighUpCommand;
 
 public enum CommandType {
 	LOGIN(new LoginCommand()), LOGOUT(new LogoutCommand()), SIGNUP(new SignUpCommand()),
@@ -116,7 +117,8 @@ public enum CommandType {
 	TOALLACCOUNTS(new ToAllAccountsCommand()), CHANGEADMINRIGHTS(new ChangeAdminRightsCommand()), BACKTOSIGNUP(new BackToSignupCommand()),
 	CHECKKEYANDSIGNUP(new CheckKeyAndSignUpCommand()), TOSETRECORDSPERPAGEEMAIL(new ToSetRecordsPerPageEmailCommand()),
 	TOALLEMAILS(new ToAllEmailsCommand()), ADDREMOVETOSENDLIST(new AddRemoveToSendListCommand()), 
-	SUBJECTTEXTSEND(new ToSubjectTextSendCommand()), SENDMESSAGE(new SendMessageCommand()), BACKTOALLEMAILS(new BackToAllEmailsCommand());
+	SUBJECTTEXTSEND(new ToSubjectTextSendCommand()), SENDMESSAGE(new SendMessageCommand()), BACKTOALLEMAILS(new BackToAllEmailsCommand()),
+	ERRORBACK(new ErrorBackCommand());
 	
 	
 	private CommandType(ActionCommand command) {

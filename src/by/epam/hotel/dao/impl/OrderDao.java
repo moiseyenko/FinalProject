@@ -35,7 +35,6 @@ public class OrderDao extends AbstractDao<Integer, Order> {
 			+ "`order`.`account_id`,`order`.`from`, `order`.`to`, `order`.`cost`, `order`.`removed`" 
 			+ "FROM `order`"
 			+ "WHERE `order`.`id` = ?;";
-	private final String DELETE_ORDER = "DELETE FROM `order` WHERE `order`.`id` = ?;";
 	private final String INSERT_ORDER = "INSERT INTO `hotel`.`order` (`room_number`, `client_id`, `account_id`, `from`, `to`, `cost`) "
 			+ "VALUE (?,?,?,?,?,?);";
 	private final String UPDATE_ORDER = "UPDATE `hotel`.`order` SET `order`.`room_number` = ?, `order`.`account_id` = ?, "
@@ -43,7 +42,39 @@ public class OrderDao extends AbstractDao<Integer, Order> {
 			+ "WHERE `order`.`id` = ?;";
 	private final String CHANGE_REMOVED = "UPDATE `order` SET `order`.`removed` = ? " 
 			+ "WHERE `order`.`id` = ?;";
-
+	private final String COUNT_ORDERS = "SELECT COUNT(`order`.`id`) AS `QUANTITY` FROM `order`;";
+	private final String FIND_FULL_INFO_ORDER_BY_ORDERID = "SELECT `order`.`id`,`order`.`account_id`, `account`.`login`, "
+			+ "`account`.`email`, `order`.`client_id`, `client`.`first_name`, `client`.`last_name`, "
+			+ "`client`.`passport`, `client`.`nationality_id`, "
+			+ "`nationality`.`country`, `order`.`room_number`, `room`.`class_id` AS `class`, `room`.`capacity`, `room`.`price`, "
+			+ "`order`.`from`, `order`.`to`, `order`.`cost`, `order`.`removed` "
+			+ "FROM `account` INNER JOIN (`room` INNER JOIN (`order` INNER JOIN (`client` INNER JOIN `nationality` "
+			+ "ON `client`.`nationality_id` = `nationality`.`id`) ON `order`.`client_id` = `client`.`id`) "
+			+ "ON `room`.`number` = `order`.`room_number`) ON `account`.`id` = `order`.`account_id` "
+			+ "WHERE `order`.`id` = ?;";
+	private final String FIND_FULL_INFO_ORDER = "SELECT `order`.`id`,`order`.`account_id`, `account`.`login`, "
+			+ "`account`.`email`, `order`.`client_id`, `client`.`first_name`, `client`.`last_name`, "
+			+ "`client`.`passport`, `client`.`nationality_id`, "
+			+ "`nationality`.`country`, `order`.`room_number`, `room`.`class_id` AS `class`, `room`.`capacity`, `room`.`price`, "
+			+ "`order`.`from`, `order`.`to`, `order`.`cost`, `order`.`removed` "
+			+ "FROM `account` INNER JOIN (`room` INNER JOIN (`order` INNER JOIN (`client` INNER JOIN `nationality` "
+			+ "ON `client`.`nationality_id` = `nationality`.`id`) ON `order`.`client_id` = `client`.`id`) "
+			+ "ON `room`.`number` = `order`.`room_number`) ON `account`.`id` = `order`.`account_id` "
+			+ "GROUP BY  `order`.`id` "
+			+ "LIMIT ?, ?";
+	private final String COUNT_ACCOUNT_ORDERS = "SELECT COUNT(`order`.`id`) AS `QUANTITY` FROM `order` WHERE `order`.`account_id` = ?;";
+	private final String FIND_FULL_INFO_ORDER_BY_ACCOUNT = "SELECT `order`.`id`,`order`.`account_id`, `account`.`login`, "
+			+ "`account`.`email`, `order`.`client_id`, `client`.`first_name`, `client`.`last_name`, "
+			+ "`client`.`passport`, `client`.`nationality_id`, "
+			+ "`nationality`.`country`, `order`.`room_number`, `room`.`class_id` AS `class`, `room`.`capacity`, `room`.`price`, "
+			+ "`order`.`from`, `order`.`to`, `order`.`cost`, `order`.`removed` "
+			+ "FROM `account` INNER JOIN (`room` INNER JOIN (`order` INNER JOIN (`client` INNER JOIN `nationality` "
+			+ "ON `client`.`nationality_id` = `nationality`.`id`) ON `order`.`client_id` = `client`.`id`) "
+			+ "ON `room`.`number` = `order`.`room_number`) ON `account`.`id` = `order`.`account_id` "
+			+ "WHERE `account`.`id` = ? "
+			+ "GROUP BY  `order`.`id` "
+			+ "LIMIT ?, ?";
+	
 	@Override
 	public List<Order> findAll(int start, int recordsPerPage) throws DaoException {
 		List<Order> orders = new LinkedList<>();
@@ -67,8 +98,8 @@ public class OrderDao extends AbstractDao<Integer, Order> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Finding all orders error: {}", exc);
-				throw new DaoException("Finding all orders error", exc);
 			}
+			throw new DaoException("Finding all orders error", e);
 		}
 		return orders;
 	}
@@ -93,46 +124,10 @@ public class OrderDao extends AbstractDao<Integer, Order> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Finding order error: {}", exc);
-				throw new DaoException("Finding order error", exc);
 			}
+			throw new DaoException("Finding order error", e);
 		}
 		return null;
-	}
-
-	@Override
-	public boolean delete(Integer id) throws DaoException {
-		try {
-			try (PreparedStatement statement = connection.prepareStatement(DELETE_ORDER)) {
-				statement.setInt(1, id);
-				if (statement.executeUpdate() > 0) {
-					return true;
-				}
-			}
-		} catch (SQLException e) {
-			for (Throwable exc : e) {
-				LOG.error("Deletion order error: {}", exc);
-				throw new DaoException("Deletion order error", exc);
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public boolean delete(Order entity) throws DaoException {
-		try {
-			try (PreparedStatement statement = connection.prepareStatement(DELETE_ORDER)) {
-				statement.setInt(1, entity.getId());
-				if (statement.executeUpdate() > 0) {
-					return true;
-				}
-			}
-		} catch (SQLException e) {
-			for (Throwable exc : e) {
-				LOG.error("Deletion order error: {}", exc);
-				throw new DaoException("Deletion order error", exc);
-			}
-		}
-		return false;
 	}
 
 	@Override
@@ -154,8 +149,8 @@ public class OrderDao extends AbstractDao<Integer, Order> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Creation order error: {}", exc);
-				throw new DaoException("Creation order error", exc);
 			}
+			throw new DaoException("Creation order error", e);
 		}
 		return false;
 	}
@@ -180,8 +175,8 @@ public class OrderDao extends AbstractDao<Integer, Order> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Update order error: {}", exc);
-				throw new DaoException("Update order error", exc);
 			}
+			throw new DaoException("Update order error", e);
 		}
 		return false;
 	}
@@ -199,24 +194,11 @@ public class OrderDao extends AbstractDao<Integer, Order> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Change removed flag error: {}", exc);
-				throw new DaoException("Change removed flag error", exc);
 			}
+			throw new DaoException("Change removed flag error", e);
 		}
 		return false;
 	}
-	//////////////////////////////////////////////////////////////////////////////
-	
-	private final String FIND_FULL_INFO_ORDER_BY_ACCOUNT = "SELECT `order`.`id`,`order`.`account_id`, `account`.`login`, "
-			+ "`account`.`email`, `order`.`client_id`, `client`.`first_name`, `client`.`last_name`, "
-			+ "`client`.`passport`, `client`.`nationality_id`, "
-			+ "`nationality`.`country`, `order`.`room_number`, `room`.`class_id` AS `class`, `room`.`capacity`, `room`.`price`, "
-			+ "`order`.`from`, `order`.`to`, `order`.`cost`, `order`.`removed` "
-			+ "FROM `account` INNER JOIN (`room` INNER JOIN (`order` INNER JOIN (`client` INNER JOIN `nationality` "
-			+ "ON `client`.`nationality_id` = `nationality`.`id`) ON `order`.`client_id` = `client`.`id`) "
-			+ "ON `room`.`number` = `order`.`room_number`) ON `account`.`id` = `order`.`account_id` "
-			+ "WHERE `account`.`id` = ? "
-			+ "GROUP BY  `order`.`id` "
-			+ "LIMIT ?, ?";
 	
 	public List<FullInfoOrder> findFullInfoOrderByAccount (Integer accountId, int start, int recordsPerPage) throws DaoException {
 		List<FullInfoOrder> resultList = new ArrayList<>();
@@ -260,13 +242,11 @@ public class OrderDao extends AbstractDao<Integer, Order> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Finding full info order error: {}", exc);
-				throw new DaoException("Finding full info order error", exc);
 			}
+			throw new DaoException("Finding full info order error", e);
 		}
 		return resultList;
 	}
-	
-	private final String COUNT_ACCOUNT_ORDERS = "SELECT COUNT(`order`.`id`) AS `QUANTITY` FROM `order` WHERE `order`.`account_id` = ?;";
 	
 	public int countAccountOrders(int accountId) throws DaoException {
 		int quantity = 0;
@@ -281,22 +261,11 @@ public class OrderDao extends AbstractDao<Integer, Order> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Counting orders error: {}", exc);
-				throw new DaoException("Counting orders error", exc);
 			}
+			throw new DaoException("Counting orders error", e);
 		}
 		return quantity;
 	}
-
-	private final String FIND_FULL_INFO_ORDER = "SELECT `order`.`id`,`order`.`account_id`, `account`.`login`, "
-			+ "`account`.`email`, `order`.`client_id`, `client`.`first_name`, `client`.`last_name`, "
-			+ "`client`.`passport`, `client`.`nationality_id`, "
-			+ "`nationality`.`country`, `order`.`room_number`, `room`.`class_id` AS `class`, `room`.`capacity`, `room`.`price`, "
-			+ "`order`.`from`, `order`.`to`, `order`.`cost`, `order`.`removed` "
-			+ "FROM `account` INNER JOIN (`room` INNER JOIN (`order` INNER JOIN (`client` INNER JOIN `nationality` "
-			+ "ON `client`.`nationality_id` = `nationality`.`id`) ON `order`.`client_id` = `client`.`id`) "
-			+ "ON `room`.`number` = `order`.`room_number`) ON `account`.`id` = `order`.`account_id` "
-			+ "GROUP BY  `order`.`id` "
-			+ "LIMIT ?, ?";
 	
 	public List<FullInfoOrder> findFullInfoOrder (int start, int recordsPerPage) throws DaoException {
 		List<FullInfoOrder> resultList = new ArrayList<>();
@@ -340,13 +309,11 @@ public class OrderDao extends AbstractDao<Integer, Order> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Finding full info order error: {}", exc);
-				throw new DaoException("Finding full info order error", exc);
 			}
+			throw new DaoException("Finding full info order error", e);
 		}
 		return resultList;
 	}
-	
-	private final String COUNT_ORDERS = "SELECT COUNT(`order`.`id`) AS `QUANTITY` FROM `order`;";
 	
 	public int countOrders() throws DaoException {
 		int quantity = 0;
@@ -360,21 +327,11 @@ public class OrderDao extends AbstractDao<Integer, Order> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Counting orders error: {}", exc);
-				throw new DaoException("Counting orders error", exc);
 			}
+			throw new DaoException("Counting orders error", e);
 		}
 		return quantity;
 	}
-	
-	private final String FIND_FULL_INFO_ORDER_BY_ORDERID = "SELECT `order`.`id`,`order`.`account_id`, `account`.`login`, "
-			+ "`account`.`email`, `order`.`client_id`, `client`.`first_name`, `client`.`last_name`, "
-			+ "`client`.`passport`, `client`.`nationality_id`, "
-			+ "`nationality`.`country`, `order`.`room_number`, `room`.`class_id` AS `class`, `room`.`capacity`, `room`.`price`, "
-			+ "`order`.`from`, `order`.`to`, `order`.`cost`, `order`.`removed` "
-			+ "FROM `account` INNER JOIN (`room` INNER JOIN (`order` INNER JOIN (`client` INNER JOIN `nationality` "
-			+ "ON `client`.`nationality_id` = `nationality`.`id`) ON `order`.`client_id` = `client`.`id`) "
-			+ "ON `room`.`number` = `order`.`room_number`) ON `account`.`id` = `order`.`account_id` "
-			+ "WHERE `order`.`id` = ?;";
 	
 	public FullInfoOrder findFullInfoOrderByOrderId (Integer orderId) throws DaoException {
 		FullInfoOrder fullInfoOrder = null;
@@ -414,16 +371,10 @@ public class OrderDao extends AbstractDao<Integer, Order> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Finding full info order by orderId error: {}", exc);
-				throw new DaoException("Finding full info order by orderId error", exc);
 			}
+			throw new DaoException("Finding full info order by orderId error", e);
 		}
 		return fullInfoOrder;
 	}
-	
-	
-	
-	
-	
-	
 
 }

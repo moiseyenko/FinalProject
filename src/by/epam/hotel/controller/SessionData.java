@@ -12,18 +12,17 @@ import by.epam.hotel.entity.FullInfoOrder;
 import by.epam.hotel.entity.Nationality;
 import by.epam.hotel.entity.Room;
 import by.epam.hotel.entity.RoomClass;
-import by.epam.hotel.util.apptype.RoleType;
+import by.epam.hotel.util.type.RoleType;
 
 public class SessionData {
 	private String login;
 	private RoleType role;
 	private Locale locale;
-	private boolean innerRedirect;
 	private List<Client> clients;
 	private List<Nationality> nationalities;
 	private List<RoomClass> roomClasses;
 	private Client chosenClient;
-	List<Room> availableRoomList;
+	private List<Room> availableRoomList;
 	private LocalDate from;
 	private LocalDate to;
 	private Room chosenRoom;
@@ -69,14 +68,6 @@ public class SessionData {
 
 	public void setLocale(Locale locale) {
 		this.locale = locale;
-	}
-
-	public boolean isInnerRedirect() {
-		return innerRedirect;
-	}
-
-	public void setInnerRedirect(boolean innerRedirect) {
-		this.innerRedirect = innerRedirect;
 	}
 	
 	public List<Client> getClients() {
@@ -297,8 +288,7 @@ public class SessionData {
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + ": login=" + login + ", role=" + role + ", locale=" + locale
-				+ ", innerRedirect=" + innerRedirect;
+		return getClass().getSimpleName() + ": login=" + login + ", role=" + role + ", locale=" + locale;
 	}
 
 }

@@ -50,11 +50,13 @@
 		<input type="submit" value="<fmt:message key="accounts" />" />
 	</form>
 	<hr />
-	<form action="${pageContext.request.contextPath}/controller" method="post">
-		<input type="hidden" name="command" value="toChangePersonalData" /> 
-		<input type="submit" value="<fmt:message key="changepersonaldata" />" />
-	</form>
+	<c:if test="${sessionData.login ne 'superadmin' }">
+		<form action="${pageContext.request.contextPath}/controller" method="post">
+			<input type="hidden" name="command" value="toChangePersonalData" /> 
+			<input type="submit" value="<fmt:message key="changepersonaldata" />" />
+		</form>
 	<hr />
+	</c:if>
 	<form action="${pageContext.request.contextPath}/controller" method="post">
 		<input type="hidden" name="command" value="toSetRecordsPerPageEmail" /> 
 		<input type="submit" value="<fmt:message key="sendmessage" />" />

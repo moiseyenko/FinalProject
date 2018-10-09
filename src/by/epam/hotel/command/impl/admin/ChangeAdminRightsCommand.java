@@ -11,15 +11,14 @@ import by.epam.hotel.controller.SessionData;
 import by.epam.hotel.entity.Account;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
-import by.epam.hotel.logic.ChangeAdminRightsLogic;
-import by.epam.hotel.logic.ToAllAccountsLogic;
+import by.epam.hotel.service.AdminService;
 import by.epam.hotel.util.ConfigurationManager;
 import by.epam.hotel.util.MessageManager;
-import by.epam.hotel.util.apptype.RoleType;
-import by.epam.hotel.util.apptype.RouterType;
 import by.epam.hotel.util.constant.AttributeConstant;
 import by.epam.hotel.util.constant.ParameterConstant;
 import by.epam.hotel.util.constant.PropertyConstant;
+import by.epam.hotel.util.type.RoleType;
+import by.epam.hotel.util.type.RouterType;
 
 public class ChangeAdminRightsCommand implements ActionCommand{
 	
@@ -35,15 +34,15 @@ public class ChangeAdminRightsCommand implements ActionCommand{
 			int recordsPerPage = sessionData.getRecordsPerPage();
 			int currentPage = sessionData.getCurrentPage();
 			try {
-				if (ChangeAdminRightsLogic.changeAccountAdminRights(accountToChangeAdminRights)) {
-					List<Account> accountList = ToAllAccountsLogic.getAccountsList(currentPage,
+				if (AdminService.changeAccountAdminRights(accountToChangeAdminRights)) {
+					List<Account> accountList = AdminService.getAccountsList(currentPage,
 							recordsPerPage);
 					sessionData.setAccountList(accountList);
 					page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ALL_ACCOUNTS);
 					router.setType(RouterType.REDIRECT);
 				}else {
 					request.setAttribute(AttributeConstant.ERROR_CHANGE_ADMIN_RIGHTS_MESSAGE,
-							MessageManager.getProrerty(PropertyConstant.MESSAGE_CHANGE_ADMIN_RIGHTS_ERROR));
+							MessageManager.getProrerty(PropertyConstant.MESSAGE_CHANGE_ADMIN_RIGHTS_ERROR, sessionData.getLocale()));
 					page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ALL_ACCOUNTS);
 					router.setType(RouterType.FORWARD);
 				}

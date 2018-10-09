@@ -26,11 +26,10 @@ public class RoomClassDao extends AbstractDao<String, RoomClass> {
 			+ "FROM `class` WHERE `class`.`id` = ? AND `class`.`removed` = 0;";
 	private final String FIND_CLASS = "SELECT `class`.`id`, `class`.`removed` "
 			+ "FROM `class` WHERE `class`.`id` = ? ";
-	private final String DELETE_CLASS = "DELETE FROM `class` WHERE `class`.`id` = ? ;";
 	private final String CHANGE_REMOVED = "UPDATE `class` SET `class`.`removed` = ? "
 			+ "WHERE `class`.`id` = ? ;";
 	private final String INSERT_CLASS = "INSERT INTO`hotel`.`class`(`id`) VALUES (?);";
-	
+	private final String COUNT_ROOM_CLASSES = "SELECT COUNT(`class`.`id`) AS `QUANTITY` FROM `class`;";
 	
 	
 
@@ -51,8 +50,8 @@ public class RoomClassDao extends AbstractDao<String, RoomClass> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Finding all room classes error: {}", exc);
-				throw new DaoException("Finding all room classes error", exc);
 			}
+			throw new DaoException("Finding all room classes error", e);
 		}
 		return classes;
 	}
@@ -70,8 +69,8 @@ public class RoomClassDao extends AbstractDao<String, RoomClass> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Finding existing room classes error: {}", exc);
-				throw new DaoException("Finding existing room classes error", exc);
 			}
+			throw new DaoException("Finding existing room classes error", e);
 		}
 		return classes;
 	}
@@ -92,47 +91,10 @@ public class RoomClassDao extends AbstractDao<String, RoomClass> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Finding room class error: {}", exc);
-				throw new DaoException("Finding room class error", exc);
 			}
+			throw new DaoException("Finding room class error", e);
 		}
 		return null;
-	}
-
-	@Override
-	public boolean delete(String id) throws DaoException {
-		try {
-			try (PreparedStatement statement = connection.prepareStatement(DELETE_CLASS)) {
-				statement.setString(1, id);
-				if (statement.executeUpdate() > 0) {
-					return true;
-				}
-			}
-		} catch (SQLException e) {
-			for (Throwable exc : e) {
-				LOG.error("Deletion room class error: {}", exc);
-				throw new DaoException("Deletion room class error", exc);
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public boolean delete(RoomClass entity) throws DaoException {
-		try {
-			String classAttempt = entity.getClassId();
-			try (PreparedStatement statement = connection.prepareStatement(DELETE_CLASS)) {
-				statement.setString(1, classAttempt);
-				if (statement.executeUpdate() > 0) {
-					return true;
-				}
-			}
-		} catch (SQLException e) {
-			for (Throwable exc : e) {
-				LOG.error("Deletion  room class error: {}", exc);
-				throw new DaoException("Deletion  room class error", exc);
-			}
-		}
-		return false;
 	}
 
 	@Override
@@ -153,8 +115,8 @@ public class RoomClassDao extends AbstractDao<String, RoomClass> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Creation room class error: {}", exc);
-				throw new DaoException("Creation room class error", exc);
 			}
+			throw new DaoException("Creation room class error", e);
 		}
 		return false;
 	}
@@ -177,8 +139,8 @@ public class RoomClassDao extends AbstractDao<String, RoomClass> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Change room class removed flag  error: {}", exc);
-				throw new DaoException("Change room class removed flag error", exc);
 			}
+			throw new DaoException("Change room class removed flag error", e);
 		}
 		return false;
 	}
@@ -197,13 +159,11 @@ public class RoomClassDao extends AbstractDao<String, RoomClass> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Finding not removed room class error: {}", exc);
-				throw new DaoException("Finding not removed room class error", exc);
 			}
+			throw new DaoException("Finding not removed room class error", e);
 		}
 		return null;
 	}
-	
-	private final String COUNT_ROOM_CLASSES = "SELECT COUNT(`class`.`id`) AS `QUANTITY` FROM `class`;";
 
 	public int countRoomClasses() throws DaoException {
 		int quantity = 0;
@@ -217,8 +177,8 @@ public class RoomClassDao extends AbstractDao<String, RoomClass> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Counting room classes error: {}", exc);
-				throw new DaoException("Counting room classes error", exc);
 			}
+			throw new DaoException("Counting room classes error", e);
 		}
 		return quantity;
 	}

@@ -26,13 +26,13 @@ public class NationalityDao extends AbstractDao<String, Nationality> {
 			+ "FROM `nationality` WHERE `nationality`.`id` = ? OR `nationality`.`country` = ?";
 	private final String FIND_NATIONALITY_BY_ID = "SELECT `nationality`.`id`, `nationality`.`country`, `nationality`.`removed` "
 			+ "FROM `nationality` WHERE `nationality`.`id` = ?";
-	private final String DELETE_NATIONALITY = "DELETE FROM `nationality` WHERE `nationality`.`id` = ? OR `nationality`.`country` = ?;";
-	private final String DELETE_NATIONALITY_BY_ID = "DELETE FROM `nationality` WHERE `nationality`.`id` = ?;";
 	private final String CHANGE_REMOVED = "UPDATE `nationality` SET `nationality`.`removed` = ? "
 			+ "WHERE `nationality`.`id` = ? OR `nationality`.`country` = ?;";
 	private final String INSERT_NATIONALITY = "INSERT INTO`hotel`.`nationality`(`id`,`country`) VALUES (?, ?);";
 	private final String UPDATE_NATIONALITY = "UPDATE `nationality` SET `nationality`.`country` = ? "
 			+ "WHERE `nationality`.`id` = ?;";
+	private final String COUNT_NATIONALITIES = "SELECT COUNT(`nationality`.`id`) AS `QUANTITY` FROM `nationality`;";
+	
 
 	@Override
 	public List<Nationality> findAll(int start, int recordsPerPage) throws DaoException {
@@ -52,8 +52,8 @@ public class NationalityDao extends AbstractDao<String, Nationality> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Finding all nationalities error: {}", exc);
-				throw new DaoException("Finding all nationalities error", exc);
 			}
+			throw new DaoException("Finding all nationalities error", e);
 		}
 		return nationalities;
 	}
@@ -72,8 +72,8 @@ public class NationalityDao extends AbstractDao<String, Nationality> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Finding existing nationalities error: {}", exc);
-				throw new DaoException("Finding existing nationalities error", exc);
 			}
+			throw new DaoException("Finding existing nationalities error", e);
 		}
 		return nationalities;
 	}
@@ -94,49 +94,10 @@ public class NationalityDao extends AbstractDao<String, Nationality> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Finding nationality error: {}", exc);
-				throw new DaoException("Finding nationality error", exc);
 			}
+			throw new DaoException("Finding nationality error", e);
 		}
 		return null;
-	}
-
-	@Override
-	public boolean delete(String id) throws DaoException {
-		try {
-			try (PreparedStatement statement = connection.prepareStatement(DELETE_NATIONALITY_BY_ID)) {
-				statement.setString(1, id);
-				if (statement.executeUpdate() > 0) {
-					return true;
-				}
-			}
-		} catch (SQLException e) {
-			for (Throwable exc : e) {
-				LOG.error("Deletion nationality error: {}", exc);
-				throw new DaoException("Deletion nationality error", exc);
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public boolean delete(Nationality entity) throws DaoException {
-		try {
-			String countryAttempt = entity.getCountry();
-			String countryIdAttempt = entity.getCountryId();
-			try (PreparedStatement statement = connection.prepareStatement(DELETE_NATIONALITY)) {
-				statement.setString(1, countryIdAttempt);
-				statement.setString(2, countryAttempt);
-				if (statement.executeUpdate() > 0) {
-					return true;
-				}
-			}
-		} catch (SQLException e) {
-			for (Throwable exc : e) {
-				LOG.error("Deletion nationality error: {}", exc);
-				throw new DaoException("Deletion nationality error", exc);
-			}
-		}
-		return false;
 	}
 
 	@Override
@@ -160,8 +121,8 @@ public class NationalityDao extends AbstractDao<String, Nationality> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Creation nationality error: {}", exc);
-				throw new DaoException("Creation nationality error", exc);
 			}
+			throw new DaoException("Creation nationality error", e);
 		}
 		return false;
 	}
@@ -179,8 +140,8 @@ public class NationalityDao extends AbstractDao<String, Nationality> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Update nationality error: {}", exc);
-				throw new DaoException("Update nationality error", exc);
 			}
+			throw new DaoException("Update nationality error", e);
 		}
 		return false;
 	}
@@ -199,8 +160,8 @@ public class NationalityDao extends AbstractDao<String, Nationality> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Change nationality removed flag  error: {}", exc);
-				throw new DaoException("Change nationality removed flag error", exc);
 			}
+			throw new DaoException("Change nationality removed flag error", e);
 		}
 		return false;
 	}
@@ -221,8 +182,8 @@ public class NationalityDao extends AbstractDao<String, Nationality> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Finding not removed nationality error: {}", exc);
-				throw new DaoException("Finding not removed nationality error", exc);
 			}
+			throw new DaoException("Finding not removed nationality error", e);
 		}
 		return null;
 	}
@@ -243,14 +204,12 @@ public class NationalityDao extends AbstractDao<String, Nationality> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Finding nationality error: {}", exc);
-				throw new DaoException("Finding nationality error", exc);
 			}
+			throw new DaoException("Finding nationality error", e);
 		}
 		return null;
 	}
 
-	private final String COUNT_NATIONALITIES = "SELECT COUNT(`nationality`.`id`) AS `QUANTITY` FROM `nationality`;";
-	
 	public int countNationalities() throws DaoException {
 		int quantity = 0;
 		try {
@@ -263,8 +222,8 @@ public class NationalityDao extends AbstractDao<String, Nationality> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Counting nationalities error: {}", exc);
-				throw new DaoException("Counting nationalities error", exc);
 			}
+			throw new DaoException("Counting nationalities error", e);
 		}
 		return quantity;
 	}

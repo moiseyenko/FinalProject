@@ -2,21 +2,16 @@ package by.epam.hotel.listener;
 
 import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionAttributeListener;
-import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
 import by.epam.hotel.controller.SessionData;
-import by.epam.hotel.util.apptype.LanguageType;
-import by.epam.hotel.util.apptype.RoleType;
+import by.epam.hotel.util.type.LanguageType;
+import by.epam.hotel.util.type.RoleType;
 
-/**
- * Application Lifecycle Listener implementation class SessionListenerImp
- *
- */
+
 @WebListener
-public class SessionListenerImp implements HttpSessionListener,  HttpSessionAttributeListener {
+public class SessionListenerImp implements HttpSessionListener {
 
 	public SessionListenerImp() {
 
@@ -36,25 +31,7 @@ public class SessionListenerImp implements HttpSessionListener,  HttpSessionAttr
 	}
 
 	public void sessionDestroyed(HttpSessionEvent event) {
-		System.out.println(event.getSession().getAttribute("sessionData"));
-	}
-
-	@Override
-	public void attributeAdded(HttpSessionBindingEvent event) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void attributeRemoved(HttpSessionBindingEvent event) {
-		System.out.println(" Session attributeRemoved ");
-
-	}
-
-	@Override
-	public void attributeReplaced(HttpSessionBindingEvent event) {
-		System.out.println(event.getSession().getAttribute("sessionData"));
-
+		System.out.println("sessionDestroyed" + event.getSession().getAttribute("sessionData"));
 	}
 
 }

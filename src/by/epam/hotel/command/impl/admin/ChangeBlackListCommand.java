@@ -11,15 +11,14 @@ import by.epam.hotel.controller.SessionData;
 import by.epam.hotel.entity.Client;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
-import by.epam.hotel.logic.ChangeBlackListLogic;
-import by.epam.hotel.logic.ToAllClientsLogic;
+import by.epam.hotel.service.AdminService;
 import by.epam.hotel.util.ConfigurationManager;
 import by.epam.hotel.util.MessageManager;
-import by.epam.hotel.util.apptype.RoleType;
-import by.epam.hotel.util.apptype.RouterType;
 import by.epam.hotel.util.constant.AttributeConstant;
 import by.epam.hotel.util.constant.ParameterConstant;
 import by.epam.hotel.util.constant.PropertyConstant;
+import by.epam.hotel.util.type.RoleType;
+import by.epam.hotel.util.type.RouterType;
 
 public class ChangeBlackListCommand implements ActionCommand {
 	
@@ -35,15 +34,15 @@ public class ChangeBlackListCommand implements ActionCommand {
 			int recordsPerPage = sessionData.getRecordsPerPage();
 			int currentPage = sessionData.getCurrentPage();
 			try {
-				if (ChangeBlackListLogic.changeClientBlacklist(clientToChangeBlacklist)) {
-					List<Client> clientList = ToAllClientsLogic.getClientsList(currentPage,
+				if (AdminService.changeClientBlacklist(clientToChangeBlacklist)) {
+					List<Client> clientList = AdminService.getClientsList(currentPage,
 							recordsPerPage);
 					sessionData.setClientList(clientList);
 					page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ALL_CLIENTS);
 					router.setType(RouterType.REDIRECT);
 				}else {
 					request.setAttribute(AttributeConstant.ERROR_CHANGE_BLACKLIST_CLIENT_MESSAGE,
-							MessageManager.getProrerty(PropertyConstant.MESSAGE_CHANGE_CLIENT_BLACKLIST_ERROR));
+							MessageManager.getProrerty(PropertyConstant.MESSAGE_CHANGE_CLIENT_BLACKLIST_ERROR, sessionData.getLocale()));
 					page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ALL_CLIENTS);
 					router.setType(RouterType.FORWARD);
 				}

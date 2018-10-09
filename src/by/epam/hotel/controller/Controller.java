@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,12 +35,12 @@ public class Controller extends HttpServlet {
 		ConnectionPool.getInstance().destroyPool();
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		proccedRequest(request, response);
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		proccedRequest(request, response);
 	}
@@ -52,15 +53,15 @@ public class Controller extends HttpServlet {
 			response.sendRedirect(request.getContextPath() + ConfigurationManager.getProperty("path.page.welcome"));
 		} else {
 			Router router = null;
-			String action = request.getParameter("command");
 			ActionFactory user = new ActionFactory();
+			String action = request.getParameter("command");
 			ActionCommand command = user.defineCommand(action);
 			try {
 				router = command.execute(request);
 				LOG.debug(router);
 			} catch (CommandException e) {
 				LOG.error(router, e);
-				response.sendError(500);
+				response.sendError(500);	
 			}
 			switch (router.getType()) {
 			case REDIRECT:
@@ -75,7 +76,7 @@ public class Controller extends HttpServlet {
 				break;
 			// need change;
 			default:
-				LOG.error("You will never be here");
+				throw new IllegalArgumentException("You will never be here");
 			}
 		}
 	}

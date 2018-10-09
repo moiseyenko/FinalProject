@@ -7,12 +7,13 @@ import by.epam.hotel.controller.Router;
 import by.epam.hotel.controller.SessionData;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
-import by.epam.hotel.logic.OrderLogic;
+import by.epam.hotel.service.ClientService;
+import by.epam.hotel.service.CommonService;
 import by.epam.hotel.util.ConfigurationManager;
-import by.epam.hotel.util.apptype.RoleType;
-import by.epam.hotel.util.apptype.RouterType;
 import by.epam.hotel.util.constant.AttributeConstant;
 import by.epam.hotel.util.constant.PropertyConstant;
+import by.epam.hotel.util.type.RoleType;
+import by.epam.hotel.util.type.RouterType;
 
 public class OrderCommand implements ActionCommand {
 	@Override
@@ -22,9 +23,9 @@ public class OrderCommand implements ActionCommand {
 		SessionData sessionData = (SessionData) request.getSession().getAttribute(AttributeConstant.SESSION_DATA);
 		if (sessionData.getRole() == RoleType.CLIENT) {
 			try {
-				sessionData.setClients(OrderLogic.getClientList(sessionData.getLogin()));
-				sessionData.setNationalities(OrderLogic.getNationalityList());
-				sessionData.setRoomClasses(OrderLogic.getRoomClassList());
+				sessionData.setClients(ClientService.getClientList(sessionData.getLogin()));
+				sessionData.setNationalities(ClientService.getNationalityList());
+				sessionData.setRoomClasses(CommonService.getRoomClassList());
 			} catch (ServiceException e) {
 				throw new CommandException(e);
 			}

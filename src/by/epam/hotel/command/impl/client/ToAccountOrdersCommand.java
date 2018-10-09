@@ -11,13 +11,13 @@ import by.epam.hotel.controller.SessionData;
 import by.epam.hotel.entity.FullInfoOrder;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
-import by.epam.hotel.logic.ToAccountOrdersLogic;
+import by.epam.hotel.service.ClientService;
 import by.epam.hotel.util.ConfigurationManager;
-import by.epam.hotel.util.apptype.RoleType;
-import by.epam.hotel.util.apptype.RouterType;
 import by.epam.hotel.util.constant.AttributeConstant;
 import by.epam.hotel.util.constant.ParameterConstant;
 import by.epam.hotel.util.constant.PropertyConstant;
+import by.epam.hotel.util.type.RoleType;
+import by.epam.hotel.util.type.RouterType;
 
 public class ToAccountOrdersCommand implements ActionCommand {
 
@@ -32,10 +32,10 @@ public class ToAccountOrdersCommand implements ActionCommand {
 			int currentPage = Integer.valueOf(request.getParameter(ParameterConstant.CURRENT_PAGE));
 			int recordsPerPage = Integer.valueOf(request.getParameter(ParameterConstant.RECORDS_PER_PAGE));
 			try {
-				List<FullInfoOrder> listAccountFullInfoOrder = ToAccountOrdersLogic.getFullInfoOrderList(currentLogin,
+				List<FullInfoOrder> listAccountFullInfoOrder = ClientService.getFullInfoOrderList(currentLogin,
 						currentPage, recordsPerPage);
 				sessionData.setListAccountFullInfoOrder(listAccountFullInfoOrder);
-				int rows = ToAccountOrdersLogic.getNumberOfRows(currentLogin);
+				int rows = ClientService.getNumberOfRows(currentLogin);
 				int noOfPages = rows / recordsPerPage;
 				if (rows % recordsPerPage > 0) {
 					noOfPages++;

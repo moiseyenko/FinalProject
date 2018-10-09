@@ -11,15 +11,14 @@ import by.epam.hotel.controller.SessionData;
 import by.epam.hotel.entity.RoomClass;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
-import by.epam.hotel.logic.ChangeClassRemovedLogic;
-import by.epam.hotel.logic.ToAllClassesLogic;
+import by.epam.hotel.service.AdminService;
 import by.epam.hotel.util.ConfigurationManager;
 import by.epam.hotel.util.MessageManager;
-import by.epam.hotel.util.apptype.RoleType;
-import by.epam.hotel.util.apptype.RouterType;
 import by.epam.hotel.util.constant.AttributeConstant;
 import by.epam.hotel.util.constant.ParameterConstant;
 import by.epam.hotel.util.constant.PropertyConstant;
+import by.epam.hotel.util.type.RoleType;
+import by.epam.hotel.util.type.RouterType;
 
 public class ChangeClassRemovedCommand implements ActionCommand{
 	
@@ -35,15 +34,15 @@ public class ChangeClassRemovedCommand implements ActionCommand{
 			int recordsPerPage = sessionData.getRecordsPerPage();
 			int currentPage = sessionData.getCurrentPage();
 			try {
-				if (ChangeClassRemovedLogic.changeClassRemoved(classToChangeRemoved)) {
-					List<RoomClass> roomClassList = ToAllClassesLogic.getClassesList(currentPage,
+				if (AdminService.changeClassRemoved(classToChangeRemoved)) {
+					List<RoomClass> roomClassList = AdminService.getClassesList(currentPage,
 							recordsPerPage);
 					sessionData.setRoomClassList(roomClassList);
 					page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ALL_CLASSES);
 					router.setType(RouterType.REDIRECT);
 				}else {
 					request.setAttribute(AttributeConstant.ERROR_CHANGE_CLASS_REMOVED_MESSAGE,
-							MessageManager.getProrerty(PropertyConstant.MESSAGE_CHANGE_CLASS_REMOVED_ERROR));
+							MessageManager.getProrerty(PropertyConstant.MESSAGE_CHANGE_CLASS_REMOVED_ERROR, sessionData.getLocale()));
 					page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ALL_CLASSES);
 					router.setType(RouterType.FORWARD);
 				}

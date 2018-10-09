@@ -14,11 +14,11 @@ import by.epam.hotel.controller.SessionData;
 import by.epam.hotel.entity.FullInfoOrder;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.util.ConfigurationManager;
-import by.epam.hotel.util.apptype.RoleType;
-import by.epam.hotel.util.apptype.RouterType;
 import by.epam.hotel.util.constant.AttributeConstant;
 import by.epam.hotel.util.constant.ParameterConstant;
 import by.epam.hotel.util.constant.PropertyConstant;
+import by.epam.hotel.util.type.RoleType;
+import by.epam.hotel.util.type.RouterType;
 
 public class CancelOrderCommand implements ActionCommand {
 	
@@ -29,7 +29,7 @@ public class CancelOrderCommand implements ActionCommand {
 		HttpSession session = request.getSession();
 		SessionData sessionData = (SessionData) session.getAttribute(AttributeConstant.SESSION_DATA);
 		if (sessionData.getRole() == RoleType.CLIENT) {
-			int orderIndex = Integer.parseInt(request.getParameter(ParameterConstant.ORDER_ID)) ;
+			int orderIndex = Integer.parseInt(request.getParameter(ParameterConstant.ORDER_INDEX)) ;
 			FullInfoOrder orderToCancel =sessionData.getListAccountFullInfoOrder().get(--orderIndex);
 			BigDecimal returnedSum = calculateReturnSum(orderToCancel);
 			request.setAttribute(AttributeConstant.RETURNED_SUM, returnedSum);

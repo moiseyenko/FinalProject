@@ -7,12 +7,12 @@ import by.epam.hotel.controller.Router;
 import by.epam.hotel.controller.SessionData;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
-import by.epam.hotel.logic.OrderLogic;
+import by.epam.hotel.service.CommonService;
 import by.epam.hotel.util.ConfigurationManager;
-import by.epam.hotel.util.apptype.RoleType;
-import by.epam.hotel.util.apptype.RouterType;
 import by.epam.hotel.util.constant.AttributeConstant;
 import by.epam.hotel.util.constant.PropertyConstant;
+import by.epam.hotel.util.type.RoleType;
+import by.epam.hotel.util.type.RouterType;
 
 public class ToCreateRoomCommand implements ActionCommand{
 	
@@ -23,7 +23,7 @@ public class ToCreateRoomCommand implements ActionCommand{
 		SessionData sessionData = (SessionData) request.getSession().getAttribute(AttributeConstant.SESSION_DATA);
 		if (sessionData.getRole() == RoleType.ADMIN) {
 			try {
-				sessionData.setRoomClasses(OrderLogic.getRoomClassList());
+				sessionData.setRoomClasses(CommonService.getRoomClassList());
 				page = ConfigurationManager.getProperty(PropertyConstant.PAGE_CREATE_ROOM);
 			} catch (ServiceException e) {
 				throw new CommandException(e);

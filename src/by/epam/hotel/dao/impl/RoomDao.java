@@ -26,7 +26,6 @@ public class RoomDao extends AbstractDao<Integer, Room> {
 			+ "(?, ?, ?, ?);";
 	private final String FIND_ROOM_BY_ID = "SELECT `room`.`number`, `room`.`class_id`, `room`.`capacity`, "
 			+ "			+ `room`.`price`, `room`.`removed` FROM `room` WHERE `room`.`number` = ?;";
-	private final String DELETE_ROOM = "DELETE FROM `room` WHERE `room`.`number` = ?;";
 	private final String UPDATE_ROOM = "UPDATE `room` SET `room`.`class_id` = ?, "
 			+ "`room`.`capacity` = ?, `room`.`price` = ? WHERE `room`.`number` = ?;";
 	private final String CHANGE_REMOVED = "UPDATE `room` SET `room`.`removed` = ? WHERE `room`.`number` = ?;";
@@ -37,6 +36,7 @@ public class RoomDao extends AbstractDao<Integer, Room> {
 		+ "					 FROM `order` JOIN `room` ON `order`.`room_number` = `room`.`number` " 
 		+ "					 WHERE `room`.`capacity` >= ? AND `room`.`class_id` = ? " 
 		+ "					 AND `order`.`from`<= ? AND `order`.`to`>= ? AND `order`.`removed` = 0);";
+	private final String COUNT_ROOMS = "SELECT COUNT(`room`.`number`) AS `QUANTITY` FROM `room`;";
 
 	@Override
 	public List<Room> findAll(int start, int recordsPerPage) throws DaoException {
@@ -58,8 +58,8 @@ public class RoomDao extends AbstractDao<Integer, Room> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Finding all rooms error: {}", exc);
-				throw new DaoException("Finding all rooms error", exc);
 			}
+			throw new DaoException("Finding all rooms error", e);
 		}
 		return rooms;
 	}
@@ -81,46 +81,10 @@ public class RoomDao extends AbstractDao<Integer, Room> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Finding room error: {}", exc);
-				throw new DaoException("Finding room error", exc);
 			}
+			throw new DaoException("Finding room error", e);
 		}
 		return null;
-	}
-
-	@Override
-	public boolean delete(Integer id) throws DaoException {
-		try {
-			try (PreparedStatement statement = connection.prepareStatement(DELETE_ROOM)) {
-				statement.setInt(1, id);
-				if (statement.executeUpdate() > 0) {
-					return true;
-				}
-			}
-		} catch (SQLException e) {
-			for (Throwable exc : e) {
-				LOG.error("Deletion room error: {}", exc);
-				throw new DaoException("Deletion room error", exc);
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public boolean delete(Room room) throws DaoException {
-		try {
-			try (PreparedStatement statement = connection.prepareStatement(DELETE_ROOM)) {
-				statement.setInt(1, room.getNumber());
-				if (statement.executeUpdate() > 0) {
-					return true;
-				}
-			}
-		} catch (SQLException e) {
-			for (Throwable exc : e) {
-				LOG.error("Deletion room error: {}", exc);
-				throw new DaoException("Deletion room error", exc);
-			}
-		}
-		return false;
 	}
 
 	@Override
@@ -138,8 +102,8 @@ public class RoomDao extends AbstractDao<Integer, Room> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Creation room error: {}", exc);
-				throw new DaoException("Creation room error", exc);
 			}
+			throw new DaoException("Creation room error", e);
 		}
 		return false;
 	}
@@ -159,8 +123,8 @@ public class RoomDao extends AbstractDao<Integer, Room> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Update room error: {}", exc);
-				throw new DaoException("Update room error", exc);
 			}
+			throw new DaoException("Update room error", e);
 		}
 		return false;
 	}
@@ -178,8 +142,8 @@ public class RoomDao extends AbstractDao<Integer, Room> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Change room removed flag error: {}", exc);
-				throw new DaoException("Change room removed flag error", exc);
 			}
+			throw new DaoException("Change room removed flag error", e);
 		}
 		return false;
 	}
@@ -205,47 +169,11 @@ public class RoomDao extends AbstractDao<Integer, Room> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Showing empty room error: {}", exc);
-				throw new DaoException("Showing empty room error", exc);
 			}
+			throw new DaoException("Showing empty room error", e);
 		}
 		return resultList;
 	}
-	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	private final String LEAST_PROFITABLE_HOTEL_ROOM = "SELECT `outer`.`number`, `outer`.`class_id`, " 
-			+ "`outer`.`capacity`, `outer`.`price`"
-			+ "FROM `times_rooms` `outer` "
-			+ "WHERE `outer`.`times` = (SELECT MIN(`inner`.`times`) "
-			+ "						 FROM `times_rooms` `inner` "
-			+ "						 WHERE `inner`.`class` = `outer`.`class_id`) "
-			+ "ORDER BY `outer`.`class_id`;";
-
-	public List<Room> showLeastProfitableRoom () throws DaoException{
-		List<Room> resultList = new LinkedList<>();
-		try {
-			try (Statement statement = connection.createStatement()) {
-				ResultSet result = statement.executeQuery(LEAST_PROFITABLE_HOTEL_ROOM);
-				while (result.next()) {
-					int number = result.getInt(DaoFieldType.NUMBER.getField());
-					String roomClass = result.getString(DaoFieldType.CLASS.getField());
-					int capasity = result.getInt(DaoFieldType.PRICE.getField());
-					BigDecimal price = result.getBigDecimal(DaoFieldType.PRICE.getField());
-					resultList.add(new Room(number, roomClass, capasity, price));
-				}
-
-			}
-		} catch (SQLException e) {
-			for (Throwable exc : e) {
-				LOG.error("Showing the least profitable rooms error: {}", exc);
-				throw new DaoException("Showing the least profitable rooms error", exc);
-			}
-		}
-		return resultList;
-	}
-	
-	
-private final String COUNT_ROOMS = "SELECT COUNT(`room`.`number`) AS `QUANTITY` FROM `room`;";
 	
 	public int countRooms() throws DaoException {
 		int quantity = 0;
@@ -259,12 +187,10 @@ private final String COUNT_ROOMS = "SELECT COUNT(`room`.`number`) AS `QUANTITY` 
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Counting rooms error: {}", exc);
-				throw new DaoException("Counting rooms error", exc);
 			}
+			throw new DaoException("Counting rooms error", e);
 		}
 		return quantity;
-	}
-	
-	
+	}	
 
 }

@@ -15,13 +15,13 @@ import by.epam.hotel.controller.SessionData;
 import by.epam.hotel.entity.Room;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
-import by.epam.hotel.logic.FindRoomLogic;
+import by.epam.hotel.service.ClientService;
 import by.epam.hotel.util.ConfigurationManager;
-import by.epam.hotel.util.apptype.RoleType;
-import by.epam.hotel.util.apptype.RouterType;
 import by.epam.hotel.util.constant.AttributeConstant;
 import by.epam.hotel.util.constant.ParameterConstant;
 import by.epam.hotel.util.constant.PropertyConstant;
+import by.epam.hotel.util.type.RoleType;
+import by.epam.hotel.util.type.RouterType;
 
 public class ChooseRoomCommand implements ActionCommand {
 
@@ -38,7 +38,7 @@ public class ChooseRoomCommand implements ActionCommand {
 			LocalDate from = sessionData.getFrom();
 			LocalDate to = sessionData.getTo();
 			try {
-				List<Room> updatedAvailableRoomList = FindRoomLogic.findAvailableRoom(chosenRoom.getCapacity(), chosenRoom.getClassRoom(), from, to);
+				List<Room> updatedAvailableRoomList = ClientService.findAvailableRoom(chosenRoom.getCapacity(), chosenRoom.getClassRoom(), from, to);
 				if (updatedAvailableRoomList.contains(chosenRoom)) {
 					sessionData.setChosenRoom(chosenRoom);
 					long timeStampDiff = to.getLong(ChronoField.EPOCH_DAY)-from.getLong(ChronoField.EPOCH_DAY);

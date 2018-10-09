@@ -34,5 +34,7 @@ public interface ParameterConstant {
 	String FROM = "from";
 	String TO = "to";
 	String REPLENISH_AMOUNT = "replenishAmount";
+	String SUBJECT = "subject";
+	String EMAIL_CONFIRMATION_KEY = "emailConfirmationKey";
 	
 }

@@ -6,10 +6,10 @@ import by.epam.hotel.command.ActionCommand;
 import by.epam.hotel.controller.Router;
 import by.epam.hotel.controller.SessionData;
 import by.epam.hotel.util.ConfigurationManager;
-import by.epam.hotel.util.apptype.RoleType;
-import by.epam.hotel.util.apptype.RouterType;
 import by.epam.hotel.util.constant.AttributeConstant;
 import by.epam.hotel.util.constant.PropertyConstant;
+import by.epam.hotel.util.type.RoleType;
+import by.epam.hotel.util.type.RouterType;
 
 public class BackToClientmainCommand implements ActionCommand {
 

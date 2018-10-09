@@ -12,15 +12,15 @@ import by.epam.hotel.controller.SessionData;
 import by.epam.hotel.entity.RoomClass;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
-import by.epam.hotel.logic.CreateClassLogic;
+import by.epam.hotel.service.AdminService;
 import by.epam.hotel.util.ConfigurationManager;
 import by.epam.hotel.util.MessageManager;
-import by.epam.hotel.util.apptype.RoleType;
-import by.epam.hotel.util.apptype.RouterType;
 import by.epam.hotel.util.constant.AttributeConstant;
 import by.epam.hotel.util.constant.ParameterConstant;
 import by.epam.hotel.util.constant.PropertyConstant;
 import by.epam.hotel.util.constant.ValidationConstant;
+import by.epam.hotel.util.type.RoleType;
+import by.epam.hotel.util.type.RouterType;
 
 public class CreateClassCommand implements ActionCommand{
 	
@@ -35,12 +35,12 @@ public class CreateClassCommand implements ActionCommand{
 			if(validateClassId(classId)) {
 				RoomClass newRoomClass = new RoomClass(classId);
 				try {
-					if(CreateClassLogic.createRoomClass(newRoomClass)) {
+					if(AdminService.createRoomClass(newRoomClass)) {
 						page = ConfigurationManager.getProperty(PropertyConstant.PAGE_SUCCESS_CREATE_CLASS);
 						router.setType(RouterType.REDIRECT);
 					}else {
 						request.setAttribute(AttributeConstant.ERROR_CREATE_CLASS_MESSAGE,
-								MessageManager.getProrerty(PropertyConstant.MESSAGE_CREATE_CLASS_ERROR));
+								MessageManager.getProrerty(PropertyConstant.MESSAGE_CREATE_CLASS_ERROR, sessionData.getLocale()));
 						page = ConfigurationManager.getProperty(PropertyConstant.PAGE_CREATE_CLASS);
 						router.setType(RouterType.FORWARD);
 					}
@@ -49,7 +49,7 @@ public class CreateClassCommand implements ActionCommand{
 				}
 			}else {
 				request.setAttribute(AttributeConstant.ERROR_CLASS_ID_MESSAGE,
-						MessageManager.getProrerty(PropertyConstant.MESSAGE_CLASS_ID_ERROR));
+						MessageManager.getProrerty(PropertyConstant.MESSAGE_CLASS_ID_ERROR, sessionData.getLocale()));
 				page = ConfigurationManager.getProperty(PropertyConstant.PAGE_CREATE_CLASS);
 				router.setType(RouterType.FORWARD);
 			}	

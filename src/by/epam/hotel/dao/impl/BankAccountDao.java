@@ -44,20 +44,10 @@ public class BankAccountDao extends AbstractDao<Integer, BankAccount>{
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Finding bank account error: {}", exc);
-				throw new DaoException("Finding bank account error", exc);
 			}
+			throw new DaoException("Finding bank account error", e);
 		}
 		return null;
-	}
-
-	@Override
-	public boolean delete(Integer id) throws DaoException {
-		throw new UnsupportedOperationException("BankAccount class doesn't support specified method");
-	}
-
-	@Override
-	public boolean delete(BankAccount entity) throws DaoException {
-		throw new UnsupportedOperationException("BankAccount class doesn't support specified method");
 	}
 
 	@Override
@@ -73,8 +63,8 @@ public class BankAccountDao extends AbstractDao<Integer, BankAccount>{
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Creation bank account error: {}", exc);
-				throw new DaoException("Creation bank account error", exc);
 			}
+			throw new DaoException("Creation bank account error", e);
 		}
 		return false;
 	}
@@ -92,8 +82,8 @@ public class BankAccountDao extends AbstractDao<Integer, BankAccount>{
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Update bank account error: {}", exc);
-				throw new DaoException("Update bank account error", exc);
 			}
+			throw new DaoException("Update bank account error", e);
 		}
 		return false;
 	}

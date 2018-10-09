@@ -12,13 +12,13 @@ import by.epam.hotel.controller.SessionData;
 import by.epam.hotel.entity.Account;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
-import by.epam.hotel.logic.ToAllAccountsLogic;
+import by.epam.hotel.service.AdminService;
 import by.epam.hotel.util.ConfigurationManager;
-import by.epam.hotel.util.apptype.RoleType;
-import by.epam.hotel.util.apptype.RouterType;
 import by.epam.hotel.util.constant.AttributeConstant;
 import by.epam.hotel.util.constant.ParameterConstant;
 import by.epam.hotel.util.constant.PropertyConstant;
+import by.epam.hotel.util.type.RoleType;
+import by.epam.hotel.util.type.RouterType;
 
 public class ToAllEmailsCommand implements ActionCommand{
 
@@ -32,10 +32,10 @@ public class ToAllEmailsCommand implements ActionCommand{
 			int currentPage = Integer.valueOf(request.getParameter(ParameterConstant.CURRENT_PAGE));
 			int recordsPerPage = Integer.valueOf(request.getParameter(ParameterConstant.RECORDS_PER_PAGE));
 			try {
-				List<Account> accountList = ToAllAccountsLogic.getAccountsList(currentPage,
+				List<Account> accountList = AdminService.getAccountsList(currentPage,
 						recordsPerPage);
 				sessionData.setAccountList(accountList);
-				int rows = ToAllAccountsLogic.getNumberOfRows();
+				int rows = AdminService.getNumberOfRowsAccounts();
 				int noOfPages = rows / recordsPerPage;
 				if (rows % recordsPerPage > 0) {
 					noOfPages++;
@@ -44,7 +44,7 @@ public class ToAllEmailsCommand implements ActionCommand{
 				sessionData.setNoOfPages(noOfPages);
 				sessionData.setCurrentPage(currentPage);
 				sessionData.setRecordsPerPage(recordsPerPage);
-				page = ConfigurationManager.getProperty("path.page.allemails");
+				page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ALL_EMAILS);
 			} catch (ServiceException e) {
 				throw new CommandException(e);
 			}

@@ -13,14 +13,13 @@ import by.epam.hotel.controller.SessionData;
 import by.epam.hotel.entity.Room;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
-import by.epam.hotel.logic.FindRoomLogic;
-import by.epam.hotel.logic.ToPayLogic;
+import by.epam.hotel.service.ClientService;
 import by.epam.hotel.util.ConfigurationManager;
 import by.epam.hotel.util.MessageManager;
-import by.epam.hotel.util.apptype.RoleType;
-import by.epam.hotel.util.apptype.RouterType;
 import by.epam.hotel.util.constant.AttributeConstant;
 import by.epam.hotel.util.constant.PropertyConstant;
+import by.epam.hotel.util.type.RoleType;
+import by.epam.hotel.util.type.RouterType;
 
 public class ToPayCommand implements ActionCommand {
 
@@ -35,16 +34,16 @@ public class ToPayCommand implements ActionCommand {
 			LocalDate from = sessionData.getFrom();
 			LocalDate to = sessionData.getTo();
 			try {
-				List<Room> updatedAvailableRoomList = FindRoomLogic.findAvailableRoom(chosenRoom.getCapacity(),
+				List<Room> updatedAvailableRoomList = ClientService.findAvailableRoom(chosenRoom.getCapacity(),
 						chosenRoom.getClassRoom(), from, to);
 				if (updatedAvailableRoomList.contains(chosenRoom)) {
-					BigDecimal currentAmount = ToPayLogic.getCurrentAmount(sessionData.getLogin());
+					BigDecimal currentAmount = ClientService.getCurrentAmount(sessionData.getLogin());
 					if(currentAmount != null) {
 						sessionData.setCurrentAmount(currentAmount);
 						page = ConfigurationManager.getProperty(PropertyConstant.PAGE_PAYPAGE);
 					}else {
 						request.setAttribute(AttributeConstant.ERROR_FIND_BANK_ACCOUNT_MESSAGE,
-								MessageManager.getProrerty(PropertyConstant.MESSAGE_FIND_IN_BANK_ACCOUNT_ERROR));
+								MessageManager.getProrerty(PropertyConstant.MESSAGE_FIND_IN_BANK_ACCOUNT_ERROR, sessionData.getLocale()));
 						page = ConfigurationManager.getProperty(PropertyConstant.PAGE_INFO_FOR_PAYMENT);
 						router.setType(RouterType.FORWARD);
 					}

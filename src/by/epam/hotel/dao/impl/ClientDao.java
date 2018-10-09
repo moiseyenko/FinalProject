@@ -29,7 +29,6 @@ public class ClientDao extends AbstractDao<Integer, Client> {
 			+ "`client`.`passport`, `client`.`nationality_id`, `client`.`blacklist` "
 			+ "FROM `client`" 
 			+ "WHERE `client`.`id` = ?;";
-	private static final String DELETE_CLIENT = "DELETE FROM `client` WHERE `client`.`id` = ?;";
 	private static final String INSERT_CLIENT = "INSERT INTO`hotel`.`client`(`first_name`,`last_name`, `passport`, `nationality_id`) "
 			+ "VALUE (?, ?, ?, ?);";
 	private static final String UPDATE_CLIENT = "UPDATE `hotel`.`client` SET `client`.`first_name` = ?, `client`.`last_name` = ?, "
@@ -40,6 +39,14 @@ public class ClientDao extends AbstractDao<Integer, Client> {
 			+ "FROM `client` "
 			+ "LIMIT ?, ?;";
 	private final String CHANGE_BLACKLIST = "UPDATE `client` SET `client`.`blacklist` = ? " + "WHERE `client`.`id` = ?;";
+	private final String COUNT_CLIENTS = "SELECT COUNT(`client`.`id`) AS `QUANTITY` FROM `client`;";
+	private final String FIND_CLIENTS_FOR_ACCOUNT = "SELECT `client`.`id`, `client`.`first_name`, "
+			+ "`client`.`last_name`, `client`.`passport`, `client`.`nationality_id` " 
+			+ "FROM `account` LEFT JOIN (`order` INNER JOIN `client` ON `order`.`client_id` = `client`.`id`) "
+			+ "ON `account`.`id` = `order`.`account_id` " 
+			+ "WHERE `account`.`login` = ? AND `account`.`removed` = 0 AND `client`.`blacklist` = 0 " 
+			+ "GROUP BY `client`.`id`";
+	
 
 	@Override
 	public List<Client> findAll(int start, int recordsPerPage) throws DaoException {
@@ -62,8 +69,8 @@ public class ClientDao extends AbstractDao<Integer, Client> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Finding all clients error: {}", exc);
-				throw new DaoException("Finding all clients error", exc);
 			}
+			throw new DaoException("Finding all clients error", e);
 		}
 		return clients;
 	}
@@ -86,46 +93,10 @@ public class ClientDao extends AbstractDao<Integer, Client> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Finding client error: {}", exc);
-				throw new DaoException("Finding client error", exc);
 			}
+			throw new DaoException("Finding client error", e);
 		}
 		return null;
-	}
-
-	@Override
-	public boolean delete(Integer id) throws DaoException {
-		try {
-			try (PreparedStatement statement = connection.prepareStatement(DELETE_CLIENT)) {
-				statement.setInt(1, id);
-				if (statement.executeUpdate() > 0) {
-					return true;
-				}
-			}
-		} catch (SQLException e) {
-			for (Throwable exc : e) {
-				LOG.error("Deletion client error: {}", exc);
-				throw new DaoException("Deletion client error", exc);
-			}
-		}
-		return false;
-	}
-	
-	@Override
-	public boolean delete(Client entity) throws DaoException {
-		try {
-			try (PreparedStatement statement = connection.prepareStatement(DELETE_CLIENT)) {
-				statement.setInt(1, entity.getId());
-				if (statement.executeUpdate() > 0) {
-					return true;
-				}
-			}
-		} catch (SQLException e) {
-			for (Throwable exc : e) {
-				LOG.error("Deletion client error: {}", exc);
-				throw new DaoException("Deletion client error", exc);
-			}
-		}
-		return false;
 	}
 
 	@Override
@@ -143,8 +114,8 @@ public class ClientDao extends AbstractDao<Integer, Client> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Creation client error: {}", exc);
-				throw new DaoException("Creation client error", exc);
 			}
+			throw new DaoException("Creation client error", e);
 		}
 		return false;
 	}
@@ -165,8 +136,8 @@ public class ClientDao extends AbstractDao<Integer, Client> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Update client error: {}", exc);
-				throw new DaoException("Update client error", exc);
 			}
+			throw new DaoException("Update client error", e);
 		}
 		return false;
 	}
@@ -184,8 +155,8 @@ public class ClientDao extends AbstractDao<Integer, Client> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Change client blacklist error: {}", exc);
-				throw new DaoException("Change client blacklist error", exc);
 			}
+			throw new DaoException("Change client blacklist error", e);
 		}
 		return false;
 	}
@@ -212,22 +183,12 @@ public class ClientDao extends AbstractDao<Integer, Client> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Finding client error: {}", exc);
-				throw new DaoException("Finding client error", exc);
 			}
+			throw new DaoException("Finding client error", e);
 		}
 		return null;
 	}
 
-	
-/////////////////////////////////////////////////////////////////////////////////////////
-	
-	private final String FIND_CLIENTS_FOR_ACCOUNT = "SELECT `client`.`id`, `client`.`first_name`, "
-			+ "`client`.`last_name`, `client`.`passport`, `client`.`nationality_id` " 
-			+ "FROM `account` LEFT JOIN (`order` INNER JOIN `client` ON `order`.`client_id` = `client`.`id`) "
-			+ "ON `account`.`id` = `order`.`account_id` " 
-			+ "WHERE `account`.`login` = ? AND `account`.`removed` = 0 AND `client`.`blacklist` = 0 " 
-			+ "GROUP BY `client`.`id`";
-	
 	public List <Client> findClientsForAccount (String login) throws DaoException{
 		List<Client> clients = new ArrayList<>();
 		try {
@@ -245,13 +206,11 @@ public class ClientDao extends AbstractDao<Integer, Client> {
 		}catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Finding clients for account error: {}", exc);
-				throw new DaoException("Finding clients for account error", exc);
 			}
+			throw new DaoException("Finding clients for account error", e);
 		}
 		return clients;
 	}
-
-	private final String COUNT_CLIENTS = "SELECT COUNT(`client`.`id`) AS `QUANTITY` FROM `client`;";
 	
 	public int countClients() throws DaoException {
 		int quantity = 0;
@@ -265,8 +224,8 @@ public class ClientDao extends AbstractDao<Integer, Client> {
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Counting clients error: {}", exc);
-				throw new DaoException("Counting clients error", exc);
 			}
+			throw new DaoException("Counting clients error", e);
 		}
 		return quantity;
 	}

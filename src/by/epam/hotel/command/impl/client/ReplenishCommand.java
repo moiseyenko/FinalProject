@@ -14,15 +14,15 @@ import by.epam.hotel.controller.Router;
 import by.epam.hotel.controller.SessionData;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
-import by.epam.hotel.logic.ReplenishLogic;
+import by.epam.hotel.service.ClientService;
 import by.epam.hotel.util.ConfigurationManager;
 import by.epam.hotel.util.MessageManager;
-import by.epam.hotel.util.apptype.RoleType;
-import by.epam.hotel.util.apptype.RouterType;
 import by.epam.hotel.util.constant.AttributeConstant;
 import by.epam.hotel.util.constant.ParameterConstant;
 import by.epam.hotel.util.constant.PropertyConstant;
 import by.epam.hotel.util.constant.ValidationConstant;
+import by.epam.hotel.util.type.RoleType;
+import by.epam.hotel.util.type.RouterType;
 
 public class ReplenishCommand implements ActionCommand{
 	@Override
@@ -39,13 +39,13 @@ public class ReplenishCommand implements ActionCommand{
 					BigDecimal bigDecimalReplenishAmount = parseToBigDecimal(replenishAmount);
 					currentAmount = currentAmount.add(bigDecimalReplenishAmount);
 					try {
-						if(ReplenishLogic.updateBankAccount(sessionData.getLogin(), currentAmount)) {
+						if(ClientService.updateBankAccount(sessionData.getLogin(), currentAmount)) {
 							sessionData.setCurrentAmount(currentAmount);
 							page = ConfigurationManager.getProperty(PropertyConstant.PAGE_PAYPAGE);
 							router.setType(RouterType.REDIRECT);
 						}else {
 							request.setAttribute(AttributeConstant.ERROR_REPLENISH_MESSAGE,
-									MessageManager.getProrerty(PropertyConstant.MESSAGE_REPLENISH_ERROR));
+									MessageManager.getProrerty(PropertyConstant.MESSAGE_REPLENISH_ERROR, sessionData.getLocale()));
 							page = ConfigurationManager.getProperty(PropertyConstant.PAGE_REPLENISH_PAGE);
 							router.setType(RouterType.FORWARD);
 						}
@@ -57,7 +57,7 @@ public class ReplenishCommand implements ActionCommand{
 				}
 			}else {
 				request.setAttribute(AttributeConstant.ERROR_INPUT_WRONG_REPLENISH_AMOUNT,
-						MessageManager.getProrerty(PropertyConstant.MESSAGE_INPUT_REPLENISH_AMOUNT_ERROR));
+						MessageManager.getProrerty(PropertyConstant.MESSAGE_INPUT_REPLENISH_AMOUNT_ERROR, sessionData.getLocale()));
 				page = ConfigurationManager.getProperty(PropertyConstant.PAGE_REPLENISH_PAGE);
 				router.setType(RouterType.FORWARD);
 			}

@@ -26,7 +26,7 @@
 	<hr /> 
   <c:choose>
 		<c:when test="${fn:length(sessionData.listAccountFullInfoOrder)==0}">
-			No order was found
+			<fmt:message key="noordersmsg" />
 		</c:when>
 		<c:otherwise>
 			<table class="tg">

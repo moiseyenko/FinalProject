@@ -9,11 +9,11 @@ import by.epam.hotel.controller.SessionData;
 import by.epam.hotel.entity.Nationality;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.util.ConfigurationManager;
-import by.epam.hotel.util.apptype.RoleType;
-import by.epam.hotel.util.apptype.RouterType;
 import by.epam.hotel.util.constant.AttributeConstant;
 import by.epam.hotel.util.constant.ParameterConstant;
 import by.epam.hotel.util.constant.PropertyConstant;
+import by.epam.hotel.util.type.RoleType;
+import by.epam.hotel.util.type.RouterType;
 
 public class ChangeNationalityCommand implements ActionCommand {
 	

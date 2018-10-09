@@ -31,7 +31,7 @@
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
 		<input type="hidden" name="command" value="backToPayPage" />
-		<input type="submit" value="<fmt:message key="backbutton" />Back" size="20" />
+		<input type="submit" value="<fmt:message key="backbutton" />" size="20" />
 	</form>
 </body>
 </html>

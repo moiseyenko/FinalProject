@@ -11,13 +11,13 @@ import by.epam.hotel.controller.SessionData;
 import by.epam.hotel.entity.RoomClass;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
-import by.epam.hotel.logic.ToAllClassesLogic;
+import by.epam.hotel.service.AdminService;
 import by.epam.hotel.util.ConfigurationManager;
-import by.epam.hotel.util.apptype.RoleType;
-import by.epam.hotel.util.apptype.RouterType;
 import by.epam.hotel.util.constant.AttributeConstant;
 import by.epam.hotel.util.constant.ParameterConstant;
 import by.epam.hotel.util.constant.PropertyConstant;
+import by.epam.hotel.util.type.RoleType;
+import by.epam.hotel.util.type.RouterType;
 
 public class ToAllClassesCommand implements ActionCommand{
 	
@@ -31,10 +31,10 @@ public class ToAllClassesCommand implements ActionCommand{
 			int currentPage = Integer.valueOf(request.getParameter(ParameterConstant.CURRENT_PAGE));
 			int recordsPerPage = Integer.valueOf(request.getParameter(ParameterConstant.RECORDS_PER_PAGE));
 			try {
-				List<RoomClass> roomClassList = ToAllClassesLogic.getClassesList(currentPage,
+				List<RoomClass> roomClassList = AdminService.getClassesList(currentPage,
 						recordsPerPage);
 				sessionData.setRoomClassList(roomClassList);
-				int rows = ToAllClassesLogic.getNumberOfRows();
+				int rows = AdminService.getNumberOfRowsClasses();
 				int noOfPages = rows / recordsPerPage;
 				if (rows % recordsPerPage > 0) {
 					noOfPages++;

@@ -51,6 +51,9 @@ public interface AttributeConstant {
 	String ERROR_REPLENISH_MESSAGE = "errorReplenishMessage";
 	String ERROR_INPUT_WRONG_REPLENISH_AMOUNT = "wrongInputReplenishAmount";
 	String ERROR_FIND_BANK_ACCOUNT_MESSAGE = "errorFindBankAccountMessage";
+	String ERROR_SEND_MSG_MESSAGE = "errorSendMessageMessage";
+	String ERROR_SEND_CONFIRMATION_EMAIL_MESSAGE = "errorSendConfirmationEmailMessage";
+	String ERROR_KEY_CONFIRMATION_MESSAGE = "errorKeyConfirmationMessage";
 	
 	
 	

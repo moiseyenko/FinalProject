@@ -12,15 +12,14 @@ import by.epam.hotel.controller.SessionData;
 import by.epam.hotel.entity.FullInfoOrder;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
-import by.epam.hotel.logic.ApproveOrderCancelLogic;
-import by.epam.hotel.logic.ToAccountOrdersLogic;
+import by.epam.hotel.service.ClientService;
 import by.epam.hotel.util.ConfigurationManager;
 import by.epam.hotel.util.MessageManager;
-import by.epam.hotel.util.apptype.RoleType;
-import by.epam.hotel.util.apptype.RouterType;
 import by.epam.hotel.util.constant.AttributeConstant;
 import by.epam.hotel.util.constant.ParameterConstant;
 import by.epam.hotel.util.constant.PropertyConstant;
+import by.epam.hotel.util.type.RoleType;
+import by.epam.hotel.util.type.RouterType;
 
 public class ApproveOrderCancelCommand implements ActionCommand {
 
@@ -37,14 +36,14 @@ public class ApproveOrderCancelCommand implements ActionCommand {
 			int recordsPerPage = sessionData.getRecordsPerPage();
 			int currentPage = sessionData.getCurrentPage();
 			try {
-				if (ApproveOrderCancelLogic.cancelOrder(login, returnedSum, orderId)) {
-					List<FullInfoOrder> listFullInfoOrder = ToAccountOrdersLogic.getFullInfoOrderList(login, currentPage, recordsPerPage);
+				if (ClientService.approveCancelOrder(login, returnedSum, orderId)) {
+					List<FullInfoOrder> listFullInfoOrder = ClientService.getFullInfoOrderList(login, currentPage, recordsPerPage);
 					sessionData.setListAccountFullInfoOrder(listFullInfoOrder);
 					page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ACCOUNT_ORDERS);
 					router.setType(RouterType.REDIRECT);
 				}else {
 					request.setAttribute(AttributeConstant.ERROR_ORDER_CANCEL_MESSAGE,
-							MessageManager.getProrerty(PropertyConstant.MESSAGE_ORDER_CANCEL_ERROR));
+							MessageManager.getProrerty(PropertyConstant.MESSAGE_ORDER_CANCEL_ERROR, sessionData.getLocale()));
 					page = ConfigurationManager.getProperty(PropertyConstant.PAGE_APPROVE_ORDER_CANCEL);
 					router.setType(RouterType.FORWARD);
 				}

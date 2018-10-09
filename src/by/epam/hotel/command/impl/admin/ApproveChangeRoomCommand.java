@@ -16,16 +16,15 @@ import by.epam.hotel.controller.SessionData;
 import by.epam.hotel.entity.Room;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
-import by.epam.hotel.logic.ApproveChangeRoomLogic;
-import by.epam.hotel.logic.ToAllRoomsLogic;
+import by.epam.hotel.service.AdminService;
 import by.epam.hotel.util.ConfigurationManager;
 import by.epam.hotel.util.MessageManager;
-import by.epam.hotel.util.apptype.RoleType;
-import by.epam.hotel.util.apptype.RouterType;
 import by.epam.hotel.util.constant.AttributeConstant;
 import by.epam.hotel.util.constant.ParameterConstant;
 import by.epam.hotel.util.constant.PropertyConstant;
 import by.epam.hotel.util.constant.ValidationConstant;
+import by.epam.hotel.util.type.RoleType;
+import by.epam.hotel.util.type.RouterType;
 
 public class ApproveChangeRoomCommand implements ActionCommand{
 	
@@ -42,21 +41,21 @@ public class ApproveChangeRoomCommand implements ActionCommand{
 			String price = request.getParameter(ParameterConstant.PRICE);
 			int recordsPerPage = sessionData.getRecordsPerPage();
 			int currentPage = sessionData.getCurrentPage();
-			if(validateInputData(capacity, price, request)) {
+			if(validateInputData(capacity, price, request, sessionData)) {
 				try {
 					int newCapacity = Integer.parseInt(capacity);
 					BigDecimal newPrice = parseToBigDecimal(price);
 					Room updatedRoom = new Room(number, roomClass, newCapacity, newPrice);
 					try {
-						if(ApproveChangeRoomLogic.changeRoom(updatedRoom)) {
-							List<Room> roomList = ToAllRoomsLogic.getRoomsList(currentPage,
+						if(AdminService.approveChangeRoom(updatedRoom)) {
+							List<Room> roomList = AdminService.getRoomsList(currentPage,
 									recordsPerPage);
 							sessionData.setRoomList(roomList);
 							page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ALL_ROOMS);
 							router.setType(RouterType.REDIRECT);
 						}else {
 							request.setAttribute(AttributeConstant.ERROR_CHANGE_ROOM_MESSAGE,
-									MessageManager.getProrerty(PropertyConstant.MESSAGE_CHANGE_ROOM_ERROR));
+									MessageManager.getProrerty(PropertyConstant.MESSAGE_CHANGE_ROOM_ERROR, sessionData.getLocale()));
 							page = ConfigurationManager.getProperty(PropertyConstant.PAGE_CHANGE_ROOM);
 							router.setType(RouterType.FORWARD);
 						}
@@ -78,17 +77,17 @@ public class ApproveChangeRoomCommand implements ActionCommand{
 		return router;
 	}
 	
-	private boolean validateInputData(String capacity, String price, HttpServletRequest request) {
+	private boolean validateInputData(String capacity, String price, HttpServletRequest request, SessionData sessionData) {
 		boolean result = true;
 		
 		if (!validateCapacity(capacity)) {
 			request.setAttribute(AttributeConstant.ERROR_CAPACITY_MESSAGE, 
-					MessageManager.getProrerty(PropertyConstant.MESSAGE_CAPACITY_ERROR));
+					MessageManager.getProrerty(PropertyConstant.MESSAGE_CAPACITY_ERROR, sessionData.getLocale()));
 			result = false;
 		}
 		if (!validatePrice(price)) {
 			request.setAttribute(AttributeConstant.WRONG_INPUT_AMOUNT, 
-					MessageManager.getProrerty(PropertyConstant.MESSAGE_INPUT_AMOUNT_ERROR));
+					MessageManager.getProrerty(PropertyConstant.MESSAGE_INPUT_AMOUNT_ERROR, sessionData.getLocale()));
 			result = false;
 		}
 		return result;

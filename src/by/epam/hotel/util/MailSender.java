@@ -17,29 +17,36 @@ import javax.mail.internet.MimeMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import by.epam.hotel.exception.MailException;
+import by.epam.hotel.util.constant.MailConstants;
 
 public class MailSender {
-	private static final Logger LOG = LogManager.getLogger(MailSender.class);
-
-	public static boolean sendSingUpConfirmationEmail(String email, String emailKey) throws MailException {
-		String text = "Your confirmation code: " + emailKey;
-		return sendEmail(new String[] { email }, "confirmationRegistration", text);
-	}
-
-	public static boolean sendEmail(String[] recipients, String subject, String text) throws MailException {
-		boolean flag = false;
-		String d_email = "javahotel2018@gmail.com", d_host = "smtp.gmail.com", d_port = "587";
-
-		Properties props = new Properties();
-		props.put("mail.smtp.host", d_host);
-		props.put("mail.smtp.port", d_port);
+	private static final Logger LOG = LogManager.getLogger();
+	private static final ResourceBundle mailConfigResourceBundle = ResourceBundle.getBundle("resource.mail");
+    private static final Properties props;
+    static {
+    	props = new Properties();
+        props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.port", "587");
 		props.put("mail.smtp.starttls.enable", "true");
 		props.put("mail.smtp.auth", "true");
+    }
+    
+	public static boolean sendSingUpConfirmationEmail(String email, String emailKey, Locale locale) throws MailException {
+		String text = MessageManager.getProrerty(MailConstants.MSG_CONFCODE, locale) + emailKey;
+		String subject = MessageManager.getProrerty(MailConstants.SUBJECT_CONFCODE, locale);
+		return sendEmail(new String[] { email }, subject, text);
+	}
 
+	
+	public static boolean sendEmail(String[] recipients, String subject, String text) throws MailException {
+		boolean flag = false;
+		String username = mailConfigResourceBundle.getString(MailConstants.USERNAME);
+		String password = mailConfigResourceBundle.getString(MailConstants.PASSWORD);
 		Authenticator auth = new Authenticator() {
 			@Override
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication("javahotel2018@gmail.com", "Smetenie1@");
+				return new PasswordAuthentication(username, password);
 			}
 		};
 		Session session = Session.getInstance(props, auth);
@@ -57,9 +64,8 @@ public class MailSender {
 		try {
 			msg.setText(text);
 			msg.setSubject(subject);
-			msg.setFrom(new InternetAddress(d_email));
+			msg.setFrom(new InternetAddress(username));
 			msg.setRecipients(Message.RecipientType.TO, addresses);
-			// addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
 			Transport.send(msg);
 			flag = true;
 		} catch (MessagingException e) {

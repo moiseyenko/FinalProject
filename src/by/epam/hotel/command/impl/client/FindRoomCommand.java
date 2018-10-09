@@ -16,16 +16,15 @@ import by.epam.hotel.entity.Nationality;
 import by.epam.hotel.entity.Room;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
-import by.epam.hotel.logic.FindRoomLogic;
-import by.epam.hotel.logic.OrderLogic;
+import by.epam.hotel.service.ClientService;
 import by.epam.hotel.util.ConfigurationManager;
 import by.epam.hotel.util.MessageManager;
-import by.epam.hotel.util.apptype.RoleType;
-import by.epam.hotel.util.apptype.RouterType;
 import by.epam.hotel.util.constant.AttributeConstant;
 import by.epam.hotel.util.constant.ParameterConstant;
 import by.epam.hotel.util.constant.PropertyConstant;
 import by.epam.hotel.util.constant.ValidationConstant;
+import by.epam.hotel.util.type.RoleType;
+import by.epam.hotel.util.type.RouterType;
 
 public class FindRoomCommand implements ActionCommand {
 
@@ -45,26 +44,26 @@ public class FindRoomCommand implements ActionCommand {
 			String from = request.getParameter(ParameterConstant.FROM);
 			String to = request.getParameter(ParameterConstant.TO);
 			List<Nationality> nationalities = sessionData.getNationalities();
-			if (validateInputData(fname, lname, passport, nationality, nationalities, capacity, from, to, request)) {
+			if (validateInputData(fname, lname, passport, nationality, nationalities, capacity, from, to, request, sessionData)) {
 				try {
 					Client chosenClient = new Client(fname, lname, passport, nationality);
-					if (!FindRoomLogic.checkClientInBlacklist(chosenClient)) {
-						chosenClient = FindRoomLogic.getClient(chosenClient);
+					if (!ClientService.checkClientInBlacklist(chosenClient)) {
+						chosenClient = ClientService.getClient(chosenClient);
 						sessionData.setChosenClient(chosenClient);
 						LocalDate localFrom = LocalDate.parse(from);
 						LocalDate localTo = LocalDate.parse(to);
 						int intCapacity = Integer.parseInt(capacity);
 						sessionData.setFrom(localFrom);
 						sessionData.setTo(localTo);
-						List<Room> availableRoomList = FindRoomLogic.findAvailableRoom(intCapacity, roomClass,
+						List<Room> availableRoomList = ClientService.findAvailableRoom(intCapacity, roomClass,
 								localFrom, localTo);
 						System.out.println(availableRoomList);
 						sessionData.setAvailableRoomList(availableRoomList);
 						page = ConfigurationManager.getProperty(PropertyConstant.PAGE_AVAILABLE_ROOM);
 					} else {
-						sessionData.setClients(OrderLogic.getClientList(sessionData.getLogin()));
+						sessionData.setClients(ClientService.getClientList(sessionData.getLogin()));
 						request.setAttribute(AttributeConstant.ERROR_BLACKLIST_CLIENT_MESSAGE,
-								MessageManager.getProrerty(PropertyConstant.MESSAGE_BLACKLIST_CLIENT_ERROR));
+								MessageManager.getProrerty(PropertyConstant.MESSAGE_BLACKLIST_CLIENT_ERROR, sessionData.getLocale()));
 						page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ORDER);
 					}
 				} catch (ServiceException e) {
@@ -82,36 +81,36 @@ public class FindRoomCommand implements ActionCommand {
 	}
 
 	private boolean validateInputData(String fname, String lname, String passport, String nationality,
-			List<Nationality> nationalities, String capacity, String from, String to, HttpServletRequest request) {
+			List<Nationality> nationalities, String capacity, String from, String to, HttpServletRequest request, SessionData sessionData) {
 		boolean result = true;
 		if (!validateFName(fname)) {
 			request.setAttribute(AttributeConstant.ERROR_FIRST_NAME_MESSAGE,
-					MessageManager.getProrerty(PropertyConstant.MESSAGE_FIRST_NAME_ERROR));
+					MessageManager.getProrerty(PropertyConstant.MESSAGE_FIRST_NAME_ERROR, sessionData.getLocale()));
 			result = false;
 		}
 		if (!validateLName(lname)) {
 			request.setAttribute(AttributeConstant.ERROR_LAST_NAME_MESSAGE,
-					MessageManager.getProrerty(PropertyConstant.MESSAGE_LAST_NAME_ERROR));
+					MessageManager.getProrerty(PropertyConstant.MESSAGE_LAST_NAME_ERROR, sessionData.getLocale()));
 			result = false;
 		}
 		if (!validatePassport(passport)) {
 			request.setAttribute(AttributeConstant.ERROR_PASSPORT_MESSAGE,
-					MessageManager.getProrerty(PropertyConstant.MESSAGE_PASSPORT_ERROR));
+					MessageManager.getProrerty(PropertyConstant.MESSAGE_PASSPORT_ERROR, sessionData.getLocale()));
 			result = false;
 		}
 		if (!validateNationality(nationality, nationalities)) {
 			request.setAttribute(AttributeConstant.ERROR_NATIONALITY_MESSAGE,
-					MessageManager.getProrerty(PropertyConstant.MESSAGE_NATIONALITY_ERROR));
+					MessageManager.getProrerty(PropertyConstant.MESSAGE_NATIONALITY_ERROR, sessionData.getLocale()));
 			result = false;
 		}
 		if (!validateCapacity(capacity)) {
 			request.setAttribute(AttributeConstant.ERROR_CAPACITY_MESSAGE,
-					MessageManager.getProrerty(PropertyConstant.MESSAGE_CAPACITY_ERROR));
+					MessageManager.getProrerty(PropertyConstant.MESSAGE_CAPACITY_ERROR, sessionData.getLocale()));
 			result = false;
 		}
 		if (!validateFromTo(from, to)) {
 			request.setAttribute(AttributeConstant.ERROR_FROM_TO_MESSAGE,
-					MessageManager.getProrerty(PropertyConstant.MESSAGE_FROM_TO_ERROR));
+					MessageManager.getProrerty(PropertyConstant.MESSAGE_FROM_TO_ERROR, sessionData.getLocale()));
 			result = false;
 		}
 		return result;

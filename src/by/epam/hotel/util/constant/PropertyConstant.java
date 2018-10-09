@@ -92,5 +92,13 @@ public interface PropertyConstant {
 	String MESSAGE_CLASS_ID_ERROR = "message.classiderror";
 	String MESSAGE_CREATE_CLASS_ERROR = "message.createclasserror";
 	String MESSAGE_CHANGE_ADMIN_RIGHTS_ERROR = "message.changeadminrightserror";
+	String PAGE_ALL_EMAILS = "path.page.allemails";
+	String PAGE_SET_RECORDS_PER_PAGE_EMAILS ="path.page.setrecordsperpageemail";
+	String PAGE_SUCCESS_SEND_MSG ="path.page.successsendmessage";
+	String PAGE_SUBJECT_TEXT_SEND = "path.page.subjecttextsend";
+	String MESSAGE_SEND_MSG_ERROR = "message.sendmessageerror";
+	String PAGE_CONFIRMATION_EMAIL = "path.page.confirmationemail";
+	String MESSAGE_SEND_CONFIRMATION_EMAIL_ERROR = "message.sendconfirmationemailerror";
+	String MESSAGE_KEY_CONFIRMATION_ERROR = "message.keyconfirmationerror";
 
 }

@@ -62,17 +62,17 @@ public class Runner {
 			}
 		}*/
 
-		/*
-		 * try (TransactionHelper helper = new TransactionHelper()) {
-		 * helper.doOperation(accountDao); try {
-		 * 
-		 * System.out.println(accountDao.changeAccountPassword(new Account(1, "admin",
-		 * ""), "admin"));
-		 * 
-		 * } catch (DaoException e) { System.out.println("daoexceprion"); }
-		 * 
-		 * }
-		 */
+		
+		  try (TransactionHelper helper = new TransactionHelper()) {
+		  helper.doOperation(accountDao); try {
+		  
+		  System.out.println(accountDao.changeAccountPassword(new Account(1, "admin",
+		  ""), "admin"));
+		  
+		  } catch (DaoException e) { System.out.println("daoexceprion"); }
+		  
+		  }
+		 
 
 		/*
 		 * try (TransactionHelper helper = new TransactionHelper()) {

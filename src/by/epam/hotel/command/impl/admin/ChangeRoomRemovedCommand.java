@@ -11,15 +11,14 @@ import by.epam.hotel.controller.SessionData;
 import by.epam.hotel.entity.Room;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
-import by.epam.hotel.logic.ChangeRoomRemovedLogic;
-import by.epam.hotel.logic.ToAllRoomsLogic;
+import by.epam.hotel.service.AdminService;
 import by.epam.hotel.util.ConfigurationManager;
 import by.epam.hotel.util.MessageManager;
-import by.epam.hotel.util.apptype.RoleType;
-import by.epam.hotel.util.apptype.RouterType;
 import by.epam.hotel.util.constant.AttributeConstant;
 import by.epam.hotel.util.constant.ParameterConstant;
 import by.epam.hotel.util.constant.PropertyConstant;
+import by.epam.hotel.util.type.RoleType;
+import by.epam.hotel.util.type.RouterType;
 
 public class ChangeRoomRemovedCommand implements ActionCommand{
 	
@@ -35,15 +34,15 @@ public class ChangeRoomRemovedCommand implements ActionCommand{
 			int recordsPerPage = sessionData.getRecordsPerPage();
 			int currentPage = sessionData.getCurrentPage();
 			try {
-				if (ChangeRoomRemovedLogic.changeRoomRemoved(roomToChangeRemoved)) {
-					List<Room> roomList = ToAllRoomsLogic.getRoomsList(currentPage,
+				if (AdminService.changeRoomRemoved(roomToChangeRemoved)) {
+					List<Room> roomList = AdminService.getRoomsList(currentPage,
 							recordsPerPage);
 					sessionData.setRoomList(roomList);
 					page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ALL_ROOMS);
 					router.setType(RouterType.REDIRECT);
 				}else {
 					request.setAttribute(AttributeConstant.ERROR_CHANGE_ROOM_REMOVED_MESSAGE,
-							MessageManager.getProrerty(PropertyConstant.MESSAGE_CHANGE_ROOM_REMOVED_ERROR));
+							MessageManager.getProrerty(PropertyConstant.MESSAGE_CHANGE_ROOM_REMOVED_ERROR, sessionData.getLocale()));
 					page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ALL_ROOMS);
 					router.setType(RouterType.FORWARD);
 				}

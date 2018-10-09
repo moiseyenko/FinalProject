@@ -13,16 +13,15 @@ import by.epam.hotel.controller.SessionData;
 import by.epam.hotel.entity.Nationality;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
-import by.epam.hotel.logic.ApproveChangeNationalityLogic;
-import by.epam.hotel.logic.ToAllNationalitiesLogic;
+import by.epam.hotel.service.AdminService;
 import by.epam.hotel.util.ConfigurationManager;
 import by.epam.hotel.util.MessageManager;
-import by.epam.hotel.util.apptype.RoleType;
-import by.epam.hotel.util.apptype.RouterType;
 import by.epam.hotel.util.constant.AttributeConstant;
 import by.epam.hotel.util.constant.ParameterConstant;
 import by.epam.hotel.util.constant.PropertyConstant;
 import by.epam.hotel.util.constant.ValidationConstant;
+import by.epam.hotel.util.type.RoleType;
+import by.epam.hotel.util.type.RouterType;
 
 public class ApproveChangeNationalityCommand implements ActionCommand{
 	
@@ -40,15 +39,15 @@ public class ApproveChangeNationalityCommand implements ActionCommand{
 			if(validateCountry(country)) {
 					Nationality updatedNationality = new Nationality(countryId, country);
 					try {
-						if(ApproveChangeNationalityLogic.changeNationality(updatedNationality)) {
-							List<Nationality> nationalityList = ToAllNationalitiesLogic.getNationalitiesList(currentPage,
+						if(AdminService.approveChangeNationality(updatedNationality)) {
+							List<Nationality> nationalityList = AdminService.getNationalitiesList(currentPage,
 									recordsPerPage);
 							sessionData.setNationalityList(nationalityList);
 							page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ALL_NATIONALITIES);
 							router.setType(RouterType.REDIRECT);
 						}else {
 							request.setAttribute(AttributeConstant.ERROR_CHANGE_NATIONALITY_MESSAGE,
-									MessageManager.getProrerty(PropertyConstant.MESSAGE_CHANGE_NATIONALITY_ERROR));
+									MessageManager.getProrerty(PropertyConstant.MESSAGE_CHANGE_NATIONALITY_ERROR, sessionData.getLocale()));
 							page = ConfigurationManager.getProperty(PropertyConstant.PAGE_CHANGE_NATIONALITY);
 							router.setType(RouterType.FORWARD);
 						}
@@ -57,7 +56,7 @@ public class ApproveChangeNationalityCommand implements ActionCommand{
 					}
 			}else {
 				request.setAttribute(AttributeConstant.ERROR_COUNTRY_MESSAGE, 
-						MessageManager.getProrerty(PropertyConstant.MESSAGE_COUNTRY_ERROR));
+						MessageManager.getProrerty(PropertyConstant.MESSAGE_COUNTRY_ERROR, sessionData.getLocale()));
 				page = ConfigurationManager.getProperty(PropertyConstant.PAGE_CHANGE_NATIONALITY);
 				router.setType(RouterType.FORWARD);
 			}	

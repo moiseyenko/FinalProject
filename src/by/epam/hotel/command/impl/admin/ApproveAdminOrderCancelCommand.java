@@ -12,15 +12,14 @@ import by.epam.hotel.controller.SessionData;
 import by.epam.hotel.entity.FullInfoOrder;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
-import by.epam.hotel.logic.ApproveAdminOrderCancelLogic;
-import by.epam.hotel.logic.ToAllOrdersLogic;
+import by.epam.hotel.service.AdminService;
 import by.epam.hotel.util.ConfigurationManager;
 import by.epam.hotel.util.MessageManager;
-import by.epam.hotel.util.apptype.RoleType;
-import by.epam.hotel.util.apptype.RouterType;
 import by.epam.hotel.util.constant.AttributeConstant;
 import by.epam.hotel.util.constant.ParameterConstant;
 import by.epam.hotel.util.constant.PropertyConstant;
+import by.epam.hotel.util.type.RoleType;
+import by.epam.hotel.util.type.RouterType;
 
 public class ApproveAdminOrderCancelCommand implements ActionCommand{
 	
@@ -37,15 +36,15 @@ public class ApproveAdminOrderCancelCommand implements ActionCommand{
 			int recordsPerPage = sessionData.getRecordsPerPage();
 			int currentPage = sessionData.getCurrentPage();
 			try {
-				if (ApproveAdminOrderCancelLogic.cancelOrder(accountId, returnedSum, orderId)) {
-					List<FullInfoOrder> listAdminFullInfoOrder = ToAllOrdersLogic.getAllFullInfoOrderList(currentPage,
+				if (AdminService.approveCancelOrder(accountId, returnedSum, orderId)) {
+					List<FullInfoOrder> listAdminFullInfoOrder = AdminService.getAllFullInfoOrderList(currentPage,
 							recordsPerPage);
 					sessionData.setListAdminFullInfoOrder(listAdminFullInfoOrder);
 					page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ALL_ORDERS);
 					router.setType(RouterType.REDIRECT);
 				}else {
 					request.setAttribute(AttributeConstant.ERROR_ADMIN_ORDER_CANCEL_MESSAGE,
-							MessageManager.getProrerty(PropertyConstant.MESSAGE_ADMIN_ORDER_CANCEL_ERROR));
+							MessageManager.getProrerty(PropertyConstant.MESSAGE_ADMIN_ORDER_CANCEL_ERROR, sessionData.getLocale()));
 					page = ConfigurationManager.getProperty(PropertyConstant.PAGE_APPROVE_ADMIN_ORDER_CANCEL);
 					router.setType(RouterType.FORWARD);
 				}

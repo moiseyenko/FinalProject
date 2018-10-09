@@ -14,15 +14,13 @@ import by.epam.hotel.entity.Client;
 import by.epam.hotel.entity.Room;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
-import by.epam.hotel.logic.FindRoomLogic;
-import by.epam.hotel.logic.OrderLogic;
-import by.epam.hotel.logic.PayLogic;
+import by.epam.hotel.service.ClientService;
 import by.epam.hotel.util.ConfigurationManager;
 import by.epam.hotel.util.MessageManager;
-import by.epam.hotel.util.apptype.RoleType;
-import by.epam.hotel.util.apptype.RouterType;
 import by.epam.hotel.util.constant.AttributeConstant;
 import by.epam.hotel.util.constant.PropertyConstant;
+import by.epam.hotel.util.type.RoleType;
+import by.epam.hotel.util.type.RouterType;
 
 public class PayCommand implements ActionCommand {
 
@@ -37,8 +35,8 @@ public class PayCommand implements ActionCommand {
 			LocalDate from = sessionData.getFrom();
 			LocalDate to = sessionData.getTo();
 			try {
-				if (!FindRoomLogic.checkClientInBlacklist(sessionData.getChosenClient())) {
-					List<Room> updatedAvailableRoomList = FindRoomLogic.findAvailableRoom(chosenRoom.getCapacity(),
+				if (!ClientService.checkClientInBlacklist(sessionData.getChosenClient())) {
+					List<Room> updatedAvailableRoomList = ClientService.findAvailableRoom(chosenRoom.getCapacity(),
 							chosenRoom.getClassRoom(), from, to);
 					if (updatedAvailableRoomList.contains(chosenRoom)) {
 						BigDecimal currentAmount = sessionData.getCurrentAmount();
@@ -47,18 +45,18 @@ public class PayCommand implements ActionCommand {
 							int room_number = sessionData.getChosenRoom().getNumber();
 							Client client = sessionData.getChosenClient();
 							String login = sessionData.getLogin();
-							if (PayLogic.doPay(room_number, client, login, from, to, toPay)) {
+							if (ClientService.doPay(room_number, client, login, from, to, toPay)) {
 								page = ConfigurationManager.getProperty(PropertyConstant.PAGE_SUCCESS_PAYMENT);
 								router.setType(RouterType.REDIRECT);
 							} else {
 								request.setAttribute(AttributeConstant.ERROR_PAYMENT_MESSAGE,
-										MessageManager.getProrerty(PropertyConstant.MESSAGE_PAYMENT_ERROR));
+										MessageManager.getProrerty(PropertyConstant.MESSAGE_PAYMENT_ERROR, sessionData.getLocale()));
 								page = ConfigurationManager.getProperty(PropertyConstant.PAGE_PAYPAGE);
 								router.setType(RouterType.FORWARD);
 							}
 						} else {
 							request.setAttribute(AttributeConstant.ERROR_ENOUGH_MONEY_MESSAGE,
-									MessageManager.getProrerty(PropertyConstant.MESSAGE_ENOUGH_MONEY_ERROR));
+									MessageManager.getProrerty(PropertyConstant.MESSAGE_ENOUGH_MONEY_ERROR, sessionData.getLocale()));
 							page = ConfigurationManager.getProperty(PropertyConstant.PAGE_PAYPAGE);
 							router.setType(RouterType.FORWARD);
 						}
@@ -68,9 +66,9 @@ public class PayCommand implements ActionCommand {
 						router.setType(RouterType.FORWARD);
 					}
 				} else {
-					sessionData.setClients(OrderLogic.getClientList(sessionData.getLogin()));
+					sessionData.setClients(ClientService.getClientList(sessionData.getLogin()));
 					request.setAttribute(AttributeConstant.ERROR_BLACKLIST_CLIENT_MESSAGE,
-							MessageManager.getProrerty(PropertyConstant.MESSAGE_BLACKLIST_CLIENT_ERROR));
+							MessageManager.getProrerty(PropertyConstant.MESSAGE_BLACKLIST_CLIENT_ERROR, sessionData.getLocale()));
 					page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ORDER);
 					router.setType(RouterType.FORWARD);
 				}
