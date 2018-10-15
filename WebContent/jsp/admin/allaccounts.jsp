@@ -20,9 +20,20 @@
 </head>
 <body>
 <jsp:include page="/locale" />
-	<br />
 	<hr />
 <jsp:include page="/loginlogout" />
+	<hr />
+	<form action="${pageContext.request.contextPath}/controller" method="post">
+		<input type="hidden" name="command" value="to_all_accounts" /> 
+	    <input type="hidden" name="currentPage" value="1">
+	    <label for="records"><fmt:message key="selectrpp" />:</label>
+	    <select id="recordsPerPageId" name="recordsPerPage" onchange="this.form.submit();" >
+	        <option value="5">5</option> 
+	        <option value="10">10</option>
+	        <option value="15">15</option>
+	    </select>
+	    <script>document.getElementById("recordsPerPageId").value = "${sessionData.recordsPerPage}";</script>  
+	</form>
 	<hr />
   <c:choose>
 		<c:when test="${fn:length(sessionData.accountList)==0}">
@@ -67,14 +78,14 @@
 					    <c:choose>
 					   		<c:when test="${account.admin }">
 						    <form action="${pageContext.request.contextPath}/controller" method="post" >
-					    		<input type="hidden" name="command" value="changeAdminRights" />
+					    		<input type="hidden" name="command" value="change_admin_rights" />
 							    <input type="hidden" name="accountIndex" value="${status.count }" />
 							    <input type="submit" value="<fmt:message key="removerightsbutton" />" />
 						    </form>
 					    	</c:when>
 					    	<c:otherwise>
 					    		<form action="${pageContext.request.contextPath}/controller" method="post" >
-					    		<input type="hidden" name="command" value="changeAdminRights" />
+					    		<input type="hidden" name="command" value="change_admin_rights" />
 							    <input type="hidden" name="accountIndex" value="${status.count }" />
 							    <input type="submit" value="<fmt:message key="addrightsbutton" />" />
 						    </form>
@@ -94,7 +105,7 @@
         	<c:url value="/controller" var="URL">
 				<c:param name="recordsPerPage" value="${sessionData.recordsPerPage}" />
 				<c:param name="currentPage" value="${sessionData.currentPage-1}" />
-				<c:param name="command" value="toAllAccounts" />
+				<c:param name="command" value="to_all_accounts" />
 			</c:url> 
            <a href="${URL}"><fmt:message key="previousbutton" /></a>
            
@@ -108,7 +119,7 @@
                 	<c:url value="/controller" var="URL">
 						<c:param name="recordsPerPage" value="${sessionData.recordsPerPage}" />
 						<c:param name="currentPage" value="${i}" />
-						<c:param name="command" value="toAllAccounts" />
+						<c:param name="command" value="to_all_accounts" />
 					</c:url> 
                     <a href="${URL}">${i}</a>
                    
@@ -119,7 +130,7 @@
        		<c:url value="/controller" var="URL">
 				<c:param name="recordsPerPage" value="${sessionData.recordsPerPage}" />
 				<c:param name="currentPage" value="${sessionData.currentPage+1}" />
-				<c:param name="command" value="toAllAccounts" />
+				<c:param name="command" value="to_all_accounts" />
 			</c:url> 
             <a href="${URL}"><fmt:message key="nextbutton" /></a>
         </c:if>      
@@ -129,7 +140,7 @@
 	<hr/>
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
-		<input type="hidden" name="command" value="backToAdminmain" />
+		<input type="hidden" name="command" value="back_to_admin_main" />
 		<input type="submit" value="<fmt:message key="backbutton" />" size="20" />
 	</form>
 </body>

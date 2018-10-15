@@ -1,4 +1,4 @@
-package by.epam.hotel.controller;
+package by.epam.hotel.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -6,12 +6,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import by.epam.hotel.entity.Account;
-import by.epam.hotel.entity.Client;
-import by.epam.hotel.entity.FullInfoOrder;
-import by.epam.hotel.entity.Nationality;
-import by.epam.hotel.entity.Room;
-import by.epam.hotel.entity.RoomClass;
 import by.epam.hotel.util.type.RoleType;
 
 public class SessionData {

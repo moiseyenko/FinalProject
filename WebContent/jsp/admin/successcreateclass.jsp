@@ -15,7 +15,7 @@
 	<br/>
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
-		<input type="hidden" name="command" value="backToAdminClasses" /> <input
+		<input type="hidden" name="command" value="to_admin_classes" /> <input
 			type="submit" value="<fmt:message key="okbutton" />" />
 	</form>
 </body>

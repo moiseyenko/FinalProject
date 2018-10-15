@@ -111,7 +111,7 @@ public class ConnectionPool implements Cloneable {
 	}
 
 	public void releaseConnection(Connection connection) {
-		LOG.debug(connection + " : " + connection != null);
+		LOG.debug(connection + " : " + connection != null + connection.toString());
 		if (connection != null && connection.getClass() == ProxyConnection.class) {
 			try {
 				usedConnections.remove(connection);
@@ -131,6 +131,7 @@ public class ConnectionPool implements Cloneable {
 	}
 
 	public void destroyPool() {
+		System.out.println(poolSize);
 		for (int i = 0; i < poolSize; i++) {
 			try {
 				((ProxyConnection) blockingConnections.take()).closeConnection();
@@ -146,8 +147,11 @@ public class ConnectionPool implements Cloneable {
 	}
 
 	private static void deregisterDrivers() {
+		System.out.println("in deregister");
 		Enumeration<Driver> drivers = DriverManager.getDrivers();
+		System.out.println("before while");
 		while (drivers.hasMoreElements()) {
+			System.out.println("in while");
 			Driver driver = drivers.nextElement();
 			try {
 				DriverManager.deregisterDriver(driver);

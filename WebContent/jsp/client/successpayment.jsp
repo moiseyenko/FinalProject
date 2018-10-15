@@ -14,13 +14,13 @@
  <fmt:message key="successmsg" />
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
-		<input type="hidden" name="command" value="backToOrder" /> <input
+		<input type="hidden" name="command" value="back_to_order" /> <input
 			type="submit" value="<fmt:message key="backbutton" />" size="20" />
 	</form>
 
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
-		<input type="hidden" name="command" value="backToClientmain" /> <input
+		<input type="hidden" name="command" value="back_to_client_main" /> <input
 			type="submit" value="<fmt:message key="backtomainbutton" />" />
 	</form>
 </body>

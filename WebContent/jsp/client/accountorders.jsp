@@ -10,8 +10,8 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="/WEB-INF/tld/format.tld" prefix="fmtl"%>
 <fmt:setLocale value="${sessionData.locale}" scope="session" />
 <fmt:bundle basename="resource.i18n.interface" prefix="accountorders.">
 <html>
@@ -24,6 +24,18 @@
 	<hr />
 <jsp:include page="/loginlogout" />
 	<hr /> 
+	<form action="${pageContext.request.contextPath}/controller" method="post">
+		<input type="hidden" name="command" value="to_account_orders" /> 
+	    <input type="hidden" name="currentPage" value="1">
+	    <label for="records"><fmt:message key="selectrpp" />:</label>
+	    <select id="recordsPerPageId" name="recordsPerPage" onchange="this.form.submit();" >
+	        <option value="5">5</option> 
+	        <option value="10">10</option>
+	        <option value="15">15</option>
+	    </select>
+	    <script>document.getElementById("recordsPerPageId").value = "${sessionData.recordsPerPage}";</script>  
+	</form>
+	<hr />
   <c:choose>
 		<c:when test="${fn:length(sessionData.listAccountFullInfoOrder)==0}">
 			<fmt:message key="noordersmsg" />
@@ -58,22 +70,22 @@
 					    <td class="tg-c3ow">${order.room.number }</td>
 					    <td class="tg-c3ow">${order.room.classRoom }</td>
 					    <td class="tg-c3ow">${order.room.capacity }</td>
-					    <td class="tg-c3ow">${order.room.price }</td>
-					    <td class="tg-c3ow">${order.from }</td>
-					    <td class="tg-c3ow">${order.to }</td>
-					    <td class="tg-c3ow">${order.cost }</td>
+ 						<td class="tg-c3ow">${fmtl:parseCurrency(order.room.price, sessionData.locale) }</td>
+					    <td class="tg-c3ow"><fmtl:localDate date="${order.from }"/> </td>
+					    <td class="tg-c3ow"><fmtl:localDate date="${order.to }"/></td>
+					    <td class="tg-c3ow">${fmtl:parseCurrency(order.cost, sessionData.locale)}</td>
 					    <td>   
 					    <c:choose>
 					    	<c:when test="${order.from.isAfter(localDateNow.now) && order.removed=='false' }">
 					    	<form action="${pageContext.request.contextPath}/controller">
-					    		<input type="hidden" name=command value="cancelorder" />
+					    		<input type="hidden" name=command value="cancel_order" />
 							    <input type="hidden" name="orderIndex" value="${status.count }" />
 							    <input type="submit" value="<fmt:message key="cancel" />" />
 						    </form>
 					    	</c:when>
 					    	<c:when test="${order.from.isEqual(localDateNow.now) && order.removed=='false' }">
 					    	<form action="${pageContext.request.contextPath}/controller">
-					    		<input type="hidden" name=command value="cancelorder" />
+					    		<input type="hidden" name=command value="cancel_order" />
 							    <input type="hidden" name="orderIndex" value="${status.count }" />
 							    <input type="submit" value="Cancel" />
 						    </form>
@@ -96,7 +108,7 @@
         	<c:url value="/controller" var="URL">
 				<c:param name="recordsPerPage" value="${sessionData.recordsPerPage}" />
 				<c:param name="currentPage" value="${sessionData.currentPage-1}" />
-				<c:param name="command" value="toAccountOrders" />
+				<c:param name="command" value="to_account_orders" />
 			</c:url> 
            <a href="${URL}"><fmt:message key="previous" /></a>
            
@@ -110,7 +122,7 @@
                 	<c:url value="/controller" var="URL">
 						<c:param name="recordsPerPage" value="${sessionData.recordsPerPage}" />
 						<c:param name="currentPage" value="${i}" />
-						<c:param name="command" value="toAccountOrders" />
+						<c:param name="command" value="to_account_orders" />
 					</c:url> 
                     <a href="${URL}">${i}</a>
                    
@@ -121,7 +133,7 @@
        		<c:url value="/controller" var="URL">
 				<c:param name="recordsPerPage" value="${sessionData.recordsPerPage}" />
 				<c:param name="currentPage" value="${sessionData.currentPage+1}" />
-				<c:param name="command" value="toAccountOrders" />
+				<c:param name="command" value="to_account_orders" />
 			</c:url> 
             <a href="${URL}"><fmt:message key="next" /></a>
         </c:if>      
@@ -129,7 +141,7 @@
 	<hr/>
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
-		<input type="hidden" name="command" value="backToClientmain" />
+		<input type="hidden" name="command" value="back_to_client_main" />
 		<input type="submit" value="<fmt:message key="backbutton" />" size="20" />
 	</form>
 </body>

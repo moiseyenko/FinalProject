@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,9 +14,12 @@ import org.apache.logging.log4j.Logger;
 
 import by.epam.hotel.command.ActionCommand;
 import by.epam.hotel.command.ActionFactory;
+import by.epam.hotel.entity.Router;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.pool.ConnectionPool;
 import by.epam.hotel.util.ConfigurationManager;
+import by.epam.hotel.util.constant.ParameterConstant;
+import by.epam.hotel.util.constant.PropertyConstant;
 
 public class Controller extends HttpServlet {
 	private static final Logger LOG = LogManager.getLogger();
@@ -50,12 +52,12 @@ public class Controller extends HttpServlet {
 
 		HttpSession session = request.getSession(false);
 		if (session == null) {
-			response.sendRedirect(request.getContextPath() + ConfigurationManager.getProperty("path.page.welcome"));
+			response.sendRedirect(request.getContextPath() + 
+					ConfigurationManager.getProperty(PropertyConstant.PAGE_WELCOME));
 		} else {
 			Router router = null;
-			ActionFactory user = new ActionFactory();
-			String action = request.getParameter("command");
-			ActionCommand command = user.defineCommand(action);
+			String action = request.getParameter(ParameterConstant.COMMAND);
+			ActionCommand command = ActionFactory.defineCommand(action);
 			try {
 				router = command.execute(request);
 				LOG.debug(router);
@@ -66,15 +68,10 @@ public class Controller extends HttpServlet {
 			switch (router.getType()) {
 			case REDIRECT:
 				response.sendRedirect(request.getContextPath() + router.getPage());
-				System.out.println("!!!!!REDIRECT!!!!!!");
 				break;
 			case FORWARD:
 				request.getRequestDispatcher(router.getPage()).forward(request, response);
-				System.out.println("!!!!!FORWARD!!!!!!");
-				System.out.println(request.getSession().getAttribute("login") + " " 
-						+ request.getSession().getAttribute("role"));
 				break;
-			// need change;
 			default:
 				throw new IllegalArgumentException("You will never be here");
 			}

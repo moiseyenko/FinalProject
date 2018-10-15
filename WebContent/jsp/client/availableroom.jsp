@@ -27,7 +27,7 @@
 						<td>
 							<c:url value="/controller" var="roomsURL">
 								<c:param name="number" value="${room.number}" />
-								<c:param name="command" value="chooseroom" />
+								<c:param name="command" value="choose_room" />
 							</c:url> 
 							<a href="${roomsURL}"> ${room.number}:<fmt:message key="capacity" />-${room.capacity};<fmt:message key="price" />-${room.price};</a> 
 						</td>
@@ -39,12 +39,12 @@
 	<hr/>
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
-		<input type="hidden" name="command" value="backToOrder" />
+		<input type="hidden" name="command" value="back_to_order" />
 		<input type="submit" value="<fmt:message key="backbutton" />" size="20" />
 	</form>
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
-		<input type="hidden" name="command" value="backToClientmain" />
+		<input type="hidden" name="command" value="back_to_client_main" />
 		<input type="submit" value="<fmt:message key="backtomainbutton" />" size="20" />
 	</form>
 </body>

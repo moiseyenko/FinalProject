@@ -1,15 +1,12 @@
 package by.epam.hotel.command.impl.admin;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import by.epam.hotel.command.ActionCommand;
-import by.epam.hotel.controller.Router;
-import by.epam.hotel.controller.SessionData;
 import by.epam.hotel.entity.Nationality;
+import by.epam.hotel.entity.Router;
+import by.epam.hotel.entity.SessionData;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
 import by.epam.hotel.service.AdminService;
@@ -18,12 +15,28 @@ import by.epam.hotel.util.MessageManager;
 import by.epam.hotel.util.constant.AttributeConstant;
 import by.epam.hotel.util.constant.ParameterConstant;
 import by.epam.hotel.util.constant.PropertyConstant;
-import by.epam.hotel.util.constant.ValidationConstant;
 import by.epam.hotel.util.type.RoleType;
 import by.epam.hotel.util.type.RouterType;
+import by.epam.hotel.util.validator.ClientValidator;
 
+/**
+ * This class is an implementation of a {@link by.epam.hotel.command.ActionCommand ActionCommand} interface 
+ * and is used to creation of new nationality.
+ * 
+ * 
+ * @author Evgeniy Moiseyenko
+ */
 public class CreateNationalityCommand implements ActionCommand{
 	
+	/**
+	 * If user's role does not equal to {@link by.epam.hotel.util.type.RoleType#ADMIN ADMIN} 
+	 * method  will return user by {@link by.epam.hotel.util.type.RouterType FORWARD} to welcome page.
+	 * If parameters: countryId and country are invalid or if new nationality cannot be created, 
+	 * method will return user by {@link by.epam.hotel.util.type.RouterType FORWARD} to previous page.
+	 * Otherwise method will create new nationality and send admin by
+	 * {@link by.epam.hotel.util.type.RouterType REDIRECT} to page with message of successfull
+	 * creation.
+	 */
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {
 		Router router = new Router();
@@ -63,30 +76,18 @@ public class CreateNationalityCommand implements ActionCommand{
 	private boolean validateInputData(String countryId, String country, HttpServletRequest request, SessionData sessionData) {
 		boolean result = true;
 		
-		if (!validateCountryId(countryId)) {
+		if (!ClientValidator.validateCountryId(countryId)) {
 			request.setAttribute(AttributeConstant.ERROR_COUNTRY_ID_MESSAGE, 
 					MessageManager.getProrerty(PropertyConstant.MESSAGE_COUNTRY_ID_ERROR, sessionData.getLocale()));
 			result = false;
 		}
-		if (!validateCountry(country)) {
+		if (!ClientValidator.validateCountry(country)) {
 			request.setAttribute(AttributeConstant.ERROR_COUNTRY_MESSAGE,
 					MessageManager.getProrerty(PropertyConstant.MESSAGE_COUNTRY_ERROR, sessionData.getLocale()));
 			result = false;
 		}
 		
 		return result;
-	}
-	
-	private boolean validateCountryId(String countryId) {
-		Pattern pattern = Pattern.compile(ValidationConstant.COUNTRY_ID_PATTERN);
-		Matcher matcher = pattern.matcher(countryId);
-		return matcher.matches();
-	}
-	
-	private boolean validateCountry(String country) {
-		Pattern pattern = Pattern.compile(ValidationConstant.COUNTRY_PATTERN);
-		Matcher matcher = pattern.matcher(country);
-		return matcher.matches();
 	}
 
 }

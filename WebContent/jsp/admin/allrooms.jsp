@@ -24,6 +24,18 @@
 	<hr />
 <jsp:include page="/loginlogout" />
 	<hr />
+	<form action="${pageContext.request.contextPath}/controller" method="post">
+		<input type="hidden" name="command" value="to_all_rooms" /> 
+	    <input type="hidden" name="currentPage" value="1">
+	    <label for="records"><fmt:message key="selectrpp" />:</label>
+	    <select id="recordsPerPageId" name="recordsPerPage" onchange="this.form.submit();" >
+	        <option value="5">5</option> 
+	        <option value="10">10</option>
+	        <option value="15">15</option>
+	    </select>
+	    <script>document.getElementById("recordsPerPageId").value = "${sessionData.recordsPerPage}";</script>  
+	</form>
+	<hr />
   <c:choose>
 		<c:when test="${fn:length(sessionData.roomList)==0}">
 			<fmt:message key="noroommessage" />
@@ -59,14 +71,14 @@
 					    <c:choose>
 					   		<c:when test="${room.removed }">
 						    <form action="${pageContext.request.contextPath}/controller" method="post" >
-					    		<input type="hidden" name=command value="changeRoomRemoved" />
+					    		<input type="hidden" name=command value="change_room_removed" />
 							    <input type="hidden" name="roomIndex" value="${status.count }" />
 							    <input type="submit" value="<fmt:message key="restore" />" />
 						    </form>
 					    	</c:when>
 					    	<c:otherwise>
 					    		<form action="${pageContext.request.contextPath}/controller" method="post" >
-					    		<input type="hidden" name=command value="changeRoomRemoved" />
+					    		<input type="hidden" name=command value="change_room_removed" />
 							    <input type="hidden" name="roomIndex" value="${status.count }" />
 							    <input type="submit" value="<fmt:message key="remove" />" />
 						    </form>
@@ -76,7 +88,7 @@
 					    </td>
 					    <td>
 					    <form action="${pageContext.request.contextPath}/controller" method="post" >
-				    		<input type="hidden" name=command value="changeRoom" />
+				    		<input type="hidden" name=command value="change_room" />
 						    <input type="hidden" name="roomIndex" value="${status.count }" />
 						    <input type="submit" value="<fmt:message key="change" />" />
 					    </form>
@@ -91,7 +103,7 @@
     	<c:url value="/controller" var="URL">
 			<c:param name="recordsPerPage" value="${sessionData.recordsPerPage}" />
 			<c:param name="currentPage" value="${sessionData.currentPage-1}" />
-			<c:param name="command" value="toAllRooms" />
+			<c:param name="command" value="to_all_rooms" />
 		</c:url> 
        <a href="${URL}"><fmt:message key="previous" /></a>
     </c:if>
@@ -104,7 +116,7 @@
             	<c:url value="/controller" var="URL">
 					<c:param name="recordsPerPage" value="${sessionData.recordsPerPage}" />
 					<c:param name="currentPage" value="${i}" />
-					<c:param name="command" value="toAllRooms" />
+					<c:param name="command" value="to_all_rooms" />
 				</c:url> 
                 <a href="${URL}">${i}</a>
             </c:otherwise>
@@ -114,14 +126,14 @@
    		<c:url value="/controller" var="URL">
 			<c:param name="recordsPerPage" value="${sessionData.recordsPerPage}" />
 			<c:param name="currentPage" value="${sessionData.currentPage+1}" />
-			<c:param name="command" value="toAllRooms" />
+			<c:param name="command" value="to_all_rooms" />
 		</c:url> 
         <a href="${URL}"><fmt:message key="next" /></a>
     </c:if>  
 	<hr/>
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
-		<input type="hidden" name="command" value="backToAdminRooms" />
+		<input type="hidden" name="command" value="to_admin_rooms" />
 		<input type="submit" value="<fmt:message key="backbutton" />" size="20" />
 	</form>
 </body>

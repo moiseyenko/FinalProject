@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib	version="2.1"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.oracle.com/webfolder/technetwork/jsc/xml/ns/javaee/jsp_2_3.xsd">
+		<tlib-version>1.0</tlib-version>
+		<short-name>fmtl</short-name>
+		<uri>customtags</uri>
+	<tag>
+		<name>localDate</name>
+		<tag-class>by.epam.hotel.customtags.LocalDateFormatTag</tag-class>
+		<info>format LocalDate depending on current locale</info>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>date</name>
+			<required>true</required>	
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<function>
+		<name>parseCurrency</name>
+		<function-class>by.epam.hotel.customtags.CurrencyFormat</function-class>
+		<function-signature>String parseCurrency(java.math.BigDecimal,java.util.Locale)</function-signature>
+	</function>
+
+</taglib>

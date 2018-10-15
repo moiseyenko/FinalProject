@@ -22,7 +22,9 @@
 	${sessionData.login},<fmt:message key="hello" />!
 	<hr />
 	<form action="${pageContext.request.contextPath}/controller" method="post">
-		<input type="hidden" name="command" value="toSetRecordsPerPageAccountOrder" /> 
+		<input type="hidden" name="command" value="to_account_orders" /> 
+		<input type="hidden" name="currentPage" value="1">
+	    <input type="hidden" name="recordsPerPage" value="10">
 		<input type="submit" value="<fmt:message key="orders" />" />
 	</form>
 	<hr />
@@ -33,7 +35,7 @@
 	${errorRelogMessage} ${errorReSignupMessage}
 	<hr />
 	<form action="${pageContext.request.contextPath}/controller" method="post">
-		<input type="hidden" name="command" value="toChangePersonalData" /> 
+		<input type="hidden" name="command" value="to_change_personal_data" /> 
 		<input type="submit" value="<fmt:message key="changepersonaldata" />" />
 	</form>
 </body>

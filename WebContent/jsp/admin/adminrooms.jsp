@@ -13,19 +13,21 @@
 	<hr />
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
-		<input type="hidden" name="command" value="toSetRecordsPerPageRoom" />
+		<input type="hidden" name="command" value="to_all_rooms" />
+		<input type="hidden" name="currentPage" value="1">
+	    <input type="hidden" name="recordsPerPage" value="10">
 		<input type="submit" value="<fmt:message key="allrooms" />" size="20" />
 	</form>
 	<hr/>
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
-		<input type="hidden" name="command" value="toCreateRoom" />
+		<input type="hidden" name="command" value="to_create_room" />
 		<input type="submit" value="<fmt:message key="createroom" />" size="20" />
 	</form>
 	<hr/>
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
-		<input type="hidden" name="command" value="backToAdminmain" />
+		<input type="hidden" name="command" value="back_to_admin_main" />
 		<input type="submit" value="<fmt:message key="backbutton" />" size="20" />
 	</form>
 </body>

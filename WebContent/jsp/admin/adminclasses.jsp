@@ -13,19 +13,21 @@
 	<hr />
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
-		<input type="hidden" name="command" value="toSetRecordsPerPageClass" />
+		<input type="hidden" name="command" value="to_all_classes" />
+		<input type="hidden" name="currentPage" value="1">
+	    <input type="hidden" name="recordsPerPage" value="10">
 		<input type="submit" value="<fmt:message key="allclasses" />" size="20" />
 	</form>
 	<hr/>
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
-		<input type="hidden" name="command" value="toCreateClass" />
+		<input type="hidden" name="command" value="to_create_class" />
 		<input type="submit" value="<fmt:message key="createclass" />" size="20" />
 	</form>
 	<hr/>
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
-		<input type="hidden" name="command" value="backToAdminmain" />
+		<input type="hidden" name="command" value="back_to_admin_main" />
 		<input type="submit" value="<fmt:message key="backbuttom" />" size="20" />
 	</form>
 </body>

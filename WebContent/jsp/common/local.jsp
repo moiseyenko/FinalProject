@@ -2,36 +2,35 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<html>
-<head>
-<title>Locale</title>
-</head>
-<body>
-	<c:url value="/controller" var="russianURL" >
-		<c:param name="locale" value="Russian" />
-		<c:param name="command" value="changeLocale" />
-		<c:param name="jsppath" value="${pageContext.request.requestURI }" />
-	</c:url>
-	<a href="${russianURL}" > Русский </a>
-	
-	<c:url value="/controller" var="englishURL">
-		<c:param name="locale" value="English" />
-		<c:param name="command" value="changeLocale" />
-		<c:param name="jsppath" value="${pageContext.request.requestURI }" />
-	</c:url>
-	<a href="${englishURL}"> English </a>
-<%-- 	<br/>
-	<form action="${pageContext.request.contextPath}/controller" method="post">
-		<input type="hidden" name="locale" value="English" />
-		<input type="hidden" name="command" value="changeLocale" />
-		<input type="hidden" name="jsppath" value="${pageContext.request.requestURI }" />
-		<input type="submit" value="English" size="20" />
-	</form>
-	<form action="${pageContext.request.contextPath}/controller" method="post">
-		<input type="hidden" name="locale" value="Russian" />
-		<input type="hidden" name="command" value="changeLocale" />
-		<input type="hidden" name="jsppath" value="${pageContext.request.requestURI }" />
-		<input type="submit" value="Русский" size="20" />
-	</form> --%>
-</body>
-</html>
+<fmt:setLocale value="${sessionData.locale}" scope="session" />
+<fmt:bundle basename="resource.i18n.interface" prefix="contacts.">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+	<div class="collapse navbar-collapse justify-content-md">
+		<ul>
+		<li><fmt:message key="address" /></li>
+		<li><fmt:message key="phone" />: +375(44) 722-50-81</li>
+		<li><fmt:message key="email" />: javahotel2018@gmail.com</li>
+	</ul>
+	</div>
+	<div class="collapse navbar-collapse justify-content-md-end">
+		<form action="${pageContext.request.contextPath}/controller"
+			method="post" style="vertical-align: middle;">
+			<input type="hidden" name="locale" value="English" />
+			<input type="hidden" name="command" value="change_locale" />
+			<input type="hidden" name="jsppath"
+				value="${pageContext.request.requestURI }" />
+			<input class="btn btn-dark btn-primary btn-block" type="submit"
+				value="English" />
+		</form>
+		<form action="${pageContext.request.contextPath}/controller"
+			method="post">
+			<input type="hidden" name="locale" value="Russian" />
+			<input type="hidden" name="command" value="change_locale" />
+			<input type="hidden" name="jsppath"
+				value="${pageContext.request.requestURI }" />
+			<input class="btn btn-dark btn-primary btn-block" type="submit"
+				value="Русский" />
+		</form>
+	</div>
+</nav>
+</fmt:bundle>

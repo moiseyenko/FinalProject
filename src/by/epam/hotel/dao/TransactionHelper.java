@@ -8,7 +8,6 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import by.epam.hotel.exception.CloseTransactionException;
 import by.epam.hotel.pool.ConnectionPool;
 
 public class TransactionHelper implements AutoCloseable {
@@ -36,7 +35,7 @@ public class TransactionHelper implements AutoCloseable {
 	}
 
 	@Override
-	public void close() throws CloseTransactionException {
+	public void close() {
 		for (AbstractDao<?, ?> dao : daoList) {
 			dao.setConnection(null);
 		}

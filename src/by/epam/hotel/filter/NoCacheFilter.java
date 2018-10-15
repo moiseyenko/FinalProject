@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 		 DispatcherType.INCLUDE,
 		 DispatcherType.REQUEST,
 		 DispatcherType.FORWARD
-		 }, urlPatterns = { "/jsp/welcome.jsp"})
+		 }, urlPatterns = { "/jsp/common/welcome.jsp"})
 public class NoCacheFilter implements Filter {
 
     

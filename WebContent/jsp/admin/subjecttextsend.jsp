@@ -12,7 +12,7 @@
 	<br />
 	<hr />
 	<form action="${pageContext.request.contextPath}/controller" method="post" >
-	<input type="hidden" name="command" value="sendMessage" />
+	<input type="hidden" name="command" value="send_message" />
    		<fmt:message key="subject" />: <input type="text" name="subject" /><br/>
 	    <fmt:message key="text" />: <input type="text" name="text" /><br/>
 	    <input type="submit" value="<fmt:message key="sendmessage" />" />
@@ -21,7 +21,7 @@
   	<hr />
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
-		<input type="hidden" name="command" value="backToAllEmails" />
+		<input type="hidden" name="command" value="back_to_all_emails" />
 		<input type="submit" value="<fmt:message key="backbutton" />" size="20" />
 	</form>
 </body>

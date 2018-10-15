@@ -62,14 +62,14 @@
 		method="post">
 		<input type="hidden" name="returnedSum" value="${returnedSum }" />
 		<input type="hidden" name="orderId" value="${orderToCancel.id }" />
-		<input type="hidden" name="command" value="approveOrderCancel" />
+		<input type="hidden" name="command" value="approve_order_cancel" />
 		<input type="submit" value="<fmt:message key="approvecancel" />" size="20" />
 	</form>
 	${errorOrderCancelMessage }
 	<br />
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
-		<input type="hidden" name="command" value="backToAccountOrders" />
+		<input type="hidden" name="command" value="back_to_account_orders" />
 		<input type="submit" value="<fmt:message key="backbutton" />" size="20" />
 	</form>
 </body>

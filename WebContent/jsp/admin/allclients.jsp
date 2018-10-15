@@ -24,7 +24,18 @@
 	<hr />
 <jsp:include page="/loginlogout" />
 	<hr />
-
+<form action="${pageContext.request.contextPath}/controller" method="post">
+	<input type="hidden" name="command" value="to_all_clients" /> 
+    <input type="hidden" name="currentPage" value="1">
+    <label for="records"><fmt:message key="selectrpp" />:</label>
+    <select id="recordsPerPageId" name="recordsPerPage" onchange="this.form.submit();" >
+        <option value="5">5</option> 
+        <option value="10">10</option>
+        <option value="15">15</option>
+    </select>
+    <script>document.getElementById("recordsPerPageId").value = "${sessionData.recordsPerPage}";</script> 
+</form>
+<hr/>
   <c:choose>
 		<c:when test="${fn:length(sessionData.clientList)==0}">
 			<fmt:message key="noclientmessage" />
@@ -61,14 +72,14 @@
 					    <c:choose>
 					   		<c:when test="${client.blacklist }">
 						    <form action="${pageContext.request.contextPath}/controller" method="post" >
-					    		<input type="hidden" name=command value="changeBlackList" />
+					    		<input type="hidden" name=command value="change_blackList" />
 							    <input type="hidden" name="clientIndex" value="${status.count }" />
 							    <input type="submit" value="<fmt:message key="removefrombl" />" />
 						    </form>
 					    	</c:when>
 					    	<c:otherwise>
 					    		<form action="${pageContext.request.contextPath}/controller" method="post" >
-					    		<input type="hidden" name=command value="changeBlackList" />
+					    		<input type="hidden" name=command value="change_blackList" />
 							    <input type="hidden" name="clientIndex" value="${status.count }" />
 							    <input type="submit" value="<fmt:message key="addtobl" />" />
 						    </form>
@@ -86,7 +97,7 @@
     	<c:url value="/controller" var="URL">
 			<c:param name="recordsPerPage" value="${sessionData.recordsPerPage}" />
 			<c:param name="currentPage" value="${sessionData.currentPage-1}" />
-			<c:param name="command" value="toAllClients" />
+			<c:param name="command" value="to_all_clients" />
 		</c:url> 
        <a href="${URL}"><fmt:message key="previous" /></a>
     </c:if>
@@ -99,7 +110,7 @@
             	<c:url value="/controller" var="URL">
 					<c:param name="recordsPerPage" value="${sessionData.recordsPerPage}" />
 					<c:param name="currentPage" value="${i}" />
-					<c:param name="command" value="toAllClients" />
+					<c:param name="command" value="to_all_clients" />
 				</c:url> 
                 <a href="${URL}">${i}</a>
             </c:otherwise>
@@ -109,14 +120,14 @@
    		<c:url value="/controller" var="URL">
 			<c:param name="recordsPerPage" value="${sessionData.recordsPerPage}" />
 			<c:param name="currentPage" value="${sessionData.currentPage+1}" />
-			<c:param name="command" value="toAllClients" />
+			<c:param name="command" value="to_all_clients" />
 		</c:url> 
         <a href="${URL}"><fmt:message key="next" /></a>
     </c:if>  
 	<hr/>
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
-		<input type="hidden" name="command" value="backToAdminmain" />
+		<input type="hidden" name="command" value="back_to_admin_main" />
 		<input type="submit" value="<fmt:message key="backbutton" />" size="20" />
 	</form>
 </body>

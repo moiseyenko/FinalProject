@@ -1,4 +1,4 @@
-package by.epam.hotel.controller;
+package by.epam.hotel.entity;
 
 import by.epam.hotel.util.type.RouterType;
 

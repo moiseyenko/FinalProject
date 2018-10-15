@@ -5,7 +5,8 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
-import by.epam.hotel.controller.SessionData;
+import by.epam.hotel.entity.SessionData;
+import by.epam.hotel.util.constant.AttributeConstant;
 import by.epam.hotel.util.type.LanguageType;
 import by.epam.hotel.util.type.RoleType;
 
@@ -14,12 +15,11 @@ import by.epam.hotel.util.type.RoleType;
 public class SessionListenerImp implements HttpSessionListener {
 
 	public SessionListenerImp() {
-
 	}
 
 	public void sessionCreated(HttpSessionEvent event) {
 		HttpSession session = event.getSession();
-		SessionData sessionData = (SessionData)session.getAttribute("sessionData");
+		SessionData sessionData = (SessionData)session.getAttribute(AttributeConstant.SESSION_DATA);
 		if(sessionData == null) {
 			sessionData = new SessionData();
 			sessionData.setRole(RoleType.GUEST);
@@ -27,11 +27,9 @@ public class SessionListenerImp implements HttpSessionListener {
 			session.setAttribute("sessionData", sessionData);
 		}
 		session.setMaxInactiveInterval(60*10);
-		System.out.println("sessionCreated: "+ sessionData);
 	}
 
 	public void sessionDestroyed(HttpSessionEvent event) {
-		System.out.println("sessionDestroyed" + event.getSession().getAttribute("sessionData"));
 	}
 
 }

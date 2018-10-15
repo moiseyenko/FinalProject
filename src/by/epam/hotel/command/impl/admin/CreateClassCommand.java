@@ -1,15 +1,12 @@
 package by.epam.hotel.command.impl.admin;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import by.epam.hotel.command.ActionCommand;
-import by.epam.hotel.controller.Router;
-import by.epam.hotel.controller.SessionData;
 import by.epam.hotel.entity.RoomClass;
+import by.epam.hotel.entity.Router;
+import by.epam.hotel.entity.SessionData;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
 import by.epam.hotel.service.AdminService;
@@ -18,12 +15,28 @@ import by.epam.hotel.util.MessageManager;
 import by.epam.hotel.util.constant.AttributeConstant;
 import by.epam.hotel.util.constant.ParameterConstant;
 import by.epam.hotel.util.constant.PropertyConstant;
-import by.epam.hotel.util.constant.ValidationConstant;
 import by.epam.hotel.util.type.RoleType;
 import by.epam.hotel.util.type.RouterType;
+import by.epam.hotel.util.validator.RoomValidator;
 
+/**
+ * This class is an implementation of a {@link by.epam.hotel.command.ActionCommand ActionCommand} interface 
+ * and is used to creation of new room class.
+ * 
+ * 
+ * @author Evgeniy Moiseyenko
+ */
 public class CreateClassCommand implements ActionCommand{
 	
+	/**
+	 * If user's role does not equal to {@link by.epam.hotel.util.type.RoleType#ADMIN ADMIN} 
+	 * method  will return user by {@link by.epam.hotel.util.type.RouterType FORWARD} to welcome page.
+	 * If parameter: new class id is invalid or if it cannot be created, method will return user by 
+	 * {@link by.epam.hotel.util.type.RouterType FORWARD} to previous page.
+	 * Otherwise method will create new class id and send admin by
+	 * {@link by.epam.hotel.util.type.RouterType REDIRECT} to page with message of successfull
+	 * creation.
+	 */
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {
 		Router router = new Router();
@@ -32,7 +45,7 @@ public class CreateClassCommand implements ActionCommand{
 		SessionData sessionData = (SessionData) session.getAttribute(AttributeConstant.SESSION_DATA);
 		if (sessionData.getRole() == RoleType.ADMIN) {
 			String classId = request.getParameter(ParameterConstant.CLASS_ID);
-			if(validateClassId(classId)) {
+			if(RoomValidator.validateClassId(classId)) {
 				RoomClass newRoomClass = new RoomClass(classId);
 				try {
 					if(AdminService.createRoomClass(newRoomClass)) {
@@ -59,12 +72,6 @@ public class CreateClassCommand implements ActionCommand{
 		}
 		router.setPage(page);
 		return router;
-	}
-	
-	private boolean validateClassId(String classId) {
-		Pattern pattern = Pattern.compile(ValidationConstant.CLASS_ID_PATTERN);
-		Matcher matcher = pattern.matcher(classId);
-		return matcher.matches();
 	}
 	
 }

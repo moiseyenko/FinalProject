@@ -16,7 +16,7 @@
 	<hr/>
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
-		<input type="hidden" name="command" value="backToAdminmain" />
+		<input type="hidden" name="command" value="back_to_admin_main" />
 		<input type="submit" value="<fmt:message key="okbutton" />" size="20" />
 	</form>
 </body>

@@ -4,6 +4,7 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <fmt:setLocale value="${sessionData.locale}" scope="session" />
+<fmt:setBundle basename="resource.i18n.messages" var="rb" />
 <fmt:bundle basename="resource.i18n.interface" prefix="order.">
 <html>
 <head>
@@ -23,7 +24,7 @@
 					<td>
 						<c:url value="/controller" var="clientsURL">
 							<c:param name="clientIndex" value="${status.count}" />
-							<c:param name="command" value="fillorderform" />
+							<c:param name="command" value="fill_order_form" />
 						</c:url> 
 						<a href="${clientsURL}"> ${client.firstName} ${client.lastName} ${client.passport} (${client.nationality}) </a> 
 					</td>
@@ -33,21 +34,24 @@
 	</div>
 	<hr/>
 	<form action="${pageContext.request.contextPath}/controller" method="post">
-		<input type="hidden" name="command" value="findRoom" />	
-		<table border="0" >
+		<input type="hidden" name="command" value="find_room" />	
+		<table>
 			<tr>
 				<td valign="top"><fmt:message key="fname" />: </td>
-				<td valign="top"><input type="text" name="fname" value="${tempFName}" size="40" /></td>
+				<td valign="top"><input type="text" name="fname" value="${tempFName}" size="40"
+				pattern="^[A-ZА-ЯЁ][a-zA-ZА-Яа-яЁё\\'.-]{1,44}$" title="<fmt:message key="message.fnameerror" bundle="${ rb }" />" /></td>
 				<td valign="top">${errorFNameMessage}</td>
 			</tr>
 			<tr>
 				<td valign="top"><fmt:message key="lname" />: </td>
-				<td valign="top"><input type="text" name="lname" value="${tempLName}" size="40" /></td>
+				<td valign="top"><input type="text" name="lname" value="${tempLName}" size="40" 
+				pattern="^[a-zA-ZА-Яа-яЁё\\'.-]{1,45}$" title="<fmt:message key="message.lnameerror" bundle="${ rb }" />"/></td>
 				<td valign="top">${errorLNameMessage}</td>
 			</tr>
 			<tr>
 				<td valign="top"><fmt:message key="passport" />: </td>
-				<td valign="top"><input type="text" name="passport" value="${tempPassport}" size="40" /></td>
+				<td valign="top"><input type="text" name="passport" value="${tempPassport}" size="40" 
+				pattern="^[a-zA-Z0-9]{1,15}$" title="<fmt:message key="message.passporterror" bundle="${ rb }" />"/></td>
 				<td valign="top">${errorPassportMessage}</td>
 			</tr>
 			<tr>
@@ -73,7 +77,8 @@
 			</tr>
 			<tr>
 				<td valign="top"><fmt:message key="capacity" />: </td>
-				<td valign="top"><input type="text" name="capacity" size="40" /></td>
+				<td valign="top"><input type="text" name="capacity" size="40" 
+				pattern="^[0-9]{1,5}$" title="<fmt:message key="message.capacityerror" bundle="${ rb }" />"/></td>
 				<td valign="top">${errorCapacityMessage}</td>
 			</tr>
 			<tr>
@@ -94,7 +99,7 @@
 	<hr/>
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
-		<input type="hidden" name="command" value="backToClientmain" />
+		<input type="hidden" name="command" value="back_to_client_main" />
 		<input type="submit" value="<fmt:message key="backbutton" />" size="20" />
 	</form>
 </body>

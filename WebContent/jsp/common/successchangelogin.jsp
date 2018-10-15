@@ -6,6 +6,10 @@
 <html>
 <head>
 <title><fmt:message key="title" /></title>
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/css/bootstrap.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
 <jsp:include page="/locale" />
@@ -15,7 +19,7 @@
 	<hr/>
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
-		<input type="hidden" name="command" value="backToChangePersonalData" />
+		<input type="hidden" name="command" value="to_change_personal_data" />
 		<input type="submit" value="<fmt:message key="okbutton" />" size="20" />
 	</form>
 </body>

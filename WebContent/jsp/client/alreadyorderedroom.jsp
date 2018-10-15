@@ -16,12 +16,12 @@
 
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
-		<input type="hidden" name="command" value="backToRooms" />
+		<input type="hidden" name="command" value="back_to_rooms" />
 		<input type="submit" value="<fmt:message key="backbutton" />" size="20" />
 	</form>
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
-		<input type="hidden" name="command" value="backToClientmain" />
+		<input type="hidden" name="command" value="back_to_client_main" />
 		<input type="submit" value="<fmt:message key="backtomainbutton" />" size="20" />
 	</form>
 </body>

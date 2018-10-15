@@ -15,7 +15,6 @@ public interface PropertyConstant {
 	String PAGE_PAYPAGE = "path.page.paypage";
 	String PAGE_REPLENISH_PAGE = "path.page.replenishpage";
 	String PAGE_SUCCESS_PAYMENT =	"path.page.successpayment";
-	String PAGE_SET_RECORDS_PER_PAGE_ACCOUNT_ORDERS = "path.page.setrecordsperpageaccountorders";
 	String PAGE_ACCOUNT_ORDERS =	"path.page.accountorders";
 	String PAGE_APPROVE_ORDER_CANCEL =	"path.page.approveordercancel";
 	String PAGE_CHANGE_PERSONAL_DATA =	"path.page.changepersonaldata";
@@ -27,28 +26,22 @@ public interface PropertyConstant {
 	String PAGE_SUCCESS_DELETE_ACCOUNT = "path.page.successdeleteaccount";
 	String PAGE_ADMIN_MAIN =  "path.page.adminmain";
 	String PAGE_ALL_ORDERS = "path.page.allorders";
-	String PAGE_SET_RECORDS_PER_PAGE_ORDERS = "path.page.setrecordsperpageorders";
 	String PAGE_APPROVE_ADMIN_ORDER_CANCEL = "path.page.approveadminordercancel";
-	String PAGE_SET_RECORDS_PER_PAGE_CLIENTS = "path.page.setrecordsperpageclients";
 	String PAGE_ALL_CLIENTS = "path.page.allclients";
 	String PAGE_ADMIN_ROOMS = "path.page.adminrooms";
-	String PAGE_SET_RECORDS_PER_PAGE_ROOMS = "path.page.setrecordsperpagerooms";
 	String PAGE_ALL_ROOMS = "path.page.allrooms";
 	String PAGE_CHANGE_ROOM = "path.page.changeroom";
 	String PAGE_CREATE_ROOM = "path.page.createroom";
 	String PAGE_SUCCESS_CREATE_ROOM = "path.page.successcreateroom";
 	String PAGE_ADMIN_NATIONALITIES = "path.page.adminnationalities";
-	String PAGE_SET_RECORDS_PER_PAGE_NATIONALITIES = "path.page.setrecordsperpagenationalities";
 	String PAGE_ALL_NATIONALITIES = "path.page.allnationalities";
 	String PAGE_CHANGE_NATIONALITY = "path.page.changenationality";
 	String PAGE_CREATE_NATIONALITY = "path.page.createnationality";
 	String PAGE_SUCCESS_CREATE_NATIONALITY = "path.page.successcreatenationality";
 	String PAGE_ADMIN_CLASSES = "path.page.adminclasses";
-	String PAGE_SET_RECORDS_PER_PAGE_CLASSES = "path.page.setrecordsperpageclasses";
 	String PAGE_ALL_CLASSES = "path.page.allclasses";
 	String PAGE_CREATE_CLASS = "path.page.createclass";
 	String PAGE_SUCCESS_CREATE_CLASS = "path.page.successcreateclass";
-	String PAGE_SET_RECORDS_PER_PAGE_ACCOUNTS = "path.page.setrecordsperpageaccounts";
 	String PAGE_ALL_ACCOUNTS = "path.page.allaccounts";
 	String MESSAGE_LOGIN_ERROR = "message.loginerror";
 	String MESSAGE_SIGNUP_ERROR = "message.signuperror";
@@ -93,12 +86,12 @@ public interface PropertyConstant {
 	String MESSAGE_CREATE_CLASS_ERROR = "message.createclasserror";
 	String MESSAGE_CHANGE_ADMIN_RIGHTS_ERROR = "message.changeadminrightserror";
 	String PAGE_ALL_EMAILS = "path.page.allemails";
-	String PAGE_SET_RECORDS_PER_PAGE_EMAILS ="path.page.setrecordsperpageemail";
 	String PAGE_SUCCESS_SEND_MSG ="path.page.successsendmessage";
 	String PAGE_SUBJECT_TEXT_SEND = "path.page.subjecttextsend";
 	String MESSAGE_SEND_MSG_ERROR = "message.sendmessageerror";
 	String PAGE_CONFIRMATION_EMAIL = "path.page.confirmationemail";
 	String MESSAGE_SEND_CONFIRMATION_EMAIL_ERROR = "message.sendconfirmationemailerror";
 	String MESSAGE_KEY_CONFIRMATION_ERROR = "message.keyconfirmationerror";
+	String PAGE_HOTEL_INFO = "path.page.hotelinfo";
 
 }

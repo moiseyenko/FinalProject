@@ -13,19 +13,21 @@
 	<hr />
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
-		<input type="hidden" name="command" value="toSetRecordsPerPageNationality" />
+		<input type="hidden" name="command" value="to_all_nationalities" />
+		<input type="hidden" name="currentPage" value="1">
+	    <input type="hidden" name="recordsPerPage" value="10">
 		<input type="submit" value="<fmt:message key="allnationalitites" />" size="20" />
 	</form>
 	<hr/>
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
-		<input type="hidden" name="command" value="toCreateNationality" />
+		<input type="hidden" name="command" value="to_create_nationality" />
 		<input type="submit" value="<fmt:message key="createnationality" />" size="20" />
 	</form>
 	<hr/>
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
-		<input type="hidden" name="command" value="backToAdminmain" />
+		<input type="hidden" name="command" value="back_to_admin_main" />
 		<input type="submit" value="<fmt:message key="backbutton" />" size="20" />
 	</form>
 </body>

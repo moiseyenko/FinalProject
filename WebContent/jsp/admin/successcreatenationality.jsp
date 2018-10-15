@@ -15,7 +15,7 @@
 	<br/>
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
-		<input type="hidden" name="command" value="backToAdminNationalities" /> <input
+		<input type="hidden" name="command" value="to_admin_nationalities" /> <input
 			type="submit" value="<fmt:message key="okbutton" />" />
 	</form>
 </body>

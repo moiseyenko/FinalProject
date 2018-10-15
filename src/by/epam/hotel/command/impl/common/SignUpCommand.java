@@ -1,14 +1,11 @@
 package by.epam.hotel.command.impl.common;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import by.epam.hotel.command.ActionCommand;
-import by.epam.hotel.controller.Router;
-import by.epam.hotel.controller.SessionData;
+import by.epam.hotel.entity.Router;
+import by.epam.hotel.entity.SessionData;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.MailException;
 import by.epam.hotel.exception.ServiceException;
@@ -20,12 +17,29 @@ import by.epam.hotel.util.MessageManager;
 import by.epam.hotel.util.constant.AttributeConstant;
 import by.epam.hotel.util.constant.ParameterConstant;
 import by.epam.hotel.util.constant.PropertyConstant;
-import by.epam.hotel.util.constant.ValidationConstant;
 import by.epam.hotel.util.type.RoleType;
 import by.epam.hotel.util.type.RouterType;
+import by.epam.hotel.util.validator.AccountValidator;
 
+/**
+ * This class is an implementation of a
+ * {@link by.epam.hotel.command.ActionCommand ActionCommand} interface and is
+ * used to start client registration.
+ * 
+ * 
+ * @author Evgeniy Moiseyenko
+ */
 public class SignUpCommand implements ActionCommand {	
 
+	/**
+	 * If user's role equals to {@link by.epam.hotel.util.type.RoleType#CLIENT
+	 * CLIENT} or {@link by.epam.hotel.util.type.RoleType#ADMIN ADMIN}, method will
+	 * return user by {@link by.epam.hotel.util.type.RouterType FORWARD} to client
+	 * or admin home page respectively. If user's role equals to
+	 * {@link by.epam.hotel.util.type.RoleType#GUEST GUEST}, inputted login, password and 
+	 * email are correct and account with specified login or email does not exist, method will
+	 * send confirmation key to specified email and send user to key confirmation page.
+	 */
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {
 		Router router = new Router();
@@ -99,48 +113,22 @@ public class SignUpCommand implements ActionCommand {
 
 	private boolean validateInputData(String login, String password, String email, HttpServletRequest request, SessionData sessionData) {
 		boolean result = true;
-		if (!validateLogin(login)) {
+		if (!AccountValidator.validateLogin(login)) {
 			request.setAttribute(AttributeConstant.ERROR_LOGIN_SIGNUP_MESSAGE, 
 					MessageManager.getProrerty(PropertyConstant.MESSAGE_LOGIN_SIGNUP_ERROR, sessionData.getLocale()));
 			result = false;
 		}
-		if (!validateEmail(email)) {
+		if (!AccountValidator.validateEmail(email)) {
 			request.setAttribute(AttributeConstant.ERROR_EMAIL_SIGHUP_MESSAGE,
 					MessageManager.getProrerty(PropertyConstant.MESSAGE_EMAIL_SIGHUP_ERROR, sessionData.getLocale()));
 			result = false;
 		}
-		if (!validatePassword(password)) {
+		if (!AccountValidator.validatePassword(password)) {
 			request.setAttribute(AttributeConstant.ERROR_PASSWORD_SIGHUP_MESSAGE,
 					MessageManager.getProrerty(PropertyConstant.MESSAGE_PASSWORD_SIGNUP_ERROR, sessionData.getLocale()));
 			result = false;
 		}
 		return result;
-	}
-
-	private boolean validateLogin(String login) {
-		Pattern pattern = Pattern.compile(ValidationConstant.LOGIN_PATTERN);
-		Matcher matcher = pattern.matcher(login);
-		return matcher.matches();
-	}
-
-	private boolean validateEmail(String email) {
-		Pattern pattern = Pattern.compile(ValidationConstant.EMAIL_PATTERN, Pattern.CASE_INSENSITIVE);
-		Matcher matcher = pattern.matcher(email);
-		return matcher.matches();
-	}
-
-	/*
-	 * ^ # start-of-string (?=.*[0-9]) # a digit must occur at least once
-	 * (?=.*[a-z]) # a lower case letter must occur at least once (?=.*[A-Z]) # an
-	 * upper case letter must occur at least once (?=.*[@#$%^&+=]) # a special
-	 * character must occur at least once (?=\S+$) # no whitespace allowed in the
-	 * entire string .{8,} # anything, at least eight places though $ #
-	 * end-of-string
-	 */
-	private boolean validatePassword(String password) {
-		Pattern pattern = Pattern.compile(ValidationConstant.PASSWORD_PATTERN);
-		Matcher matcher = pattern.matcher(password);
-		return matcher.matches();
 	}
 
 }

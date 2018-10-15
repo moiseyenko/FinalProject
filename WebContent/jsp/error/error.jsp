@@ -10,7 +10,7 @@
 	<br /> Status code: ${pageContext.errorData.statusCode }
 	<br /> Exception: ${pageContext.errorData.throwable }
 	<form action="${pageContext.request.contextPath}/controller" method="post">
-	<input type="hidden" name="command" value="ErrorBack" />
+	<input type="hidden" name="command" value="error_back" />
 		<input type="submit" value="Back" />
 	</form>
 </body>

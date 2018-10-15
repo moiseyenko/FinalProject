@@ -8,9 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import by.epam.hotel.command.ActionCommand;
-import by.epam.hotel.controller.Router;
-import by.epam.hotel.controller.SessionData;
 import by.epam.hotel.entity.Room;
+import by.epam.hotel.entity.Router;
+import by.epam.hotel.entity.SessionData;
 import by.epam.hotel.exception.CommandException;
 import by.epam.hotel.exception.ServiceException;
 import by.epam.hotel.service.ClientService;
@@ -21,8 +21,26 @@ import by.epam.hotel.util.constant.PropertyConstant;
 import by.epam.hotel.util.type.RoleType;
 import by.epam.hotel.util.type.RouterType;
 
+/**
+ * This class is an implementation of a
+ * {@link by.epam.hotel.command.ActionCommand ActionCommand} interface and is
+ * used to provide transition to payment page.
+ * 
+ * 
+ * @author Evgeniy Moiseyenko
+ */
 public class ToPayCommand implements ActionCommand {
 
+	/**
+	 * If user's role does not equal to {@link by.epam.hotel.util.type.RoleType#CLIENT
+	 * CLIENT} method will return user by {@link by.epam.hotel.util.type.RouterType
+	 * FORWARD} to welcome page. If selected hotel room has already been ordered,
+	 * method will return back client by {@link by.epam.hotel.util.type.RouterType
+	 * FORWARD} to page with according information.If client does not have bank
+	 * account, method will return back client by
+	 * {@link by.epam.hotel.util.type.RouterType FORWARD} to previous page.
+	 * Otherwise method will send client to payment page.
+	 */
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {
 		Router router = new Router();
@@ -38,12 +56,13 @@ public class ToPayCommand implements ActionCommand {
 						chosenRoom.getClassRoom(), from, to);
 				if (updatedAvailableRoomList.contains(chosenRoom)) {
 					BigDecimal currentAmount = ClientService.getCurrentAmount(sessionData.getLogin());
-					if(currentAmount != null) {
+					if (currentAmount != null) {
 						sessionData.setCurrentAmount(currentAmount);
 						page = ConfigurationManager.getProperty(PropertyConstant.PAGE_PAYPAGE);
-					}else {
+					} else {
 						request.setAttribute(AttributeConstant.ERROR_FIND_BANK_ACCOUNT_MESSAGE,
-								MessageManager.getProrerty(PropertyConstant.MESSAGE_FIND_IN_BANK_ACCOUNT_ERROR, sessionData.getLocale()));
+								MessageManager.getProrerty(PropertyConstant.MESSAGE_FIND_IN_BANK_ACCOUNT_ERROR,
+										sessionData.getLocale()));
 						page = ConfigurationManager.getProperty(PropertyConstant.PAGE_INFO_FOR_PAYMENT);
 						router.setType(RouterType.FORWARD);
 					}

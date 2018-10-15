@@ -15,7 +15,7 @@
 	<hr />
 	<form action="${pageContext.request.contextPath}/controller" method="post">
 		<input type="hidden" name="command" value="pay" />	
-		<table border="0" >
+		<table>
 			<tr>
 				<td valign="top"><fmt:message key="curbankaccount" />: </td>
 				<td valign="top"><input type="text" value="${sessionData.currentAmount}" size="40" disabled="disabled" /></td>
@@ -34,12 +34,12 @@
 	</form>
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
-		<input type="hidden" name="command" value="toReplenish" />
+		<input type="hidden" name="command" value="to_replenish" />
 		<input type="submit" value="<fmt:message key="replenish" />" size="20" />
 	</form>
 	<form action="${pageContext.request.contextPath}/controller"
 		method="post">
-		<input type="hidden" name="command" value="backToInfoPayment" />
+		<input type="hidden" name="command" value="back_to_infopayment" />
 		<input type="submit" value="<fmt:message key="backbutton" />" size="20" />
 	</form>
 </body>

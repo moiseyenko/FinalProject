@@ -1,5 +1,7 @@
 package by.epam.hotel.runner;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,6 +18,7 @@ import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 
+import by.epam.hotel.command.CommandType;
 import by.epam.hotel.dao.DaoFieldType;
 import by.epam.hotel.dao.TransactionHelper;
 import by.epam.hotel.dao.impl.AccountDao;
@@ -30,26 +33,32 @@ import by.epam.hotel.entity.Client;
 import by.epam.hotel.entity.Nationality;
 import by.epam.hotel.entity.Order;
 import by.epam.hotel.entity.Room;
-import by.epam.hotel.exception.CloseTransactionException;
 import by.epam.hotel.exception.DaoException;
 import by.epam.hotel.exception.ServiceException;
+import by.epam.hotel.pool.ConnectionPool;
 import by.epam.hotel.util.Encoder;
 
 public class Runner {
-	public static void main(String[] args) throws ParseException, ServiceException, CloseTransactionException {
+	public static void main(String[] args) throws ParseException, ServiceException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, CloneNotSupportedException {
 		String login = "temp";
-		String password = "temp";
+		//String password = "temp";
 		String email = "temp@mail.ru";
 		AccountDao accountDao = new AccountDao();
 		OrderDao orderDao = new OrderDao();
 		NationalityDao nationDao = new NationalityDao();
 		RoomDao roomDao = new RoomDao();
 		BankAccountDao bankdao = new BankAccountDao();
-
-		List<Room> rooms = null;
 		
 		
-		System.out.println(Encoder.generateEmailKey("ustasgame@mail.ru"));
+        
+        for(int i=0;i<11;i++) {
+        	System.out.println("geton from conn pool");
+        	ConnectionPool.getInstance().getConnection();
+        }
+         
+       
+        ConnectionPool.getInstance().clone();
+		//System.out.println(Encoder.encodePassword("admin", "1"));
 
 		/*NationalityDao nationalityDao = new NationalityDao();
 		try (TransactionHelper helper = new TransactionHelper()) {
@@ -62,7 +71,7 @@ public class Runner {
 			}
 		}*/
 
-		
+		/*
 		  try (TransactionHelper helper = new TransactionHelper()) {
 		  helper.doOperation(accountDao); try {
 		  
@@ -72,7 +81,7 @@ public class Runner {
 		  } catch (DaoException e) { System.out.println("daoexceprion"); }
 		  
 		  }
-		 
+		 */
 
 		/*
 		 * try (TransactionHelper helper = new TransactionHelper()) {

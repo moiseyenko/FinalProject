@@ -1,6 +1,7 @@
 package by.epam.hotel.util.constant;
 
 public interface ParameterConstant {
+	String COMMAND = "command";
 	String PASSWORD = "password";
 	String LOCALE = "locale";
 	String JSP_PATH = "jsppath";

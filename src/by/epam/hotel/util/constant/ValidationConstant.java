@@ -2,16 +2,8 @@ package by.epam.hotel.util.constant;
 
 public interface ValidationConstant {
 	String LOGIN_PATTERN = "^[a-zA-ZÀ-ßà-ÿ0-9_-]{3,25}$";
-	/*
-	 * ^ # start-of-string (?=.*[0-9]) # a digit must occur at least once
-	 * (?=.*[a-z]) # a lower case letter must occur at least once (?=.*[A-Z]) # an
-	 * upper case letter must occur at least once (?=.*[@#$%^&+=]) # a special
-	 * character must occur at least once (?=\S+$) # no whitespace allowed in the
-	 * entire string .{8,} # anything, at least eight places though $ #
-	 * end-of-string
-	 */
 	String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-zà-ÿ])(?=.*[A-ZÀ-ß])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
-	String EMAIL_PATTERN = "^[A-Z0-9_.%+-]{1,30}@[A-Z0-9.-]{1,10}\\.[A-Z]{2,6}$";
+	String EMAIL_PATTERN = "^[A-Za-z0-9_.%+-]{1,30}@[A-Za-z0-9.-]{1,10}\\.[A-Za-z]{2,6}$";
 	String COUNTRY_PATTERN = "^[A-Za-zÀ-ÿà-ÿ ¨¸'-]{1,80}$";
 	String CAPACITY_PATTERN = "^[0-9]{1,5}$";
 	String PRICE_PATTERN = "^\\d{1,10}([\\.,]\\d{0,2})?$";

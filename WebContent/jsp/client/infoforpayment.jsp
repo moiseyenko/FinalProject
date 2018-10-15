@@ -12,7 +12,7 @@
 	<br />
 	<hr />
 	<form action="${pageContext.request.contextPath}/controller" method="post">
-		<input type="hidden" name="command" value="toPay" />
+		<input type="hidden" name="command" value="to_pay" />
 		<table>
 			<tr>
 				<td><fmt:message key="fname" />: </td>
@@ -65,7 +65,7 @@
 		</table>
 	</form>
 	<form action="${pageContext.request.contextPath}/controller" method="post">
-		<input type="hidden" name="command" value="backToRooms" />
+		<input type="hidden" name="command" value="back_to_rooms" />
 		<input type="submit" value="<fmt:message key="backbutton" />" size="20" />
 	</form>
 </body>
