@@ -16,37 +16,42 @@ import by.epam.hotel.dao.DaoFieldType;
 import by.epam.hotel.entity.Client;
 import by.epam.hotel.exception.DaoException;
 
+
+/**
+ * Class {@link ClientDao} provides operation with data of database table
+ * 'client'.
+ * 
+ * 
+ * @author evgeniy Moiseyenko
+ *
+ */
 public class ClientDao extends AbstractDao<Integer, Client> {
 
 	private static final Logger LOG = LogManager.getLogger(ClientDao.class);
 
 	private static final String FIND_CLIENT = "SELECT `client`.`id`, `client`.`first_name`, `client`.`last_name`, "
-			+ "`client`.`passport`, `client`.`nationality_id`, `client`.`blacklist` "
-			+ "FROM `client` "
+			+ "`client`.`passport`, `client`.`nationality_id`, `client`.`blacklist` " + "FROM `client` "
 			+ "WHERE `client`.`first_name` = ? AND `client`.`last_name` = ? AND `client`.`passport` = ? "
 			+ "AND `client`.`nationality_id` = ?;";
 	private static final String FIND_CLIENT_BY_ID = "SELECT `client`.`id`, `client`.`first_name`, `client`.`last_name`, "
-			+ "`client`.`passport`, `client`.`nationality_id`, `client`.`blacklist` "
-			+ "FROM `client`" 
+			+ "`client`.`passport`, `client`.`nationality_id`, `client`.`blacklist` " + "FROM `client`"
 			+ "WHERE `client`.`id` = ?;";
 	private static final String INSERT_CLIENT = "INSERT INTO`hotel`.`client`(`first_name`,`last_name`, `passport`, `nationality_id`) "
 			+ "VALUE (?, ?, ?, ?);";
 	private static final String UPDATE_CLIENT = "UPDATE `hotel`.`client` SET `client`.`first_name` = ?, `client`.`last_name` = ?, "
-			+ "`client`.`passport` = ?,`client`.`nationality_id` = ? "
-			+ "WHERE `client`.`id` = ?;";
+			+ "`client`.`passport` = ?,`client`.`nationality_id` = ? " + "WHERE `client`.`id` = ?;";
 	private static final String FIND_ALL = "SELECT `client`.`id`, `client`.`first_name`, `client`.`last_name`, "
-			+ "`client`.`passport`, `client`.`nationality_id`, `client`.`blacklist` "
-			+ "FROM `client` "
+			+ "`client`.`passport`, `client`.`nationality_id`, `client`.`blacklist` " + "FROM `client` "
 			+ "LIMIT ?, ?;";
-	private final String CHANGE_BLACKLIST = "UPDATE `client` SET `client`.`blacklist` = ? " + "WHERE `client`.`id` = ?;";
+	private final String CHANGE_BLACKLIST = "UPDATE `client` SET `client`.`blacklist` = ? "
+			+ "WHERE `client`.`id` = ?;";
 	private final String COUNT_CLIENTS = "SELECT COUNT(`client`.`id`) AS `QUANTITY` FROM `client`;";
 	private final String FIND_CLIENTS_FOR_ACCOUNT = "SELECT `client`.`id`, `client`.`first_name`, "
-			+ "`client`.`last_name`, `client`.`passport`, `client`.`nationality_id` " 
+			+ "`client`.`last_name`, `client`.`passport`, `client`.`nationality_id` "
 			+ "FROM `account` LEFT JOIN (`order` INNER JOIN `client` ON `order`.`client_id` = `client`.`id`) "
-			+ "ON `account`.`id` = `order`.`account_id` " 
-			+ "WHERE `account`.`login` = ? AND `account`.`removed` = 0 AND `client`.`blacklist` = 0 " 
+			+ "ON `account`.`id` = `order`.`account_id` "
+			+ "WHERE `account`.`login` = ? AND `account`.`removed` = 0 AND `client`.`blacklist` = 0 "
 			+ "GROUP BY `client`.`id`";
-	
 
 	@Override
 	public List<Client> findAll(int start, int recordsPerPage) throws DaoException {
@@ -74,7 +79,7 @@ public class ClientDao extends AbstractDao<Integer, Client> {
 		}
 		return clients;
 	}
-	
+
 	@Override
 	public Client findEntityById(Integer id) throws DaoException {
 		try {
@@ -142,6 +147,9 @@ public class ClientDao extends AbstractDao<Integer, Client> {
 		return false;
 	}
 
+	/**
+	 * The method adds or removes specified client to (from) black list.
+	 */
 	@Override
 	public boolean changeRemoved(Client entity) throws DaoException {
 		try {
@@ -160,11 +168,21 @@ public class ClientDao extends AbstractDao<Integer, Client> {
 		}
 		return false;
 	}
-	
+
+	/**
+	 * The method looks for specified client. Return null if specified client was
+	 * not found.
+	 * 
+	 * 
+	 * @param entity client searched in the database
+	 * @return found {@link Client} object
+	 * @throws DaoException if method has catched {@link java.sql.SQLException
+	 *                      SQLException}
+	 */
 	public Client findClient(Client entity) throws DaoException {
 		try {
 			try (PreparedStatement statement = connection.prepareStatement(FIND_CLIENT)) {
-				
+
 				String firstName = entity.getFirstName();
 				String lastName = entity.getLastName();
 				String passport = entity.getPassport();
@@ -174,7 +192,7 @@ public class ClientDao extends AbstractDao<Integer, Client> {
 				statement.setString(3, passport);
 				statement.setString(4, nationality);
 				ResultSet result = statement.executeQuery();
-				if(result.next()) {
+				if (result.next()) {
 					int clientId = result.getInt(DaoFieldType.ID.getField());
 					boolean blacklist = result.getBoolean(DaoFieldType.BLACKLIST.getField());
 					return new Client(clientId, firstName, lastName, passport, nationality, blacklist);
@@ -189,11 +207,20 @@ public class ClientDao extends AbstractDao<Integer, Client> {
 		return null;
 	}
 
-	public List <Client> findClientsForAccount (String login) throws DaoException{
+	/**
+	 * The method looks for all clients for specified account.
+	 * 
+	 * 
+	 * @param login login of account for which clients is searched
+	 * @return list of clients found
+	 * @throws DaoException if method has catched {@link java.sql.SQLException
+	 *                      SQLException}
+	 */
+	public List<Client> findClientsForAccount(String login) throws DaoException {
 		List<Client> clients = new ArrayList<>();
 		try {
-			try(PreparedStatement statement = connection.prepareStatement(FIND_CLIENTS_FOR_ACCOUNT)){
-				statement.setString (1, login);
+			try (PreparedStatement statement = connection.prepareStatement(FIND_CLIENTS_FOR_ACCOUNT)) {
+				statement.setString(1, login);
 				ResultSet result = statement.executeQuery();
 				while (result.next()) {
 					String firstName = result.getString(DaoFieldType.FIRST_NAME.getField());
@@ -203,7 +230,7 @@ public class ClientDao extends AbstractDao<Integer, Client> {
 					clients.add(new Client(firstName, lastName, passport, nationalityId));
 				}
 			}
-		}catch (SQLException e) {
+		} catch (SQLException e) {
 			for (Throwable exc : e) {
 				LOG.error("Finding clients for account error: {}", exc);
 			}
@@ -211,7 +238,15 @@ public class ClientDao extends AbstractDao<Integer, Client> {
 		}
 		return clients;
 	}
-	
+
+	/**
+	 * The method return total number of clients
+	 * 
+	 * 
+	 * @return total number of clients
+	 * @throws DaoException if method has catched {@link java.sql.SQLException
+	 *                      SQLException}
+	 */
 	public int countClients() throws DaoException {
 		int quantity = 0;
 		try {

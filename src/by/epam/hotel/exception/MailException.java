@@ -1,14 +1,22 @@
 package by.epam.hotel.exception;
 
-public class MailException extends Exception{
-	
+/**
+ * The class {@code MailException} is subclass of {@code Exception}. Class
+ * represent an exception that may occur when sending an email
+ * 
+ * 
+ * @author Evgeniy Moiseyenko
+ *
+ */
+public class MailException extends Exception {
+
 	private static final long serialVersionUID = 404683131861925789L;
 
 	public MailException() {
 		super();
 	}
 
-	public MailException( String message, Throwable exception) {
+	public MailException(String message, Throwable exception) {
 		super(message, exception);
 	}
 

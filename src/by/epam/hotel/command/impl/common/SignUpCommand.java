@@ -29,16 +29,17 @@ import by.epam.hotel.util.validator.AccountValidator;
  * 
  * @author Evgeniy Moiseyenko
  */
-public class SignUpCommand implements ActionCommand {	
+public class SignUpCommand implements ActionCommand {
 
 	/**
 	 * If user's role equals to {@link by.epam.hotel.util.type.RoleType#CLIENT
 	 * CLIENT} or {@link by.epam.hotel.util.type.RoleType#ADMIN ADMIN}, method will
-	 * return user by {@link by.epam.hotel.util.type.RouterType FORWARD} to client
-	 * or admin home page respectively. If user's role equals to
-	 * {@link by.epam.hotel.util.type.RoleType#GUEST GUEST}, inputted login, password and 
-	 * email are correct and account with specified login or email does not exist, method will
-	 * send confirmation key to specified email and send user to key confirmation page.
+	 * return user by {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to
+	 * client or admin home page respectively. If user's role equals to
+	 * {@link by.epam.hotel.util.type.RoleType#GUEST GUEST}, inputted login,
+	 * password and email are correct and account with specified login or email does
+	 * not exist, method will send confirmation key to specified email and send user
+	 * to key confirmation page.
 	 */
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {
@@ -56,9 +57,9 @@ public class SignUpCommand implements ActionCommand {
 			if (validateInputData(login, password, email, request, sessionData)) {
 				try {
 					String emailKey = Encoder.generateEmailKey(email);
-					if(!CommonService.checkAccount(login, email)) {
+					if (!CommonService.checkAccount(login, email)) {
 						try {
-							if(MailSender.sendSingUpConfirmationEmail(email, emailKey, sessionData.getLocale())) {
+							if (MailSender.sendSingUpConfirmationEmail(email, emailKey, sessionData.getLocale())) {
 								sessionData.setTempLogin(login);
 								sessionData.setTempPassword(password);
 								sessionData.setTempEmail(email);
@@ -66,9 +67,10 @@ public class SignUpCommand implements ActionCommand {
 								page = ConfigurationManager.getProperty(PropertyConstant.PAGE_CONFIRMATION_EMAIL);
 								router.setPage(page);
 								router.setType(RouterType.REDIRECT);
-							}else {
+							} else {
 								request.setAttribute(AttributeConstant.ERROR_SEND_CONFIRMATION_EMAIL_MESSAGE,
-										MessageManager.getProrerty(PropertyConstant.MESSAGE_SEND_CONFIRMATION_EMAIL_ERROR,
+										MessageManager.getProrerty(
+												PropertyConstant.MESSAGE_SEND_CONFIRMATION_EMAIL_ERROR,
 												sessionData.getLocale()));
 								page = ConfigurationManager.getProperty(PropertyConstant.PAGE_SIGNUP);
 								router.setPage(page);
@@ -77,9 +79,9 @@ public class SignUpCommand implements ActionCommand {
 						} catch (MailException e) {
 							throw new CommandException(e);
 						}
-					}else {
-						request.setAttribute(AttributeConstant.ERROR_SIGHUP_MESSAGE,
-								MessageManager.getProrerty(PropertyConstant.MESSAGE_SIGNUP_ERROR, sessionData.getLocale()));
+					} else {
+						request.setAttribute(AttributeConstant.ERROR_SIGHUP_MESSAGE, MessageManager
+								.getProrerty(PropertyConstant.MESSAGE_SIGNUP_ERROR, sessionData.getLocale()));
 						page = ConfigurationManager.getProperty(PropertyConstant.PAGE_SIGNUP);
 						router.setPage(page);
 						router.setType(RouterType.FORWARD);
@@ -111,10 +113,11 @@ public class SignUpCommand implements ActionCommand {
 		return router;
 	}
 
-	private boolean validateInputData(String login, String password, String email, HttpServletRequest request, SessionData sessionData) {
+	private boolean validateInputData(String login, String password, String email, HttpServletRequest request,
+			SessionData sessionData) {
 		boolean result = true;
 		if (!AccountValidator.validateLogin(login)) {
-			request.setAttribute(AttributeConstant.ERROR_LOGIN_SIGNUP_MESSAGE, 
+			request.setAttribute(AttributeConstant.ERROR_LOGIN_SIGNUP_MESSAGE,
 					MessageManager.getProrerty(PropertyConstant.MESSAGE_LOGIN_SIGNUP_ERROR, sessionData.getLocale()));
 			result = false;
 		}
@@ -124,8 +127,8 @@ public class SignUpCommand implements ActionCommand {
 			result = false;
 		}
 		if (!AccountValidator.validatePassword(password)) {
-			request.setAttribute(AttributeConstant.ERROR_PASSWORD_SIGHUP_MESSAGE,
-					MessageManager.getProrerty(PropertyConstant.MESSAGE_PASSWORD_SIGNUP_ERROR, sessionData.getLocale()));
+			request.setAttribute(AttributeConstant.ERROR_PASSWORD_SIGHUP_MESSAGE, MessageManager
+					.getProrerty(PropertyConstant.MESSAGE_PASSWORD_SIGNUP_ERROR, sessionData.getLocale()));
 			result = false;
 		}
 		return result;

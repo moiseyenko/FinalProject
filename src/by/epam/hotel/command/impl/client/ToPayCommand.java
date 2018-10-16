@@ -32,14 +32,14 @@ import by.epam.hotel.util.type.RouterType;
 public class ToPayCommand implements ActionCommand {
 
 	/**
-	 * If user's role does not equal to {@link by.epam.hotel.util.type.RoleType#CLIENT
-	 * CLIENT} method will return user by {@link by.epam.hotel.util.type.RouterType
-	 * FORWARD} to welcome page. If selected hotel room has already been ordered,
-	 * method will return back client by {@link by.epam.hotel.util.type.RouterType
-	 * FORWARD} to page with according information.If client does not have bank
-	 * account, method will return back client by
-	 * {@link by.epam.hotel.util.type.RouterType FORWARD} to previous page.
-	 * Otherwise method will send client to payment page.
+	 * If user's role does not equal to
+	 * {@link by.epam.hotel.util.type.RoleType#CLIENT CLIENT} method will return
+	 * user by {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to welcome
+	 * page. If selected hotel room has already been ordered, method will return
+	 * back client by {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to
+	 * page with according information.If client does not have bank account, method
+	 * will return back client by {@link by.epam.hotel.util.type.RouterType#FORWARD
+	 * FORWARD} to previous page. Otherwise method will send client to payment page.
 	 */
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {

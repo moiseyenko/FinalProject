@@ -13,16 +13,18 @@ import by.epam.hotel.util.constant.PropertyConstant;
 import by.epam.hotel.util.type.RouterType;
 
 /**
- * This class is an implementation of a {@link by.epam.hotel.command.ActionCommand ActionCommand} interface 
- * and is used to return user back to signup page.
+ * This class is an implementation of a
+ * {@link by.epam.hotel.command.ActionCommand ActionCommand} interface and is
+ * used to return user back to signup page.
  * 
  * 
  * @author Evgeniy Moiseyenko
  */
-public class BackToSignupCommand implements ActionCommand{
+public class BackToSignupCommand implements ActionCommand {
 
 	/**
-	 * Method will return user by {@link by.epam.hotel.util.type.RouterType FORWARD} to singup page.
+	 * Method will return user by {@link by.epam.hotel.util.type.RouterType#FORWARD
+	 * FORWARD} to singup page.
 	 */
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {

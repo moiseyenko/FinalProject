@@ -18,23 +18,25 @@ import by.epam.hotel.util.type.RoleType;
 import by.epam.hotel.util.type.RouterType;
 
 /**
- * This class is an implementation of a {@link by.epam.hotel.command.ActionCommand ActionCommand} interface 
- * and is used to setting of a specific room to change.
+ * This class is an implementation of a
+ * {@link by.epam.hotel.command.ActionCommand ActionCommand} interface and is
+ * used to setting of a specific room to change.
  * 
  * 
  * @author Evgeniy Moiseyenko
  */
-public class ChangeRoomCommand implements ActionCommand{
-	
+public class ChangeRoomCommand implements ActionCommand {
+
 	/**
-	 * If user's role equals to {@link by.epam.hotel.util.type.RoleType#ADMIN ADMIN}, method will set
-	 * specified room to change and will send admin by
-	 * {@link by.epam.hotel.util.type.RouterType REDIRECT} to page of room changes.
-	 * Otherwise method  returns user by {@link by.epam.hotel.util.type.RouterType FORWARD} to welcome page.
+	 * If user's role equals to {@link by.epam.hotel.util.type.RoleType#ADMIN
+	 * ADMIN}, method will set specified room to change and will send admin by
+	 * {@link by.epam.hotel.util.type.RouterType#REDIRECT REDIRECT} to page of room
+	 * changes. Otherwise method returns user by
+	 * {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to welcome page.
 	 */
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {
-		
+
 		Router router = new Router();
 		String page = null;
 		HttpSession session = request.getSession();

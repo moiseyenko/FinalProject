@@ -30,30 +30,47 @@ public class Controller extends HttpServlet {
 	}
 
 	public void init(ServletConfig config) throws ServletException {
-		ConnectionPool.getInstance();
+		super.init(config);
 	}
 
+	/**
+	 * The method is called by the servlet container to indicate to a servlet that
+	 * theservlet is being taken out of service, meanwhile closing all connections
+	 * from {@link ConnectionPool Connection Pool}.
+	 */
 	public void destroy() {
 		ConnectionPool.getInstance().destroyPool();
 	}
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		proccedRequest(request, response);
 	}
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		proccedRequest(request, response);
 	}
 
+	/**
+	 * The method is used to execute main control function in application. Depending
+	 * on the received parameter "command", the method send the request and response
+	 * to the corresponding resource.
+	 * 
+	 * 
+	 * @param request  an instance of {@link HttpServletRequest} that provides
+	 *                 request information for HTTP servlets.
+	 * @param response an instance of {@link HttpServletResponse} that provides
+	 *                 HTTP-specificfunctionality in sending a response
+	 * @throws ServletException when servlet encounters difficulty
+	 * @throws IOException      when failed or interrupted I/O operations have been
+	 *                          occurred
+	 */
 	private void proccedRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		HttpSession session = request.getSession(false);
 		if (session == null) {
-			response.sendRedirect(request.getContextPath() + 
-					ConfigurationManager.getProperty(PropertyConstant.PAGE_WELCOME));
+			response.sendRedirect(
+					request.getContextPath() + ConfigurationManager.getProperty(PropertyConstant.PAGE_WELCOME));
 		} else {
 			Router router = null;
 			String action = request.getParameter(ParameterConstant.COMMAND);
@@ -63,7 +80,7 @@ public class Controller extends HttpServlet {
 				LOG.debug(router);
 			} catch (CommandException e) {
 				LOG.error(router, e);
-				response.sendError(500);	
+				response.sendError(500);
 			}
 			switch (router.getType()) {
 			case REDIRECT:

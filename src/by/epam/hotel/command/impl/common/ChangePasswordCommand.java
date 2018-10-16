@@ -29,13 +29,15 @@ import by.epam.hotel.util.validator.AccountValidator;
 public class ChangePasswordCommand implements ActionCommand {
 
 	/**
-	 * If user's role does not equal to {@link by.epam.hotel.util.type.RoleType#CLIENT
-	 * CLIENT} or {@link by.epam.hotel.util.type.RoleType#ADMIN ADMIN}, method will
-	 * return user by {@link by.epam.hotel.util.type.RouterType FORWARD} to welcome
-	 * page. If new password is incorrect or current user does not exist or new password can
-	 * not be changed, method will return back client or admin to previous page with
-	 * according information. Otherwise method will change password of current user and
-	 * send him by {@link by.epam.hotel.util.type.RouterType REDIRECT} to page with 
+	 * If user's role does not equal to
+	 * {@link by.epam.hotel.util.type.RoleType#CLIENT CLIENT} or
+	 * {@link by.epam.hotel.util.type.RoleType#ADMIN ADMIN}, method will return user
+	 * by {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to welcome
+	 * page. If new password is incorrect or current user does not exist or new
+	 * password can not be changed, method will return back client or admin to
+	 * previous page with according information. Otherwise method will change
+	 * password of current user and send him by
+	 * {@link by.epam.hotel.util.type.RouterType#REDIRECT REDIRECT} to page with
 	 * successfull change information.
 	 */
 	@Override
@@ -44,7 +46,7 @@ public class ChangePasswordCommand implements ActionCommand {
 		String page = null;
 		HttpSession session = request.getSession();
 		SessionData sessionData = (SessionData) session.getAttribute(AttributeConstant.SESSION_DATA);
-		if (sessionData.getRole() == RoleType.CLIENT||sessionData.getRole() == RoleType.ADMIN) {
+		if (sessionData.getRole() == RoleType.CLIENT || sessionData.getRole() == RoleType.ADMIN) {
 			String newPassword = request.getParameter(ParameterConstant.NEW_PASSWORD);
 			String oldPassword = request.getParameter(ParameterConstant.OLD_PASSWORD);
 			String currentLogin = sessionData.getLogin();
@@ -56,13 +58,15 @@ public class ChangePasswordCommand implements ActionCommand {
 							router.setType(RouterType.REDIRECT);
 						} else {
 							request.setAttribute(AttributeConstant.ERROR_CHANGE_PASSWORD_MESSAGE,
-									MessageManager.getProrerty(PropertyConstant.MESSAGE_CHANGE_PASSWORD_ERROR, sessionData.getLocale()));
+									MessageManager.getProrerty(PropertyConstant.MESSAGE_CHANGE_PASSWORD_ERROR,
+											sessionData.getLocale()));
 							page = ConfigurationManager.getProperty(PropertyConstant.PAGE_CHANGE_PASSWORD);
 							router.setType(RouterType.FORWARD);
 						}
 					} else {
 						request.setAttribute(AttributeConstant.ERROR_CHAECK_LOGIN_PASSWORD_MESSAGE,
-								MessageManager.getProrerty(PropertyConstant.MESSAGE_CHECK_LOGIN_PASSWORD_ERROR, sessionData.getLocale()));
+								MessageManager.getProrerty(PropertyConstant.MESSAGE_CHECK_LOGIN_PASSWORD_ERROR,
+										sessionData.getLocale()));
 						page = ConfigurationManager.getProperty(PropertyConstant.PAGE_CHANGE_PASSWORD);
 						router.setPage(page);
 						router.setType(RouterType.FORWARD);
@@ -71,8 +75,8 @@ public class ChangePasswordCommand implements ActionCommand {
 					throw new CommandException(e);
 				}
 			} else {
-				request.setAttribute(AttributeConstant.ERROR_PASSWORD_VALIDATE_MESSAGE,
-						MessageManager.getProrerty(PropertyConstant.MESSAGE_PASSWORD_VALIDATE_ERROR, sessionData.getLocale()));
+				request.setAttribute(AttributeConstant.ERROR_PASSWORD_VALIDATE_MESSAGE, MessageManager
+						.getProrerty(PropertyConstant.MESSAGE_PASSWORD_VALIDATE_ERROR, sessionData.getLocale()));
 				page = ConfigurationManager.getProperty(PropertyConstant.PAGE_CHANGE_PASSWORD);
 				router.setType(RouterType.FORWARD);
 			}
@@ -83,5 +87,5 @@ public class ChangePasswordCommand implements ActionCommand {
 		router.setPage(page);
 		return router;
 	}
-	
+
 }

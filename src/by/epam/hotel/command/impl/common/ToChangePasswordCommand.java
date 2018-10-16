@@ -20,7 +20,7 @@ import by.epam.hotel.util.type.RouterType;
  * 
  * @author Evgeniy Moiseyenko
  */
-public class ToChangePasswordCommand implements ActionCommand{
+public class ToChangePasswordCommand implements ActionCommand {
 
 	/**
 	 * If user's role equals to {@link by.epam.hotel.util.type.RoleType#ADMIN ADMIN}
@@ -33,7 +33,7 @@ public class ToChangePasswordCommand implements ActionCommand{
 		Router router = new Router();
 		String page = null;
 		SessionData sessionData = (SessionData) request.getSession().getAttribute(AttributeConstant.SESSION_DATA);
-		if (sessionData.getRole() == RoleType.CLIENT||sessionData.getRole() == RoleType.ADMIN) {
+		if (sessionData.getRole() == RoleType.CLIENT || sessionData.getRole() == RoleType.ADMIN) {
 			page = ConfigurationManager.getProperty(PropertyConstant.PAGE_CHANGE_PASSWORD);
 		} else {
 			page = ConfigurationManager.getProperty(PropertyConstant.PAGE_WELCOME);

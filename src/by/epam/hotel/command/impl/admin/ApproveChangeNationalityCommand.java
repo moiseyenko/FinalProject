@@ -22,22 +22,25 @@ import by.epam.hotel.util.type.RouterType;
 import by.epam.hotel.util.validator.ClientValidator;
 
 /**
- * This class is an implementation of a {@link by.epam.hotel.command.ActionCommand ActionCommand} interface 
- * and is used to approve modification of specified nationality.
+ * This class is an implementation of a
+ * {@link by.epam.hotel.command.ActionCommand ActionCommand} interface and is
+ * used to approve modification of specified nationality.
  * 
  * 
  * @author Evgeniy Moiseyenko
  */
-public class ApproveChangeNationalityCommand implements ActionCommand{
-	
+public class ApproveChangeNationalityCommand implements ActionCommand {
+
 	/**
-	 * If user's role does not equal to {@link by.epam.hotel.util.type.RoleType#ADMIN ADMIN} 
-	 * method  will return user by {@link by.epam.hotel.util.type.RouterType FORWARD} to welcome page.
-	 * If parameter: country is invalid or if the nationality with specified parameter 
-	 * cannot be updated, method will return user by 
-	 * {@link by.epam.hotel.util.type.RouterType FORWARD} to previous page.
-	 * Otherwise method will approve modification of specified nationality and return admin by
-	 * {@link by.epam.hotel.util.type.RouterType REDIRECT} to page with all nationalities.
+	 * If user's role does not equal to
+	 * {@link by.epam.hotel.util.type.RoleType#ADMIN ADMIN} method will return user
+	 * by {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to welcome
+	 * page. If parameter: country is invalid or if the nationality with specified
+	 * parameter cannot be updated, method will return user by
+	 * {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to previous page.
+	 * Otherwise method will approve modification of specified nationality and
+	 * return admin by {@link by.epam.hotel.util.type.RouterType#REDIRECT REDIRECT}
+	 * to page with all nationalities.
 	 */
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {
@@ -50,30 +53,31 @@ public class ApproveChangeNationalityCommand implements ActionCommand{
 			String country = request.getParameter(ParameterConstant.COUNTRY);
 			int recordsPerPage = sessionData.getRecordsPerPage();
 			int currentPage = sessionData.getCurrentPage();
-			if(ClientValidator.validateCountry(country)) {
-					Nationality updatedNationality = new Nationality(countryId, country);
-					try {
-						if(AdminService.approveChangeNationality(updatedNationality)) {
-							List<Nationality> nationalityList = AdminService.getNationalitiesList(currentPage,
-									recordsPerPage);
-							sessionData.setNationalityList(nationalityList);
-							page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ALL_NATIONALITIES);
-							router.setType(RouterType.REDIRECT);
-						}else {
-							request.setAttribute(AttributeConstant.ERROR_CHANGE_NATIONALITY_MESSAGE,
-									MessageManager.getProrerty(PropertyConstant.MESSAGE_CHANGE_NATIONALITY_ERROR, sessionData.getLocale()));
-							page = ConfigurationManager.getProperty(PropertyConstant.PAGE_CHANGE_NATIONALITY);
-							router.setType(RouterType.FORWARD);
-						}
-					} catch (ServiceException e) {
-						throw new CommandException(e);
+			if (ClientValidator.validateCountry(country)) {
+				Nationality updatedNationality = new Nationality(countryId, country);
+				try {
+					if (AdminService.approveChangeNationality(updatedNationality)) {
+						List<Nationality> nationalityList = AdminService.getNationalitiesList(currentPage,
+								recordsPerPage);
+						sessionData.setNationalityList(nationalityList);
+						page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ALL_NATIONALITIES);
+						router.setType(RouterType.REDIRECT);
+					} else {
+						request.setAttribute(AttributeConstant.ERROR_CHANGE_NATIONALITY_MESSAGE,
+								MessageManager.getProrerty(PropertyConstant.MESSAGE_CHANGE_NATIONALITY_ERROR,
+										sessionData.getLocale()));
+						page = ConfigurationManager.getProperty(PropertyConstant.PAGE_CHANGE_NATIONALITY);
+						router.setType(RouterType.FORWARD);
 					}
-			}else {
-				request.setAttribute(AttributeConstant.ERROR_COUNTRY_MESSAGE, 
+				} catch (ServiceException e) {
+					throw new CommandException(e);
+				}
+			} else {
+				request.setAttribute(AttributeConstant.ERROR_COUNTRY_MESSAGE,
 						MessageManager.getProrerty(PropertyConstant.MESSAGE_COUNTRY_ERROR, sessionData.getLocale()));
 				page = ConfigurationManager.getProperty(PropertyConstant.PAGE_CHANGE_NATIONALITY);
 				router.setType(RouterType.FORWARD);
-			}	
+			}
 		} else {
 			page = ConfigurationManager.getProperty(PropertyConstant.PAGE_WELCOME);
 			router.setType(RouterType.FORWARD);

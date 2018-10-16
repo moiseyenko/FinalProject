@@ -13,18 +13,21 @@ import by.epam.hotel.util.type.RoleType;
 import by.epam.hotel.util.type.RouterType;
 
 /**
- * This class is an implementation of a {@link by.epam.hotel.command.ActionCommand ActionCommand} interface 
- * and is used to return admin back to page with list of all order.
+ * This class is an implementation of a
+ * {@link by.epam.hotel.command.ActionCommand ActionCommand} interface and is
+ * used to return admin back to page with list of all order.
  * 
  * 
  * @author Evgeniy Moiseyenko
  */
-public class BackToAccountOrdersCommand implements ActionCommand{
+public class BackToAccountOrdersCommand implements ActionCommand {
 
 	/**
-	 * If user's role equals to {@link by.epam.hotel.util.type.RoleType#CLIENT CLIENT} method will return 
-	 * client back by {@link by.epam.hotel.util.type.RouterType FORWARD} to page with list of his orders.
-	 * Otherwise method will return user by {@link by.epam.hotel.util.type.RouterType FORWARD} to welcome page.
+	 * If user's role equals to {@link by.epam.hotel.util.type.RoleType#CLIENT
+	 * CLIENT} method will return client back by
+	 * {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to page with list
+	 * of his orders. Otherwise method will return user by
+	 * {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to welcome page.
 	 */
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {
@@ -40,5 +43,5 @@ public class BackToAccountOrdersCommand implements ActionCommand{
 		router.setType(RouterType.FORWARD);
 		return router;
 	}
-	
+
 }

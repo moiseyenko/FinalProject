@@ -18,6 +18,13 @@ import by.epam.hotel.dao.DaoFieldType;
 import by.epam.hotel.entity.Room;
 import by.epam.hotel.exception.DaoException;
 
+/**
+ * Class {@link RoomDao} provides operation with data of database table 'room'.
+ * 
+ * 
+ * @author evgeniy Moiseyenko
+ *
+ */
 public class RoomDao extends AbstractDao<Integer, Room> {
 	private static final Logger LOG = LogManager.getLogger(RoomDao.class);
 	private final String FIND_ALL = "SELECT `room`.`number`, `room`.`class_id`, `room`.`capacity`,"
@@ -29,13 +36,12 @@ public class RoomDao extends AbstractDao<Integer, Room> {
 	private final String UPDATE_ROOM = "UPDATE `room` SET `room`.`class_id` = ?, "
 			+ "`room`.`capacity` = ?, `room`.`price` = ? WHERE `room`.`number` = ?;";
 	private final String CHANGE_REMOVED = "UPDATE `room` SET `room`.`removed` = ? WHERE `room`.`number` = ?;";
-	private final String EMPTY_ROOM = "SELECT `room`.`number`, `room`.`class_id`, `room`.`capacity`, `room`.`price` " 
-		+ "FROM `room` " 
-		+ "WHERE `room`.`removed` = 0 AND `room`.`capacity` >= ? AND `room`.`class_id` = ? " 
-		+ "AND `room`.`number` NOT IN (SELECT `order`.`room_number` " 
-		+ "					 FROM `order` JOIN `room` ON `order`.`room_number` = `room`.`number` " 
-		+ "					 WHERE `room`.`capacity` >= ? AND `room`.`class_id` = ? " 
-		+ "					 AND `order`.`from`<= ? AND `order`.`to`>= ? AND `order`.`removed` = 0);";
+	private final String EMPTY_ROOM = "SELECT `room`.`number`, `room`.`class_id`, `room`.`capacity`, `room`.`price` "
+			+ "FROM `room` " + "WHERE `room`.`removed` = 0 AND `room`.`capacity` >= ? AND `room`.`class_id` = ? "
+			+ "AND `room`.`number` NOT IN (SELECT `order`.`room_number` "
+			+ "					 FROM `order` JOIN `room` ON `order`.`room_number` = `room`.`number` "
+			+ "					 WHERE `room`.`capacity` >= ? AND `room`.`class_id` = ? "
+			+ "					 AND `order`.`from`<= ? AND `order`.`to`>= ? AND `order`.`removed` = 0);";
 	private final String COUNT_ROOMS = "SELECT COUNT(`room`.`number`) AS `QUANTITY` FROM `room`;";
 
 	@Override
@@ -147,8 +153,19 @@ public class RoomDao extends AbstractDao<Integer, Room> {
 		}
 		return false;
 	}
-	
-	public List<Room> showEmptyRoom(int capacity, String roomClass, LocalDate from, LocalDate to) throws DaoException{
+
+	/**
+	 * The method returns list of available rooms matching specified criteria
+	 * 
+	 * 
+	 * @param capacity  required capacity
+	 * @param roomClass required rooms' class
+	 * @param from      required check-in date
+	 * @param to        required check out date
+	 * @return list of available rooms matching specified criteria
+	 * @throws DaoException
+	 */
+	public List<Room> showEmptyRoom(int capacity, String roomClass, LocalDate from, LocalDate to) throws DaoException {
 		List<Room> resultList = new LinkedList<>();
 		try {
 			try (PreparedStatement statement = connection.prepareStatement(EMPTY_ROOM)) {
@@ -174,7 +191,15 @@ public class RoomDao extends AbstractDao<Integer, Room> {
 		}
 		return resultList;
 	}
-	
+
+	/**
+	 * The method return total number of rooms
+	 * 
+	 * 
+	 * @return total number of rooms
+	 * @throws DaoException if method has catched {@link java.sql.SQLException
+	 *                      SQLException}
+	 */
 	public int countRooms() throws DaoException {
 		int quantity = 0;
 		try {
@@ -191,6 +216,6 @@ public class RoomDao extends AbstractDao<Integer, Room> {
 			throw new DaoException("Counting rooms error", e);
 		}
 		return quantity;
-	}	
+	}
 
 }

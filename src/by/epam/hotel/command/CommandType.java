@@ -97,7 +97,7 @@ public enum CommandType {
 	TO_PAY(new ToPayCommand()),
 	BACK_TO_INFOPAYMENT(new BackToInfoPaymentCommnamd()),
 	TO_REPLENISH(new ToReplenishCommand()),
-	BACK_TO_PAYPAGE(new BackToPayPageCommand()),
+	BACK_TO_PAY_PAGE(new BackToPayPageCommand()),
 	REPLENISH(new ReplenishCommand()),
 	PAY(new PayCommand()),
 	TO_ACCOUNT_ORDERS(new ToAccountOrdersCommand()),

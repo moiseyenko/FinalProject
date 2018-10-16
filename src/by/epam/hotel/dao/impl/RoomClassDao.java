@@ -15,23 +15,25 @@ import by.epam.hotel.dao.DaoFieldType;
 import by.epam.hotel.entity.RoomClass;
 import by.epam.hotel.exception.DaoException;
 
+
+/**
+ * Class {@link RoomClassDao} provides operation with data of database table
+ * 'class'.
+ * 
+ * 
+ * @author evgeniy Moiseyenko
+ *
+ */
 public class RoomClassDao extends AbstractDao<String, RoomClass> {
-	
+
 	private static final Logger LOG = LogManager.getLogger(RoomClassDao.class);
-	private final String FIND_ALL = "SELECT `class`.`id`, `class`.`removed`"
-			+ "FROM `class` LIMIT ?, ?;";
-	private final String FIND_EXISTING_CLASS = "SELECT `class`.`id` "
-			+ "FROM `class` WHERE `class`.`removed` = 0;";
-	private final String FIND_CLASS_NOT_REMOVED = "SELECT `class`.`id`, `class`.`removed` "
-			+ "FROM `class` WHERE `class`.`id` = ? AND `class`.`removed` = 0;";
+	private final String FIND_ALL = "SELECT `class`.`id`, `class`.`removed`" + "FROM `class` LIMIT ?, ?;";
+	private final String FIND_EXISTING_CLASS = "SELECT `class`.`id` " + "FROM `class` WHERE `class`.`removed` = 0;";
 	private final String FIND_CLASS = "SELECT `class`.`id`, `class`.`removed` "
 			+ "FROM `class` WHERE `class`.`id` = ? ";
-	private final String CHANGE_REMOVED = "UPDATE `class` SET `class`.`removed` = ? "
-			+ "WHERE `class`.`id` = ? ;";
+	private final String CHANGE_REMOVED = "UPDATE `class` SET `class`.`removed` = ? " + "WHERE `class`.`id` = ? ;";
 	private final String INSERT_CLASS = "INSERT INTO`hotel`.`class`(`id`) VALUES (?);";
 	private final String COUNT_ROOM_CLASSES = "SELECT COUNT(`class`.`id`) AS `QUANTITY` FROM `class`;";
-	
-	
 
 	@Override
 	public List<RoomClass> findAll(int start, int recordsPerPage) throws DaoException {
@@ -55,7 +57,15 @@ public class RoomClassDao extends AbstractDao<String, RoomClass> {
 		}
 		return classes;
 	}
-	
+
+	/**
+	 * The method looks for all rooms' classes not removed.
+	 * 
+	 * 
+	 * @return list of rooms' classes not removed
+	 * @throws DaoException if method has catched {@link java.sql.SQLException
+	 *                      SQLException}
+	 */
 	public List<RoomClass> findExistingClass() throws DaoException {
 		List<RoomClass> classes = new LinkedList<>();
 		try {
@@ -74,8 +84,6 @@ public class RoomClassDao extends AbstractDao<String, RoomClass> {
 		}
 		return classes;
 	}
-	
-	
 
 	@Override
 	public RoomClass findEntityById(String id) throws DaoException {
@@ -130,11 +138,11 @@ public class RoomClassDao extends AbstractDao<String, RoomClass> {
 	public boolean changeRemoved(RoomClass entity) throws DaoException {
 		try {
 			try (PreparedStatement statement = connection.prepareStatement(CHANGE_REMOVED)) {
-					statement.setInt(1, (entity.isRemoved() ? 0 : 1));
-					statement.setString(2, entity.getClassId());
-					if (statement.executeUpdate() > 0) {
-						return true;
-					}
+				statement.setInt(1, (entity.isRemoved() ? 0 : 1));
+				statement.setString(2, entity.getClassId());
+				if (statement.executeUpdate() > 0) {
+					return true;
+				}
 			}
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
@@ -144,27 +152,15 @@ public class RoomClassDao extends AbstractDao<String, RoomClass> {
 		}
 		return false;
 	}
-	
-	public RoomClass findNotRemovedRoomClass(String attemptClass) throws DaoException {
-		try {
-			try (PreparedStatement statement = connection.prepareStatement(FIND_CLASS_NOT_REMOVED)) {
-				statement.setString(1, attemptClass);
-				ResultSet result = statement.executeQuery();
-				if (result.next()) {
-					String classId = result.getString(DaoFieldType.ID.getField());
-					boolean removed = result.getBoolean(DaoFieldType.REMOVED.getField());
-					return new RoomClass(classId, removed);
-				}
-			}
-		} catch (SQLException e) {
-			for (Throwable exc : e) {
-				LOG.error("Finding not removed room class error: {}", exc);
-			}
-			throw new DaoException("Finding not removed room class error", e);
-		}
-		return null;
-	}
 
+	/**
+	 * The method return total number of rooms' classes
+	 * 
+	 * 
+	 * @return total number of rooms' classes
+	 * @throws DaoException if method has catched {@link java.sql.SQLException
+	 *                      SQLException}
+	 */
 	public int countRoomClasses() throws DaoException {
 		int quantity = 0;
 		try {

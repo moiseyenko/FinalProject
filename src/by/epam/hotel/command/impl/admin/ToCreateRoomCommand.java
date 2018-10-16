@@ -15,18 +15,20 @@ import by.epam.hotel.util.type.RoleType;
 import by.epam.hotel.util.type.RouterType;
 
 /**
- * This class is an implementation of a {@link by.epam.hotel.command.ActionCommand ActionCommand} interface 
- * and is used to send admin to page with room creation.
+ * This class is an implementation of a
+ * {@link by.epam.hotel.command.ActionCommand ActionCommand} interface and is
+ * used to send admin to page with room creation.
  * 
  * 
  * @author Evgeniy Moiseyenko
  */
-public class ToCreateRoomCommand implements ActionCommand{
-	
+public class ToCreateRoomCommand implements ActionCommand {
+
 	/**
-	 * If user's role equals to {@link by.epam.hotel.util.type.RoleType#ADMIN ADMIN} method will send 
-	 * admin  by {@link by.epam.hotel.util.type.RouterType FORWARD} to page with room creation.
-	 * Otherwise method will return user by {@link by.epam.hotel.util.type.RouterType FORWARD} to welcome page.
+	 * If user's role equals to {@link by.epam.hotel.util.type.RoleType#ADMIN ADMIN}
+	 * method will send admin by {@link by.epam.hotel.util.type.RouterType#FORWARD
+	 * FORWARD} to page with room creation. Otherwise method will return user by
+	 * {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to welcome page.
 	 */
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {
@@ -47,5 +49,5 @@ public class ToCreateRoomCommand implements ActionCommand{
 		router.setType(RouterType.FORWARD);
 		return router;
 	}
-	
+
 }

@@ -31,13 +31,14 @@ import by.epam.hotel.util.type.RouterType;
 public class SendMessageCommand implements ActionCommand {
 
 	/**
-	 * If user's role does not equal to {@link by.epam.hotel.util.type.RoleType#ADMIN
-	 * ADMIN} method will return user by {@link by.epam.hotel.util.type.RouterType
-	 * FORWARD} to welcome page. If message cannot be sent, method will return user
-	 * by {@link by.epam.hotel.util.type.RouterType FORWARD} to previous page.
-	 * Otherwise method will send message to specified list of clients and send admin by
-	 * {@link by.epam.hotel.util.type.RouterType REDIRECT} to page with message of
-	 * successfull creation.
+	 * If user's role does not equal to
+	 * {@link by.epam.hotel.util.type.RoleType#ADMIN ADMIN} method will return user
+	 * by {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to welcome
+	 * page. If message cannot be sent, method will return user by
+	 * {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to previous page.
+	 * Otherwise method will send message to specified list of clients and send
+	 * admin by {@link by.epam.hotel.util.type.RouterType#REDIRECT REDIRECT} to page
+	 * with message of successfull creation.
 	 */
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {

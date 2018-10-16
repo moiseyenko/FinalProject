@@ -25,10 +25,11 @@ import by.epam.hotel.util.type.RouterType;
 public class FillOrderFormCommand implements ActionCommand {
 
 	/**
-	 * If user's role does not equal to {@link by.epam.hotel.util.type.RoleType#CLIENT
-	 * CLIENT} method will return user by {@link by.epam.hotel.util.type.RouterType
-	 * FORWARD} to welcome page. Otherwise method will fill out a form with a
-	 * selected client and send him to order page.
+	 * If user's role does not equal to
+	 * {@link by.epam.hotel.util.type.RoleType#CLIENT CLIENT} method will return
+	 * user by {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to welcome
+	 * page. Otherwise method will fill out a form with a selected client and send
+	 * him to order page.
 	 */
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {

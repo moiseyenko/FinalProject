@@ -21,21 +21,24 @@ import by.epam.hotel.util.type.RoleType;
 import by.epam.hotel.util.type.RouterType;
 
 /**
- * This class is an implementation of a {@link by.epam.hotel.command.ActionCommand ActionCommand} interface 
- * and is used to change admin rights of specified account.
+ * This class is an implementation of a
+ * {@link by.epam.hotel.command.ActionCommand ActionCommand} interface and is
+ * used to change admin rights of specified account.
  * 
  * 
  * @author Evgeniy Moiseyenko
  */
-public class ChangeAdminRightsCommand implements ActionCommand{
-	
+public class ChangeAdminRightsCommand implements ActionCommand {
+
 	/**
-	 * If user's role does not equal to {@link by.epam.hotel.util.type.RoleType#ADMIN ADMIN} 
-	 * method  will return user by {@link by.epam.hotel.util.type.RouterType FORWARD} to welcome page.
-	 * If admin rights of specified account cannot be changed, method will return user by 
-	 * {@link by.epam.hotel.util.type.RouterType FORWARD} to previous page.
-	 * Otherwise method will change admin rights of specified account and send admin by
-	 * {@link by.epam.hotel.util.type.RouterType REDIRECT} to page with all accounts.
+	 * If user's role does not equal to
+	 * {@link by.epam.hotel.util.type.RoleType#ADMIN ADMIN} method will return user
+	 * by {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to welcome
+	 * page. If admin rights of specified account cannot be changed, method will
+	 * return user by {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to
+	 * previous page. Otherwise method will change admin rights of specified account
+	 * and send admin by {@link by.epam.hotel.util.type.RouterType#REDIRECT
+	 * REDIRECT} to page with all accounts.
 	 */
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {
@@ -50,14 +53,13 @@ public class ChangeAdminRightsCommand implements ActionCommand{
 			int currentPage = sessionData.getCurrentPage();
 			try {
 				if (AdminService.changeAccountAdminRights(accountToChangeAdminRights)) {
-					List<Account> accountList = AdminService.getAccountsList(currentPage,
-							recordsPerPage);
+					List<Account> accountList = AdminService.getAccountsList(currentPage, recordsPerPage);
 					sessionData.setAccountList(accountList);
 					page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ALL_ACCOUNTS);
 					router.setType(RouterType.REDIRECT);
-				}else {
-					request.setAttribute(AttributeConstant.ERROR_CHANGE_ADMIN_RIGHTS_MESSAGE,
-							MessageManager.getProrerty(PropertyConstant.MESSAGE_CHANGE_ADMIN_RIGHTS_ERROR, sessionData.getLocale()));
+				} else {
+					request.setAttribute(AttributeConstant.ERROR_CHANGE_ADMIN_RIGHTS_MESSAGE, MessageManager
+							.getProrerty(PropertyConstant.MESSAGE_CHANGE_ADMIN_RIGHTS_ERROR, sessionData.getLocale()));
 					page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ALL_ACCOUNTS);
 					router.setType(RouterType.FORWARD);
 				}

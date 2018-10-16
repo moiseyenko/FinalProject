@@ -25,11 +25,11 @@ public class ErrorBackCommand implements ActionCommand {
 
 	/**
 	 * If user's role equals to {@link by.epam.hotel.util.type.RoleType#CLIENT
-	 * CLIENT}, method will send client to client home page. 
-	 * If user's role equals to {@link by.epam.hotel.util.type.RoleType#ADMIN
-	 * ADMIN}, method will send admin to admin home page.
-	 * If user's role equals to {@link by.epam.hotel.util.type.RoleType#GUEST
-	 * GUEST} method will send user to welcome page.
+	 * CLIENT}, method will send client to client home page. If user's role equals
+	 * to {@link by.epam.hotel.util.type.RoleType#ADMIN ADMIN}, method will send
+	 * admin to admin home page. If user's role equals to
+	 * {@link by.epam.hotel.util.type.RoleType#GUEST GUEST} method will send user to
+	 * welcome page.
 	 */
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {

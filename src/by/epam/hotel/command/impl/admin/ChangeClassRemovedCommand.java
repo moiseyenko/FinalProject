@@ -31,11 +31,11 @@ public class ChangeClassRemovedCommand implements ActionCommand{
 	
 	/**
 	 * If user's role does not equal to {@link by.epam.hotel.util.type.RoleType#ADMIN ADMIN} 
-	 * method  will return user by {@link by.epam.hotel.util.type.RouterType FORWARD} to welcome page.
+	 * method  will return user by {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to welcome page.
 	 * If specified room class can not be removed or restored, method will return user by 
-	 * {@link by.epam.hotel.util.type.RouterType FORWARD} to previous page.
+	 * {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to previous page.
 	 * Otherwise method will restore (if room class was removed early) or remove specified room class
-	 * and send admin by{@link by.epam.hotel.util.type.RouterType REDIRECT} to page with 
+	 * and send admin by{@link by.epam.hotel.util.type.RouterType#REDIRECT REDIRECT} to page with 
 	 * all rooms' classes.
 	 */
 	@Override

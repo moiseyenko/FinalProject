@@ -16,6 +16,14 @@ import by.epam.hotel.entity.Account;
 import by.epam.hotel.exception.DaoException;
 import by.epam.hotel.util.Encoder;
 
+/**
+ * Class {@link AccountDao} provides operation with data of database table
+ * 'account'.
+ * 
+ * 
+ * @author evgeniy Moiseyenko
+ *
+ */
 public class AccountDao extends AbstractDao<Integer, Account> {
 	private static final Logger LOG = LogManager.getLogger(AccountDao.class);
 	private final String FIND_ALL = "SELECT `account`.`id`, `account`.`login`, `account`.`email`, `account`.`admin`, `account`.`removed` "
@@ -33,7 +41,6 @@ public class AccountDao extends AbstractDao<Integer, Account> {
 	private final String FIND_PASSWORD_BY_ID = "SELECT `account`.`password` FROM `account` WHERE `account`.`id` = ?;";
 	private final String COUNT_ACCOUNTS = "SELECT COUNT(`account`.`id`) AS `QUANTITY` FROM `account`;";
 	private final String CHANGE_ADMIN_RIGHTS = "UPDATE `account` SET`account`.`admin` = ? WHERE `account`.`id` = ?;";
-	
 
 	@Override
 	public List<Account> findAll(int start, int recordsPerPage) throws DaoException {
@@ -91,6 +98,18 @@ public class AccountDao extends AbstractDao<Integer, Account> {
 		throw new UnsupportedOperationException("Account class doesn't support specified method");
 	}
 
+	/**
+	 * The method creates new record in database table 'account'
+	 * 
+	 * 
+	 * @param login    login of new account
+	 * @param email    email of new account
+	 * @param password password of new account
+	 * @return <tt>true</tt> if new account in database table 'account' was created
+	 *         successfully.
+	 * @throws DaoException if method has catched {@link java.sql.SQLException
+	 *                      SQLException}
+	 */
 	public boolean create(String login, String email, String password) throws DaoException {
 		try {
 			if (insertNewAccountWithoutPassword(login, email)) {
@@ -116,8 +135,18 @@ public class AccountDao extends AbstractDao<Integer, Account> {
 		}
 		return false;
 	}
-	
-	public boolean IsExistAccount(String attemptLogin, String attemptEmail ) throws DaoException {
+
+	/**
+	 * The method checks whether account with specified login or email exists
+	 * 
+	 * 
+	 * @param attemptLogin checked login
+	 * @param attemptEmail checked email
+	 * @return <tt>true</tt> if account with specified login or email exists
+	 * @throws DaoException if method has catched {@link java.sql.SQLException
+	 *                      SQLException}
+	 */
+	public boolean IsExistAccount(String attemptLogin, String attemptEmail) throws DaoException {
 		try {
 			try (PreparedStatement statement = connection.prepareStatement(CHECK_ACCOUNT_BY_LOGIN_AND_EMAIL)) {
 				statement.setString(1, attemptLogin);
@@ -136,8 +165,17 @@ public class AccountDao extends AbstractDao<Integer, Account> {
 		}
 		return false;
 	}
-	
 
+	/**
+	 * The method looks for and returns account with specified login. If account
+	 * with specified login is not found, the method will return null.
+	 * 
+	 * 
+	 * @param attemptLogin login whose account is searched in the database
+	 * @return found {@link Account} object
+	 * @throws DaoException if method has catched {@link java.sql.SQLException
+	 *                      SQLException}
+	 */
 	public Account findAccountByLogin(String attemptLogin) throws DaoException {
 		try {
 			try (PreparedStatement statement = connection.prepareStatement(FIND_ACCOUNT_BY_LOGIN)) {
@@ -161,6 +199,17 @@ public class AccountDao extends AbstractDao<Integer, Account> {
 		return null;
 	}
 
+	/**
+	 * The method checks whether account with specified account id and password
+	 * exists
+	 * 
+	 * 
+	 * @param accountID checked account
+	 * @param password  checked password
+	 * @return <tt>true</tt> if account with specified password exists
+	 * @throws DaoException if method has catched {@link java.sql.SQLException
+	 *                      SQLException}
+	 */
 	public boolean checkPassword(int accountID, String password) throws DaoException {
 		String encodedPassword = Encoder.encodePassword(password, String.valueOf(accountID));
 		try {
@@ -179,6 +228,16 @@ public class AccountDao extends AbstractDao<Integer, Account> {
 		}
 	}
 
+	/**
+	 * The method tries to change specified password.
+	 * 
+	 * 
+	 * @param account     account in which the password is changed
+	 * @param newPassword new password
+	 * @return <tt>true</tt> if account was successfully changed with new password
+	 * @throws DaoException if method has catched {@link java.sql.SQLException
+	 *                      SQLException}
+	 */
 	public boolean changeAccountPassword(Account account, String newPassword) throws DaoException {
 		String encodedPassword = Encoder.encodePassword(newPassword, String.valueOf(account.getId()));
 		try {
@@ -197,8 +256,6 @@ public class AccountDao extends AbstractDao<Integer, Account> {
 		}
 		return false;
 	}
-
-	
 
 	@Override
 	public boolean update(Account entity) throws DaoException {
@@ -238,7 +295,15 @@ public class AccountDao extends AbstractDao<Integer, Account> {
 		}
 		return false;
 	}
-	
+
+	/**
+	 * The method return total number of accounts
+	 * 
+	 * 
+	 * @return total number of accounts
+	 * @throws DaoException if method has catched {@link java.sql.SQLException
+	 *                      SQLException}
+	 */
 	public int countAccounts() throws DaoException {
 		int quantity = 0;
 		try {
@@ -256,7 +321,17 @@ public class AccountDao extends AbstractDao<Integer, Account> {
 		}
 		return quantity;
 	}
-	
+
+	/**
+	 * The method changes admin status in the specified account.
+	 * 
+	 * 
+	 * @param entity specified account
+	 * @return <tt>true</tt> if admin status of specified account was successfully
+	 *         changed.
+	 * @throws DaoException if method has catched {@link java.sql.SQLException
+	 *                      SQLException}
+	 */
 	public boolean changeAdminRights(Account entity) throws DaoException {
 		try {
 			try (PreparedStatement statement = connection.prepareStatement(CHANGE_ADMIN_RIGHTS)) {
@@ -274,6 +349,5 @@ public class AccountDao extends AbstractDao<Integer, Account> {
 		}
 		return false;
 	}
-	
 
 }

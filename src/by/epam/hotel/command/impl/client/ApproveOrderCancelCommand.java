@@ -22,8 +22,9 @@ import by.epam.hotel.util.type.RoleType;
 import by.epam.hotel.util.type.RouterType;
 
 /**
- * This class is an implementation of a {@link by.epam.hotel.command.ActionCommand ActionCommand} interface 
- * and is used to approve cancel of specified order by client.
+ * This class is an implementation of a
+ * {@link by.epam.hotel.command.ActionCommand ActionCommand} interface and is
+ * used to approve cancel of specified order by client.
  * 
  * 
  * @author Evgeniy Moiseyenko
@@ -31,12 +32,14 @@ import by.epam.hotel.util.type.RouterType;
 public class ApproveOrderCancelCommand implements ActionCommand {
 
 	/**
-	 * If user's role does not equal to {@link by.epam.hotel.util.type.RoleType#CLIENT CLIENT} 
-	 * method  will return user by {@link by.epam.hotel.util.type.RouterType FORWARD} to welcome page.
-	 * If the order with specified parameters cannot be canceled, method will return client by 
-	 * {@link by.epam.hotel.util.type.RouterType FORWARD} to previous page.
-	 * Otherwise method will cancel specified order and send client by
-	 * {@link by.epam.hotel.util.type.RouterType REDIRECT} to page with his orders.
+	 * If user's role does not equal to
+	 * {@link by.epam.hotel.util.type.RoleType#CLIENT CLIENT} method will return
+	 * user by {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to welcome
+	 * page. If the order with specified parameters cannot be canceled, method will
+	 * return client by {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD}
+	 * to previous page. Otherwise method will cancel specified order and send
+	 * client by {@link by.epam.hotel.util.type.RouterType#REDIRECT REDIRECT} to
+	 * page with his orders.
 	 */
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {
@@ -52,13 +55,14 @@ public class ApproveOrderCancelCommand implements ActionCommand {
 			int currentPage = sessionData.getCurrentPage();
 			try {
 				if (ClientService.approveCancelOrder(login, returnedSum, orderId)) {
-					List<FullInfoOrder> listFullInfoOrder = ClientService.getFullInfoOrderList(login, currentPage, recordsPerPage);
+					List<FullInfoOrder> listFullInfoOrder = ClientService.getFullInfoOrderList(login, currentPage,
+							recordsPerPage);
 					sessionData.setListAccountFullInfoOrder(listFullInfoOrder);
 					page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ACCOUNT_ORDERS);
 					router.setType(RouterType.REDIRECT);
-				}else {
-					request.setAttribute(AttributeConstant.ERROR_ORDER_CANCEL_MESSAGE,
-							MessageManager.getProrerty(PropertyConstant.MESSAGE_ORDER_CANCEL_ERROR, sessionData.getLocale()));
+				} else {
+					request.setAttribute(AttributeConstant.ERROR_ORDER_CANCEL_MESSAGE, MessageManager
+							.getProrerty(PropertyConstant.MESSAGE_ORDER_CANCEL_ERROR, sessionData.getLocale()));
 					page = ConfigurationManager.getProperty(PropertyConstant.PAGE_APPROVE_ORDER_CANCEL);
 					router.setType(RouterType.FORWARD);
 				}

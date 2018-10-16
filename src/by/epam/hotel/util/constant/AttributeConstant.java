@@ -55,18 +55,4 @@ public interface AttributeConstant {
 	String ERROR_SEND_CONFIRMATION_EMAIL_MESSAGE = "errorSendConfirmationEmailMessage";
 	String ERROR_KEY_CONFIRMATION_MESSAGE = "errorKeyConfirmationMessage";
 	
-	
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

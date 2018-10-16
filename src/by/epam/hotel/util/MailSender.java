@@ -20,25 +20,55 @@ import org.apache.logging.log4j.Logger;
 import by.epam.hotel.exception.MailException;
 import by.epam.hotel.util.constant.MailConstants;
 
+/**
+ * Class {@link MailSender} is used to send message to specified emails.
+ * 
+ * 
+ * @author Evgeniy Moiseyenko
+ *
+ */
 public class MailSender {
 	private static final Logger LOG = LogManager.getLogger();
 	private static final ResourceBundle mailConfigResourceBundle = ResourceBundle.getBundle("resource.mail");
-    private static final Properties props;
-    static {
-    	props = new Properties();
-        props.put("mail.smtp.host", "smtp.gmail.com");
+	private static final Properties props;
+	static {
+		props = new Properties();
+		props.put("mail.smtp.host", "smtp.gmail.com");
 		props.put("mail.smtp.port", "587");
 		props.put("mail.smtp.starttls.enable", "true");
 		props.put("mail.smtp.auth", "true");
-    }
-    
-	public static boolean sendSingUpConfirmationEmail(String email, String emailKey, Locale locale) throws MailException {
+	}
+
+	/**
+	 * The method is used to send confirmation key to specified email.
+	 * 
+	 * 
+	 * @param email    where an confirmation key will be sent
+	 * @param emailKey confirmation key
+	 * @param locale   language to which the message will be translated
+	 * @return true if confirmation key was sent successfully
+	 * @throws MailException when other exceptions occurs while sending a
+	 *                       confirmation key
+	 */
+	public static boolean sendSingUpConfirmationEmail(String email, String emailKey, Locale locale)
+			throws MailException {
 		String text = MessageManager.getProrerty(MailConstants.MSG_CONFCODE, locale) + emailKey;
 		String subject = MessageManager.getProrerty(MailConstants.SUBJECT_CONFCODE, locale);
 		return sendEmail(new String[] { email }, subject, text);
 	}
 
-	
+	/**
+	 * The method is used to send message with specified subject and text to
+	 * specified array of recipients.
+	 * 
+	 * 
+	 * @param recipients array of emails to which will be sent a message
+	 * @param subject    subject of a message
+	 * @param text       body of a message
+	 * @return true if a message was sent successfully
+	 * @throws MailException when other exceptions occurs while sending a
+	 *                       confirmation key
+	 */
 	public static boolean sendEmail(String[] recipients, String subject, String text) throws MailException {
 		boolean flag = false;
 		String username = mailConfigResourceBundle.getString(MailConstants.USERNAME);

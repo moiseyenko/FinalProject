@@ -29,14 +29,15 @@ import by.epam.hotel.util.validator.AccountValidator;
 public class ChangeLoginCommand implements ActionCommand {
 
 	/**
-	 * If user's role does not equal to {@link by.epam.hotel.util.type.RoleType#CLIENT
-	 * CLIENT} or {@link by.epam.hotel.util.type.RoleType#ADMIN ADMIN}, method will
-	 * return user by {@link by.epam.hotel.util.type.RouterType FORWARD} to welcome
+	 * If user's role does not equal to
+	 * {@link by.epam.hotel.util.type.RoleType#CLIENT CLIENT} or
+	 * {@link by.epam.hotel.util.type.RoleType#ADMIN ADMIN}, method will return user
+	 * by {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to welcome
 	 * page. If new login is incorrect or new login already exists or new login can
 	 * not be changed, method will return back client or admin to previous page with
 	 * according information. Otherwise method will change login of current user and
-	 * send him by {@link by.epam.hotel.util.type.RouterType REDIRECT} to page with 
-	 * successfull change information.
+	 * send him by {@link by.epam.hotel.util.type.RouterType#REDIRECT REDIRECT} to
+	 * page with successfull change information.
 	 */
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {

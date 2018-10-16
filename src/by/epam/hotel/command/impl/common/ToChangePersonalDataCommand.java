@@ -20,20 +20,20 @@ import by.epam.hotel.util.type.RouterType;
  * 
  * @author Evgeniy Moiseyenko
  */
-public class ToChangePersonalDataCommand implements ActionCommand{
+public class ToChangePersonalDataCommand implements ActionCommand {
 
 	/**
 	 * If user's role equals to {@link by.epam.hotel.util.type.RoleType#ADMIN ADMIN}
 	 * or {@link by.epam.hotel.util.type.RoleType#CLIENT CLIENT} method will send
-	 * admin or client to change personal data page. Otherwise method will return user to
-	 * welcome page.
+	 * admin or client to change personal data page. Otherwise method will return
+	 * user to welcome page.
 	 */
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {
 		Router router = new Router();
 		String page = null;
 		SessionData sessionData = (SessionData) request.getSession().getAttribute(AttributeConstant.SESSION_DATA);
-		if (sessionData.getRole() == RoleType.CLIENT||sessionData.getRole() == RoleType.ADMIN) {
+		if (sessionData.getRole() == RoleType.CLIENT || sessionData.getRole() == RoleType.ADMIN) {
 			page = ConfigurationManager.getProperty(PropertyConstant.PAGE_CHANGE_PERSONAL_DATA);
 		} else {
 			page = ConfigurationManager.getProperty(PropertyConstant.PAGE_WELCOME);

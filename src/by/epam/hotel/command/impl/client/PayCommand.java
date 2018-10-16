@@ -33,17 +33,18 @@ import by.epam.hotel.util.type.RouterType;
 public class PayCommand implements ActionCommand {
 
 	/**
-	 * If user's role does not equal to {@link by.epam.hotel.util.type.RoleType#CLIENT
-	 * CLIENT} method will return user by {@link by.epam.hotel.util.type.RouterType
-	 * FORWARD} to welcome page. If specified client is in black list If selected
-	 * hotel room has already been ordered, method will return back client to order
-	 * page with according information. If selected hotel room has already been
-	 * ordered, method will return back client to page with according information.
-	 * the size of the client's bank account is less than the amount of the order,
-	 * method will return back client to pay page with according information.
-	 * Otherwise method will provide order payment and send client by
-	 * {@link by.epam.hotel.util.type.RouterType REDIRECT} to successfull payment
-	 * information.
+	 * If user's role does not equal to
+	 * {@link by.epam.hotel.util.type.RoleType#CLIENT CLIENT} method will return
+	 * user by {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to welcome
+	 * page. If specified client is in black list If selected hotel room has already
+	 * been ordered, method will return back client to order page with according
+	 * information. If selected hotel room has already been ordered, method will
+	 * return back client to page with according information. the size of the
+	 * client's bank account is less than the amount of the order, method will
+	 * return back client to pay page with according information. Otherwise method
+	 * will provide order payment and send client by
+	 * {@link by.epam.hotel.util.type.RouterType#REDIRECT REDIRECT} to successfull
+	 * payment information.
 	 */
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {

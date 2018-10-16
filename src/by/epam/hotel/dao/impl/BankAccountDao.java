@@ -14,6 +14,15 @@ import by.epam.hotel.dao.DaoFieldType;
 import by.epam.hotel.entity.BankAccount;
 import by.epam.hotel.exception.DaoException;
 
+
+/**
+ * Class {@link BankAccountDao} provides operation with data of database table
+ * 'bankaccount'.
+ * 
+ * 
+ * @author evgeniy Moiseyenko
+ *
+ */
 public class BankAccountDao extends AbstractDao<Integer, BankAccount>{
 	private static final Logger LOG = LogManager.getLogger(BankAccountDao.class);
 	

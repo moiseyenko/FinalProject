@@ -21,22 +21,25 @@ import by.epam.hotel.util.type.RoleType;
 import by.epam.hotel.util.type.RouterType;
 
 /**
- * This class is an implementation of a {@link by.epam.hotel.command.ActionCommand ActionCommand} interface 
- * and is used to remove or restore specified nationality.
+ * This class is an implementation of a
+ * {@link by.epam.hotel.command.ActionCommand ActionCommand} interface and is
+ * used to remove or restore specified nationality.
  * 
  * 
  * @author Evgeniy Moiseyenko
  */
-public class ChangeNationalityRemovedCommand implements ActionCommand{
-	
+public class ChangeNationalityRemovedCommand implements ActionCommand {
+
 	/**
-	 * If user's role does not equal to {@link by.epam.hotel.util.type.RoleType#ADMIN ADMIN} 
-	 * method  will return user by {@link by.epam.hotel.util.type.RouterType FORWARD} to welcome page.
-	 * If specified nationality can not be removed or restored, method will return user by 
-	 * {@link by.epam.hotel.util.type.RouterType FORWARD} to previous page.
-	 * Otherwise method will restore (if nationality was removed early) or will remove specified nationality
-	 * and send admin by {@link by.epam.hotel.util.type.RouterType REDIRECT} to page with 
-	 * all nationalities.
+	 * If user's role does not equal to
+	 * {@link by.epam.hotel.util.type.RoleType#ADMIN ADMIN} method will return user
+	 * by {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to welcome
+	 * page. If specified nationality can not be removed or restored, method will
+	 * return user by {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to
+	 * previous page. Otherwise method will restore (if nationality was removed
+	 * early) or will remove specified nationality and send admin by
+	 * {@link by.epam.hotel.util.type.RouterType#REDIRECT REDIRECT} to page with all
+	 * nationalities.
 	 */
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {
@@ -51,14 +54,14 @@ public class ChangeNationalityRemovedCommand implements ActionCommand{
 			int currentPage = sessionData.getCurrentPage();
 			try {
 				if (AdminService.changeNationalityRemoved(nationalityToChangeRemoved)) {
-					List<Nationality> nationalityList = AdminService.getNationalitiesList(currentPage,
-							recordsPerPage);
+					List<Nationality> nationalityList = AdminService.getNationalitiesList(currentPage, recordsPerPage);
 					sessionData.setNationalityList(nationalityList);
 					page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ALL_NATIONALITIES);
 					router.setType(RouterType.REDIRECT);
-				}else {
+				} else {
 					request.setAttribute(AttributeConstant.ERROR_CHANGE_NATIONALITY_REMOVED_MESSAGE,
-							MessageManager.getProrerty(PropertyConstant.MESSAGE_CHANGE_NATIONALITY_REMOVED_ERROR, sessionData.getLocale()));
+							MessageManager.getProrerty(PropertyConstant.MESSAGE_CHANGE_NATIONALITY_REMOVED_ERROR,
+									sessionData.getLocale()));
 					page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ALL_NATIONALITIES);
 					router.setType(RouterType.FORWARD);
 				}

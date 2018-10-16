@@ -31,12 +31,13 @@ public class CheckKeyAndSignUpCommand implements ActionCommand {
 	/**
 	 * If user's role equals to {@link by.epam.hotel.util.type.RoleType#CLIENT
 	 * CLIENT} or {@link by.epam.hotel.util.type.RoleType#ADMIN ADMIN}, method will
-	 * return user by {@link by.epam.hotel.util.type.RouterType FORWARD} to client
-	 * or admin home page respectively. If user's role equals to
+	 * return user by {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to
+	 * client or admin home page respectively. If user's role equals to
 	 * {@link by.epam.hotel.util.type.RoleType#GUEST GUEST}, confirmation key is
 	 * correct and account with specified login or email does not exist, method will
 	 * create new account and send client by
-	 * {@link by.epam.hotel.util.type.RouterType REDIRECT} to client home page.
+	 * {@link by.epam.hotel.util.type.RouterType#REDIRECT REDIRECT} to client home
+	 * page.
 	 */
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {

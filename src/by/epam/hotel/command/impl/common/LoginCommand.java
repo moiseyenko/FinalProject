@@ -32,10 +32,10 @@ public class LoginCommand implements ActionCommand {
 	/**
 	 * If user's role equals to {@link by.epam.hotel.util.type.RoleType#CLIENT
 	 * CLIENT} or {@link by.epam.hotel.util.type.RoleType#ADMIN ADMIN}, method will
-	 * return user by {@link by.epam.hotel.util.type.RouterType FORWARD} to client
-	 * or admin home page respectively.
-	 * If inputted login exists and passord is correct method will send user to client
-	 * or admin home page depending on his role.
+	 * return user by {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to
+	 * client or admin home page respectively. If inputted login exists and passord
+	 * is correct method will send user to client or admin home page depending on
+	 * his role.
 	 */
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {

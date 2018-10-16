@@ -14,14 +14,21 @@ import by.epam.hotel.dao.DaoFieldType;
 import by.epam.hotel.entity.Nationality;
 import by.epam.hotel.exception.DaoException;
 
+
+/**
+ * Class {@link NationalityDao} provides operation with data of database table
+ * 'nationality'.
+ * 
+ * 
+ * @author evgeniy Moiseyenko
+ *
+ */
 public class NationalityDao extends AbstractDao<String, Nationality> {
 	private static final Logger LOG = LogManager.getLogger(NationalityDao.class);
 	private final String FIND_ALL = "SELECT `nationality`.`id`, `nationality`.`country`, `nationality`.`removed`"
 			+ "FROM `nationality` LIMIT ?, ?;";
 	private final String FIND_EXISTING_NATIONALITIES = "SELECT `nationality`.`id`, `nationality`.`country` "
 			+ "FROM `nationality` WHERE `nationality`.`removed` = 0;";
-	private final String FIND_NATIONALITY_NOT_REMOVED = "SELECT `nationality`.`id`, `nationality`.`country`, `nationality`.`removed`\r\n"
-			+ "FROM `nationality` WHERE (`nationality`.`id` = ? OR `nationality`.`country` = ?) AND `nationality`.`removed` = 0;";
 	private final String FIND_NATIONALITY = "SELECT `nationality`.`id`, `nationality`.`country`, `nationality`.`removed`\r\n"
 			+ "FROM `nationality` WHERE `nationality`.`id` = ? OR `nationality`.`country` = ?";
 	private final String FIND_NATIONALITY_BY_ID = "SELECT `nationality`.`id`, `nationality`.`country`, `nationality`.`removed` "
@@ -32,7 +39,6 @@ public class NationalityDao extends AbstractDao<String, Nationality> {
 	private final String UPDATE_NATIONALITY = "UPDATE `nationality` SET `nationality`.`country` = ? "
 			+ "WHERE `nationality`.`id` = ?;";
 	private final String COUNT_NATIONALITIES = "SELECT COUNT(`nationality`.`id`) AS `QUANTITY` FROM `nationality`;";
-	
 
 	@Override
 	public List<Nationality> findAll(int start, int recordsPerPage) throws DaoException {
@@ -57,7 +63,15 @@ public class NationalityDao extends AbstractDao<String, Nationality> {
 		}
 		return nationalities;
 	}
-	
+
+	/**
+	 * The method returns a list of nationalities not removed.
+	 * 
+	 * 
+	 * @return a list of nationalities not removed
+	 * @throws DaoException if method has catched {@link java.sql.SQLException
+	 *                      SQLException}
+	 */
 	public List<Nationality> findExistingNationalities() throws DaoException {
 		List<Nationality> nationalities = new LinkedList<>();
 		try {
@@ -145,17 +159,17 @@ public class NationalityDao extends AbstractDao<String, Nationality> {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean changeRemoved(Nationality entity) throws DaoException {
 		try {
 			try (PreparedStatement statement = connection.prepareStatement(CHANGE_REMOVED)) {
-					statement.setInt(1, (entity.isRemoved() ? 0 : 1));
-					statement.setString(2, entity.getCountryId());
-					statement.setString(3, entity.getCountry());
-					if (statement.executeUpdate() > 0) {
-						return true;
-					}
+				statement.setInt(1, (entity.isRemoved() ? 0 : 1));
+				statement.setString(2, entity.getCountryId());
+				statement.setString(3, entity.getCountry());
+				if (statement.executeUpdate() > 0) {
+					return true;
+				}
 			}
 		} catch (SQLException e) {
 			for (Throwable exc : e) {
@@ -166,50 +180,14 @@ public class NationalityDao extends AbstractDao<String, Nationality> {
 		return false;
 	}
 
-	public Nationality findNotRemovedNationality(String attemptCountry) throws DaoException {
-		try {
-			try (PreparedStatement statement = connection.prepareStatement(FIND_NATIONALITY_NOT_REMOVED)) {
-				statement.setString(1, attemptCountry);
-				statement.setString(2, attemptCountry);
-				ResultSet result = statement.executeQuery();
-				if (result.next()) {
-					String countryId = result.getString(DaoFieldType.ID.getField());
-					String country = result.getString(DaoFieldType.COUNTRY.getField());
-					boolean removed = result.getBoolean(DaoFieldType.REMOVED.getField());
-					return new Nationality(countryId, country, removed);
-				}
-			}
-		} catch (SQLException e) {
-			for (Throwable exc : e) {
-				LOG.error("Finding not removed nationality error: {}", exc);
-			}
-			throw new DaoException("Finding not removed nationality error", e);
-		}
-		return null;
-	}
-
-	public Nationality findNationality(String attemptCountry) throws DaoException {
-		try {
-			try (PreparedStatement statement = connection.prepareStatement(FIND_NATIONALITY)) {
-				statement.setString(1, attemptCountry);
-				statement.setString(2, attemptCountry);
-				ResultSet result = statement.executeQuery();
-				if (result.next()) {
-					String countryId = result.getString(DaoFieldType.ID.getField());
-					String country = result.getString(DaoFieldType.COUNTRY.getField());
-					boolean removed = result.getBoolean(DaoFieldType.REMOVED.getField());
-					return new Nationality(countryId, country, removed);
-				}
-			}
-		} catch (SQLException e) {
-			for (Throwable exc : e) {
-				LOG.error("Finding nationality error: {}", exc);
-			}
-			throw new DaoException("Finding nationality error", e);
-		}
-		return null;
-	}
-
+	/**
+	 * The method return total number of nationalities
+	 * 
+	 * 
+	 * @return total number of nationalities
+	 * @throws DaoException if method has catched {@link java.sql.SQLException
+	 *                      SQLException}
+	 */
 	public int countNationalities() throws DaoException {
 		int quantity = 0;
 		try {
@@ -227,6 +205,5 @@ public class NationalityDao extends AbstractDao<String, Nationality> {
 		}
 		return quantity;
 	}
-	
 
 }

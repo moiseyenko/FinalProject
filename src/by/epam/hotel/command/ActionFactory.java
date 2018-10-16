@@ -1,6 +1,6 @@
 package by.epam.hotel.command;
 /**
- * Class {@code ActionFactory} is used to define the commnad type and create a command instance.
+ * Class {@code ActionFactory} is used to define the commnad type and create an {@link by.epam.hotel.command.ActionCommand ActionCommand} instance.
  * 
  * @author Evgeniy Moiseyenko
  *

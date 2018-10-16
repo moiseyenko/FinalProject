@@ -19,14 +19,22 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
- class ProxyConnection implements Connection {
-	 
+/**
+ * Class {@link ProxyConnection} is implementation of proxy design pattern for
+ * {@link Connection}.
+ * 
+ * 
+ * @author Evgeniy Moiseyenko
+ *
+ */
+class ProxyConnection implements Connection {
+
 	private Connection connection;
-	
+
 	public ProxyConnection(Connection connection) {
 		this.connection = connection;
 	}
-	
+
 	@Override
 	public void close() {
 		ConnectionPool.getInstance().releaseConnection(this);

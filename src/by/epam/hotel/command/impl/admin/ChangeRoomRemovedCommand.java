@@ -21,22 +21,25 @@ import by.epam.hotel.util.type.RoleType;
 import by.epam.hotel.util.type.RouterType;
 
 /**
- * This class is an implementation of a {@link by.epam.hotel.command.ActionCommand ActionCommand} interface 
- * and is used to remove or restore specified room.
+ * This class is an implementation of a
+ * {@link by.epam.hotel.command.ActionCommand ActionCommand} interface and is
+ * used to remove or restore specified room.
  * 
  * 
  * @author Evgeniy Moiseyenko
  */
-public class ChangeRoomRemovedCommand implements ActionCommand{
-	
+public class ChangeRoomRemovedCommand implements ActionCommand {
+
 	/**
-	 * If user's role does not equal to {@link by.epam.hotel.util.type.RoleType#ADMIN ADMIN} 
-	 * method  will return user by {@link by.epam.hotel.util.type.RouterType FORWARD} to welcome page.
-	 * If specified room can not be removed or restored, method will return user by 
-	 * {@link by.epam.hotel.util.type.RouterType FORWARD} to previous page.
-	 * Otherwise method will restore (if room was removed early) or will remove specified room
-	 * and send admin by {@link by.epam.hotel.util.type.RouterType REDIRECT} to page with 
-	 * all rooms.
+	 * If user's role does not equal to
+	 * {@link by.epam.hotel.util.type.RoleType#ADMIN ADMIN} method will return user
+	 * by {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to welcome
+	 * page. If specified room can not be removed or restored, method will return
+	 * user by {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to
+	 * previous page. Otherwise method will restore (if room was removed early) or
+	 * will remove specified room and send admin by
+	 * {@link by.epam.hotel.util.type.RouterType#REDIRECT REDIRECT} to page with all
+	 * rooms.
 	 */
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {
@@ -51,14 +54,13 @@ public class ChangeRoomRemovedCommand implements ActionCommand{
 			int currentPage = sessionData.getCurrentPage();
 			try {
 				if (AdminService.changeRoomRemoved(roomToChangeRemoved)) {
-					List<Room> roomList = AdminService.getRoomsList(currentPage,
-							recordsPerPage);
+					List<Room> roomList = AdminService.getRoomsList(currentPage, recordsPerPage);
 					sessionData.setRoomList(roomList);
 					page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ALL_ROOMS);
 					router.setType(RouterType.REDIRECT);
-				}else {
-					request.setAttribute(AttributeConstant.ERROR_CHANGE_ROOM_REMOVED_MESSAGE,
-							MessageManager.getProrerty(PropertyConstant.MESSAGE_CHANGE_ROOM_REMOVED_ERROR, sessionData.getLocale()));
+				} else {
+					request.setAttribute(AttributeConstant.ERROR_CHANGE_ROOM_REMOVED_MESSAGE, MessageManager
+							.getProrerty(PropertyConstant.MESSAGE_CHANGE_ROOM_REMOVED_ERROR, sessionData.getLocale()));
 					page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ALL_ROOMS);
 					router.setType(RouterType.FORWARD);
 				}

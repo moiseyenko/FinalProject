@@ -31,11 +31,11 @@ import by.epam.hotel.util.type.RouterType;
 public class CancelOrderCommand implements ActionCommand {
 
 	/**
-	 * If user's role equals to {@link by.epam.hotel.util.type.RoleType#CLIENT CLIENT},
-	 * method will calculate the refund amount for cancellation of the specified
-	 * order and will send order to page confirming its cancellation.
+	 * If user's role equals to {@link by.epam.hotel.util.type.RoleType#CLIENT
+	 * CLIENT}, method will calculate the refund amount for cancellation of the
+	 * specified order and will send order to page confirming its cancellation.
 	 * Otherwise method will return user by
-	 * {@link by.epam.hotel.util.type.RouterType FORWARD} to welcome page.
+	 * {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to welcome page.
 	 */
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {

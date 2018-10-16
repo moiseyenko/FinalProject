@@ -23,10 +23,11 @@ import by.epam.hotel.util.type.RouterType;
 public class BackToInfoPaymentCommnamd implements ActionCommand {
 
 	/**
-	 * If user's role equals to {@link by.epam.hotel.util.type.RoleType#CLIENT CLIENT}
-	 * method will return client back by {@link by.epam.hotel.util.type.RouterType
-	 * FORWARD} to page with order payment information. Otherwise method will return
-	 * user by {@link by.epam.hotel.util.type.RouterType FORWARD} to welcome page.
+	 * If user's role equals to {@link by.epam.hotel.util.type.RoleType#CLIENT
+	 * CLIENT} method will return client back by
+	 * {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to page with order
+	 * payment information. Otherwise method will return user by
+	 * {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to welcome page.
 	 */
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {

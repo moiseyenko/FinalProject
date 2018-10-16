@@ -34,11 +34,12 @@ import by.epam.hotel.util.type.RouterType;
 public class ChooseRoomCommand implements ActionCommand {
 
 	/**
-	 * If user's role does not equal to {@link by.epam.hotel.util.type.RoleType#CLIENT
-	 * CLIENT} method will return user by {@link by.epam.hotel.util.type.RouterType
-	 * FORWARD} to welcome page. If selected hotel room has already been ordered,
-	 * method will return back client by {@link by.epam.hotel.util.type.RouterType FORWARD}
-	 * to page with according information. Otherwise method will calculate the order
+	 * If user's role does not equal to
+	 * {@link by.epam.hotel.util.type.RoleType#CLIENT CLIENT} method will return
+	 * user by {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to welcome
+	 * page. If selected hotel room has already been ordered, method will return
+	 * back client by {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to
+	 * page with according information. Otherwise method will calculate the order
 	 * payment amount for selected hotel room and send client to page with payment
 	 * information.
 	 */

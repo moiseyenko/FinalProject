@@ -34,13 +34,15 @@ import by.epam.hotel.util.validator.RoomValidator;
 public class ReplenishCommand implements ActionCommand {
 
 	/**
-	 * If user's role does not equal to {@link by.epam.hotel.util.type.RoleType#CLIENT
-	 * CLIENT} method will return user by {@link by.epam.hotel.util.type.RouterType
-	 * FORWARD} to welcome page. If inputted replenish amount is incorrect or if
-	 * client's bank account can not be updated with replenish amount, method will
-	 * return back client to replenish page with according information. Otherwise
-	 * method will provide replenishment of client's bank account and send client by
-	 * {@link by.epam.hotel.util.type.RouterType REDIRECT} to order payment page.
+	 * If user's role does not equal to
+	 * {@link by.epam.hotel.util.type.RoleType#CLIENT CLIENT} method will return
+	 * user by {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to welcome
+	 * page. If inputted replenish amount is incorrect or if client's bank account
+	 * can not be updated with replenish amount, method will return back client to
+	 * replenish page with according information. Otherwise method will provide
+	 * replenishment of client's bank account and send client by
+	 * {@link by.epam.hotel.util.type.RouterType#REDIRECT REDIRECT} to order payment
+	 * page.
 	 */
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {

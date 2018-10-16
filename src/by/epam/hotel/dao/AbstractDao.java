@@ -44,7 +44,7 @@ public abstract class AbstractDao<K, T extends Entity> {
 	public abstract T findEntityById(K id) throws DaoException;
 
 	/**
-	 * The method create new record in database table
+	 * The method creates new record in database table
 	 * 
 	 * 
 	 * @param entity entity that specifies creation of new records in database table.
@@ -55,7 +55,7 @@ public abstract class AbstractDao<K, T extends Entity> {
 	public abstract boolean create(T entity) throws DaoException;
 
 	/**
-	 * The method update specified record in database table
+	 * The method updates specified record in database table
 	 * 
 	 * 
 	 * @param entity that will be updated in database table

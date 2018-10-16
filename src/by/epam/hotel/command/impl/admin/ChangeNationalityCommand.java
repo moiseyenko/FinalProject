@@ -16,19 +16,21 @@ import by.epam.hotel.util.type.RoleType;
 import by.epam.hotel.util.type.RouterType;
 
 /**
- * This class is an implementation of a {@link by.epam.hotel.command.ActionCommand ActionCommand} interface 
- * and is used to setting of a specific nationality to change.
+ * This class is an implementation of a
+ * {@link by.epam.hotel.command.ActionCommand ActionCommand} interface and is
+ * used to setting of a specific nationality to change.
  * 
  * 
  * @author Evgeniy Moiseyenko
  */
 public class ChangeNationalityCommand implements ActionCommand {
-	
+
 	/**
-	 * If user's role equals to {@link by.epam.hotel.util.type.RoleType#ADMIN ADMIN}, method will set
-	 * specified nationality to change and will send admin by
-	 * {@link by.epam.hotel.util.type.RouterType REDIRECT} to page of nationality changes.
-	 * Otherwise method  returns user by {@link by.epam.hotel.util.type.RouterType FORWARD} to welcome page.
+	 * If user's role equals to {@link by.epam.hotel.util.type.RoleType#ADMIN
+	 * ADMIN}, method will set specified nationality to change and will send admin
+	 * by {@link by.epam.hotel.util.type.RouterType#REDIRECT REDIRECT} to page of
+	 * nationality changes. Otherwise method returns user by
+	 * {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to welcome page.
 	 */
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {

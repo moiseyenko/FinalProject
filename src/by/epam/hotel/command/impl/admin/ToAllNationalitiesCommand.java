@@ -20,19 +20,21 @@ import by.epam.hotel.util.type.RoleType;
 import by.epam.hotel.util.type.RouterType;
 
 /**
- * This class is an implementation of a {@link by.epam.hotel.command.ActionCommand ActionCommand} interface 
- * and is used to send admin to page with all nationalities.
+ * This class is an implementation of a
+ * {@link by.epam.hotel.command.ActionCommand ActionCommand} interface and is
+ * used to send admin to page with all nationalities.
  * 
  * 
  * @author Evgeniy Moiseyenko
  */
-public class ToAllNationalitiesCommand implements ActionCommand{
+public class ToAllNationalitiesCommand implements ActionCommand {
 
 	/**
-	 * If user's role equals to {@link by.epam.hotel.util.type.RoleType#ADMIN ADMIN} method will
-	 * get list with all nationalities and will send admin  by {@link by.epam.hotel.util.type.RouterType FORWARD} 
-	 * to page with received list.
-	 * Otherwise method will return user by {@link by.epam.hotel.util.type.RouterType FORWARD} to welcome page.
+	 * If user's role equals to {@link by.epam.hotel.util.type.RoleType#ADMIN ADMIN}
+	 * method will get list with all nationalities and will send admin by
+	 * {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to page with
+	 * received list. Otherwise method will return user by
+	 * {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to welcome page.
 	 */
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {
@@ -44,8 +46,7 @@ public class ToAllNationalitiesCommand implements ActionCommand{
 			int currentPage = Integer.valueOf(request.getParameter(ParameterConstant.CURRENT_PAGE));
 			int recordsPerPage = Integer.valueOf(request.getParameter(ParameterConstant.RECORDS_PER_PAGE));
 			try {
-				List<Nationality> nationalityList = AdminService.getNationalitiesList(currentPage,
-						recordsPerPage);
+				List<Nationality> nationalityList = AdminService.getNationalitiesList(currentPage, recordsPerPage);
 				sessionData.setNationalityList(nationalityList);
 				int rows = AdminService.getNumberOfRowsNationalities();
 				int noOfPages = rows / recordsPerPage;

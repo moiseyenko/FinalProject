@@ -12,8 +12,9 @@ import by.epam.hotel.util.type.RoleType;
 import by.epam.hotel.util.type.RouterType;
 
 /**
- * This class is an implementation of a {@link by.epam.hotel.command.ActionCommand ActionCommand} interface 
- * and is used to return client back to client's main page.
+ * This class is an implementation of a
+ * {@link by.epam.hotel.command.ActionCommand ActionCommand} interface and is
+ * used to return client back to client's main page.
  * 
  * 
  * @author Evgeniy Moiseyenko
@@ -21,9 +22,11 @@ import by.epam.hotel.util.type.RouterType;
 public class BackToClientmainCommand implements ActionCommand {
 
 	/**
-	 * If user's role equals to {@link by.epam.hotel.util.type.RoleType#CLIENT CLIENT} method will return 
-	 * client back by {@link by.epam.hotel.util.type.RouterType FORWARD} to client's main page.
-	 * Otherwise method will return user by {@link by.epam.hotel.util.type.RouterType FORWARD} to welcome page.
+	 * If user's role equals to {@link by.epam.hotel.util.type.RoleType#CLIENT
+	 * CLIENT} method will return client back by
+	 * {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to client's main
+	 * page. Otherwise method will return user by
+	 * {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to welcome page.
 	 */
 	@Override
 	public Router execute(HttpServletRequest request) {

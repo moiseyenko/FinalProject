@@ -10,11 +10,26 @@ import org.apache.logging.log4j.Logger;
 
 import by.epam.hotel.pool.ConnectionPool;
 
+/**
+ * Class {@link TransactionHelper} is used to provide operations with database
+ * by dao objects
+ * 
+ * 
+ * @author Evgeniy Moiseyenko
+ *
+ */
 public class TransactionHelper implements AutoCloseable {
 	private static final Logger LOG = LogManager.getLogger();
 	private Connection connection = ConnectionPool.getInstance().getConnection();
 	private List<AbstractDao<?, ?>> daoList = new LinkedList<>();
 
+	/**
+	 * This method is used to provide operations with database
+	 * by several dao objects at one transaction.
+	 * 
+	 * 
+	 * @param an array of dao objects performing database operations
+	 */
 	public void doTransaction(AbstractDao<?, ?>... daos) {
 		try {
 			connection.setAutoCommit(false);
@@ -29,6 +44,13 @@ public class TransactionHelper implements AutoCloseable {
 		}
 	}
 
+	/**
+	 * This method is used to provide operations with database
+	 * by single dao object at one transaction.
+	 * 
+	 * 
+	 * @param dao object performing database operations
+	 */
 	public void doOperation(AbstractDao<?, ?> dao) {
 		dao.setConnection(connection);
 		daoList.add(dao);
@@ -43,6 +65,9 @@ public class TransactionHelper implements AutoCloseable {
 		ConnectionPool.getInstance().releaseConnection(connection);
 	}
 
+	/**
+	 * This method is used to commit changes made
+	 */
 	public void commit() {
 		try {
 			connection.commit();
@@ -53,6 +78,9 @@ public class TransactionHelper implements AutoCloseable {
 		}
 	}
 
+	/**
+	 * This method is used to rollback changes made
+	 */
 	public void rollback() {
 		try {
 			connection.rollback();

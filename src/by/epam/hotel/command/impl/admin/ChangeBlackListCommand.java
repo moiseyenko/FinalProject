@@ -21,22 +21,25 @@ import by.epam.hotel.util.type.RoleType;
 import by.epam.hotel.util.type.RouterType;
 
 /**
- * This class is an implementation of a {@link by.epam.hotel.command.ActionCommand ActionCommand} interface 
- * and is used to adding or deletion of specified client to(from) black list.
+ * This class is an implementation of a
+ * {@link by.epam.hotel.command.ActionCommand ActionCommand} interface and is
+ * used to adding or deletion of specified client to(from) black list.
  * 
  * 
  * @author Evgeniy Moiseyenko
  */
 public class ChangeBlackListCommand implements ActionCommand {
-	
+
 	/**
-	 * If user's role does not equal to {@link by.epam.hotel.util.type.RoleType#ADMIN ADMIN} 
-	 * method  will return user by {@link by.epam.hotel.util.type.RouterType FORWARD} to welcome page.
-	 * If specified client can not be added or removed to(from) black list, method will return user by 
-	 * {@link by.epam.hotel.util.type.RouterType FORWARD} to previous page.
-	 * Otherwise method will add (if client is not in blacklist) or remove(if client is already in blacklist)
-	 * to(from) black list and send admin by{@link by.epam.hotel.util.type.RouterType REDIRECT} to page with 
-	 * all clients.
+	 * If user's role does not equal to
+	 * {@link by.epam.hotel.util.type.RoleType#ADMIN ADMIN} method will return user
+	 * by {@link by.epam.hotel.util.type.RouterType#FORWARD FORWARD} to welcome
+	 * page. If specified client can not be added or removed to(from) black list,
+	 * method will return user by {@link by.epam.hotel.util.type.RouterType#FORWARD
+	 * FORWARD} to previous page. Otherwise method will add (if client is not in
+	 * blacklist) or remove(if client is already in blacklist) to(from) black list
+	 * and send admin by{@link by.epam.hotel.util.type.RouterType#REDIRECT REDIRECT}
+	 * to page with all clients.
 	 */
 	@Override
 	public Router execute(HttpServletRequest request) throws CommandException {
@@ -51,14 +54,14 @@ public class ChangeBlackListCommand implements ActionCommand {
 			int currentPage = sessionData.getCurrentPage();
 			try {
 				if (AdminService.changeClientBlacklist(clientToChangeBlacklist)) {
-					List<Client> clientList = AdminService.getClientsList(currentPage,
-							recordsPerPage);
+					List<Client> clientList = AdminService.getClientsList(currentPage, recordsPerPage);
 					sessionData.setClientList(clientList);
 					page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ALL_CLIENTS);
 					router.setType(RouterType.REDIRECT);
-				}else {
+				} else {
 					request.setAttribute(AttributeConstant.ERROR_CHANGE_BLACKLIST_CLIENT_MESSAGE,
-							MessageManager.getProrerty(PropertyConstant.MESSAGE_CHANGE_CLIENT_BLACKLIST_ERROR, sessionData.getLocale()));
+							MessageManager.getProrerty(PropertyConstant.MESSAGE_CHANGE_CLIENT_BLACKLIST_ERROR,
+									sessionData.getLocale()));
 					page = ConfigurationManager.getProperty(PropertyConstant.PAGE_ALL_CLIENTS);
 					router.setType(RouterType.FORWARD);
 				}
