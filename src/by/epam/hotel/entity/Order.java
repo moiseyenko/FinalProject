@@ -3,6 +3,13 @@ package by.epam.hotel.entity;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+/**
+ * Class {@link Order} is entity that represents concrete records from 'order' table.
+ * 
+ * 
+ * @author Evgeniy Moiseyenko
+ *
+ */
 public class Order extends Entity {
 
 	private static final long serialVersionUID = 3883259355061810087L;

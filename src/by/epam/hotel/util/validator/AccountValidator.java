@@ -5,6 +5,14 @@ import java.util.regex.Pattern;
 
 import by.epam.hotel.util.constant.ValidationConstant;
 
+/**
+ * Class {@link AccountValidator} is used to provide validation of inputted data
+ * when user tries to get access to his account.
+ * 
+ * 
+ * @author User
+ *
+ */
 public class AccountValidator {
 	public static boolean validateLogin(String login) {
 		Pattern pattern = Pattern.compile(ValidationConstant.LOGIN_PATTERN);

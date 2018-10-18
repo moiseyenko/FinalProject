@@ -21,12 +21,12 @@ import org.apache.logging.log4j.Logger;
  * @author Evgeniy Moiseyenko
  *
  */
-public class ConnectionPool implements Cloneable {
+public class ConnectionPool {
 	private static final Logger LOG = LogManager.getLogger();
 
 	private final int DEFUALT_POOL_SIZE = 10;
 
-	private BlockingQueue<ProxyConnection> blockingConnections;
+	private BlockingQueue<ProxyConnection> availableConnections;
 	private BlockingQueue<ProxyConnection> usedConnections;
 	private int poolSize;
 
@@ -50,7 +50,7 @@ public class ConnectionPool implements Cloneable {
 
 		}
 
-		blockingConnections = new LinkedBlockingQueue<>();
+		availableConnections = new LinkedBlockingQueue<>();
 		usedConnections = new LinkedBlockingQueue<>();
 
 		String stringPoolSize = DatabaseManager.getPoolSize();
@@ -66,7 +66,7 @@ public class ConnectionPool implements Cloneable {
 				Connection connection = DriverManager.getConnection(DatabaseManager.getUrl(),
 						DatabaseManager.getProperties());
 				ProxyConnection proxyConnection = new ProxyConnection(connection);
-				blockingConnections.put(proxyConnection);
+				availableConnections.put(proxyConnection);
 				LOG.debug(connection + " is created");
 			} catch (InterruptedException e) {
 				LOG.error("Interrupted while waiting: {}", e);
@@ -76,16 +76,18 @@ public class ConnectionPool implements Cloneable {
 			}
 		}
 
-		// if specified number of connections has not been created, try create missing
-		// connections again.
-		// if this time fails to create connections, a RuntimeException is thrown
-		if (blockingConnections.size() < poolSize) {
-			for (int i = 0; i < Math.subtractExact(blockingConnections.size(), poolSize); i++) {
+		/*
+		 * If specified number of connections has not been created, try create missing
+		 * connections again. if this time fails to create connections, a
+		 * RuntimeException is thrown
+		 */
+		if (availableConnections.size() < poolSize) {
+			for (int i = 0; i < Math.subtractExact(availableConnections.size(), poolSize); i++) {
 				try {
 					Connection connection = DriverManager.getConnection(DatabaseManager.getUrl(),
 							DatabaseManager.getProperties());
 					ProxyConnection proxyConnection = new ProxyConnection(connection);
-					blockingConnections.put(proxyConnection);
+					availableConnections.put(proxyConnection);
 					LOG.debug(connection + " is created");
 				} catch (InterruptedException e) {
 					LOG.fatal("Interrupted while waiting: {}", e);
@@ -123,15 +125,6 @@ public class ConnectionPool implements Cloneable {
 	}
 
 	/**
-	 * This method is used to prevent clone of
-	 * {@link by.epam.hotel.pool.ConnectionPool ConnectionPool}
-	 */
-	@Override
-	public Object clone() throws CloneNotSupportedException {
-		throw new CloneNotSupportedException();
-	}
-
-	/**
 	 * This method is used to retrieve {@link java.sql.Connection Connection} that
 	 * is wrapped in a {@link by.epam.hotel.pool.ProxyConnection ProxyConnection}
 	 * from blockingConnections queue and move specified connection to
@@ -145,7 +138,7 @@ public class ConnectionPool implements Cloneable {
 	public Connection getConnection() {
 		ProxyConnection connection = null;
 		try {
-			connection = blockingConnections.take();
+			connection = availableConnections.take();
 			usedConnections.put(connection);
 			LOG.debug(connection + " got FROM pool");
 		} catch (InterruptedException e) {
@@ -175,7 +168,7 @@ public class ConnectionPool implements Cloneable {
 						LOG.error(exc);
 					}
 				}
-				blockingConnections.put((ProxyConnection) connection);
+				availableConnections.put((ProxyConnection) connection);
 				LOG.debug(connection + " returned IN pool");
 			} catch (InterruptedException e) {
 				LOG.error("Interrupted while waiting: {}", e);
@@ -191,7 +184,7 @@ public class ConnectionPool implements Cloneable {
 		System.out.println(poolSize);
 		for (int i = 0; i < poolSize; i++) {
 			try {
-				((ProxyConnection) blockingConnections.take()).closeConnection();
+				((ProxyConnection) availableConnections.take()).closeConnection();
 			} catch (SQLException e) {
 				LOG.error("Database access error occurs: {}", e);
 			} catch (InterruptedException e) {

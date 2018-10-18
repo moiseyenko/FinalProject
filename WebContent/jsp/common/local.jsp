@@ -5,14 +5,14 @@
 <fmt:setLocale value="${sessionData.locale}" scope="session" />
 <fmt:bundle basename="resource.i18n.interface" prefix="contacts.">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-	<div class="collapse navbar-collapse justify-content-md">
-		<ul>
-		<li><fmt:message key="address" /></li>
-		<li><fmt:message key="phone" />: +375(44) 722-50-81</li>
-		<li><fmt:message key="email" />: javahotel2018@gmail.com</li>
-	</ul>
+	<div class="navbar-collapse justify-content-md">
+		<ul class="coordinates">
+			<li><fmt:message key="address" /></li>
+			<li><fmt:message key="phone" />: +375(44) 722-50-81</li>
+			<li><fmt:message key="email" />: javahotel2018@gmail.com</li>
+		</ul>
 	</div>
-	<div class="collapse navbar-collapse justify-content-md-end">
+	<div class="navbar-collapse justify-content-md-end">
 		<form action="${pageContext.request.contextPath}/controller"
 			method="post" style="vertical-align: middle;">
 			<input type="hidden" name="locale" value="English" />

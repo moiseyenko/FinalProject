@@ -2,6 +2,13 @@ package by.epam.hotel.entity;
 
 import java.io.Serializable;
 
+/**
+ * Abstract class {@link Entity} is a super class for all entities used in the application.
+ * 
+ * 
+ * @author Evgeniy Moiseyenko
+ *
+ */
 public abstract class Entity implements Serializable, Cloneable {
 	
 	private static final long serialVersionUID = -1719291704527859340L;

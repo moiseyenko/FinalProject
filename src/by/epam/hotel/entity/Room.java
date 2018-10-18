@@ -2,6 +2,13 @@ package by.epam.hotel.entity;
 
 import java.math.BigDecimal;
 
+/**
+ * Class {@link Room} is an entity that represents concrete records from 'room' table.
+ * 
+ * 
+ * @author Evgeniy Moiseyenko
+ *
+ */
 public class Room extends Entity {
 
 	private static final long serialVersionUID = -5676280733157722525L;

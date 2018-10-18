@@ -29,6 +29,7 @@ import by.epam.hotel.util.constant.AttributeConstant;
 		@WebInitParam(name = "client_path", value = "/controller?command=back_to_client_main"),
 		@WebInitParam(name = "admin_path", value = "/controller?command=back_to_admin_main") })
 public class JspFilter implements Filter {
+	private final String REFERER = "Referer";
 	private String indexPath;
 	private String clientPath;
 	private String adminPath;
@@ -72,7 +73,7 @@ public class JspFilter implements Filter {
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
 		HttpSession session = httpRequest.getSession();
 		SessionData sessionData = (SessionData) session.getAttribute(AttributeConstant.SESSION_DATA);
-		String referer = httpRequest.getHeader("Referer");
+		String referer = httpRequest.getHeader(REFERER);
 
 		if (referer == null) {
 			switch (sessionData.getRole()) {

@@ -1,5 +1,12 @@
 package by.epam.hotel.entity;
 
+/**
+ * Class {@link Nationality} is an entity that represents concrete records from 'nationality' table.
+ * 
+ * 
+ * @author Evgeniy Moiseyenko
+ *
+ */
 public class Nationality extends Entity{
 	
 	private static final long serialVersionUID = 2013950784253437740L;

@@ -1,5 +1,12 @@
 package by.epam.hotel.entity;
 
+/**
+ * Class {@link Account} is an entity that represents concrete records from 'account' table.
+ * 
+ * 
+ * @author Evgeniy Moiseyenko
+ *
+ */
 public class Account extends Entity {
 	
 	private static final long serialVersionUID = 5888722997631088291L;

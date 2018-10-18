@@ -1,5 +1,12 @@
 package by.epam.hotel.entity;
 
+/**
+ * Class {@link RoomClass} is entity that represents concrete records from 'class' table.
+ * 
+ * 
+ * @author Evgeniy Moiseyenko
+ *
+ */
 public class RoomClass extends Entity{
 	
 	private static final long serialVersionUID = 6042203087265021796L;

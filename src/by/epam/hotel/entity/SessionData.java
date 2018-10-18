@@ -8,6 +8,13 @@ import java.util.Set;
 
 import by.epam.hotel.util.type.RoleType;
 
+/**
+ * Class {@link SessionData} is used to store all session attributes.
+ * 
+ * 
+ * @author Evgeniy Moiseyenko
+ *
+ */
 public class SessionData {
 	private String login;
 	private RoleType role;

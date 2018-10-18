@@ -13,8 +13,6 @@
 	href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
-
-
 	<main role="main" class="container-fluid">
 		<jsp:include page="/locale" />
 		<div class="row">

@@ -1,5 +1,12 @@
 package by.epam.hotel.entity;
 
+/**
+ * Class {@link Client} is an entity that represents concrete records from 'client' table.
+ * 
+ * 
+ * @author Evgeniy Moiseyenko
+ *
+ */
 public class Client extends Entity {
 
 	private static final long serialVersionUID = 722528841853174445L;

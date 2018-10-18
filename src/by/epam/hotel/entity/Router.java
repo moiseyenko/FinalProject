@@ -2,6 +2,13 @@ package by.epam.hotel.entity;
 
 import by.epam.hotel.util.type.RouterType;
 
+/**
+ * Class {@link Router} is used to provide command result.
+ * 
+ * 
+ * @author Evgeniy Moiseyenko
+ *
+ */
 public class Router {
 	private String page;
 	private RouterType type;

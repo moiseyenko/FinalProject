@@ -3,6 +3,13 @@ package by.epam.hotel.entity;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+/**
+ * Class {@link FullInfoOrder} is an entity that represents concrete records from 'order' table.
+ * 
+ * 
+ * @author Evgeniy Moiseyenko
+ *
+ */
 public class FullInfoOrder extends Entity{
 	
 	private static final long serialVersionUID = -5321395858975587861L;

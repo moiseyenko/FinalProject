@@ -7,6 +7,14 @@ import java.util.regex.Pattern;
 import by.epam.hotel.entity.Nationality;
 import by.epam.hotel.util.constant.ValidationConstant;
 
+/**
+ * Class {@link ClientValidator} is used to provide validation of data
+ * during client creation.
+ * 
+ * 
+ * @author User
+ *
+ */
 public class ClientValidator {
 	public static boolean validateFName(String fname) {
 		Pattern pattern = Pattern.compile(ValidationConstant.FIRST_NAME_PATTERN);

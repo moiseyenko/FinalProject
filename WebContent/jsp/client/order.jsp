@@ -9,6 +9,9 @@
 <html>
 <head>
 <title><fmt:message key="title" /></title>
+
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/css/scroll.css">
 </head>
 <body>
 	<jsp:include page="/locale" />
@@ -17,7 +20,7 @@
 	<jsp:include page="/loginlogout" />
 	<hr />
 	<fmt:message key="clientsmsg" />:
-	<div style="height:80;width:300px; border:1px solid #ccc;overflow:auto;">
+	<div class="scrollable">
 	   	<table>
 			<c:forEach var="client" items="${sessionData.clients }" varStatus="status">
 				<tr>

@@ -2,6 +2,13 @@ package by.epam.hotel.entity;
 
 import java.math.BigDecimal;
 
+/**
+ * Class {@link BankAccount} is an entity that represents concrete records from 'bank' table.
+ * 
+ * 
+ * @author Evgeniy Moiseyenko
+ *
+ */
 public class BankAccount extends Entity {
 
 	private static final long serialVersionUID = -4586711303647435791L;

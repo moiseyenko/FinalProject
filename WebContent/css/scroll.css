@@ -1,0 +1,7 @@
+div.scrollable {
+	height: 80;
+	width: 300px;
+	border: 1px solid #ccc;
+	overflow: auto;
+}
+}

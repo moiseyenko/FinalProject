@@ -24,11 +24,6 @@ public class ConnectionPoolTest {
 	public void getInstanceTest(ConnectionPool pool) {
 		assertSame(ConnectionPool.getInstance(), pool);
 	}
-
-	@Test(dataProvider = "dp", expectedExceptions = CloneNotSupportedException.class)
-	public void ClonePoolTest(ConnectionPool pool) throws CloneNotSupportedException {
-		pool.clone();
-	}
 	
 	Deque<Connection> connections = new ArrayDeque<>();
 	

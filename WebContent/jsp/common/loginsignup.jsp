@@ -16,7 +16,7 @@
 			<form action="${pageContext.request.contextPath}/controller"
 				method="post">
 				<input type="hidden" name="command" value="to_signup" />
-				<input class="btn btn-sm btn-primary btn-block btn-outline-primary" type="submit" value="<fmt:message key="signup" />" size="20" />
+				<input class="btn btn-block btn-outline-primary" type="submit" value="<fmt:message key="signup" />" size="20" />
 			</form>
 
 		</c:when>
@@ -34,7 +34,7 @@
 					<form action="${pageContext.request.contextPath}/controller"
 						method="post">
 						<input type="hidden" name="command" value="back_to_admin_main" />
-						<input class="btn btn-sm btn-primary btn-block btn-outline-primary" type="submit" value="<fmt:message key="toadminmain" />"
+						<input class="btn btn-block btn-outline-primary" type="submit" value="<fmt:message key="toadminmain" />"
 							size="20" />
 					</form>
 				</c:when>
@@ -42,7 +42,7 @@
 					<form action="${pageContext.request.contextPath}/controller"
 						method="post">
 						<input type="hidden" name="command" value="back_to_client_main" />
-						<input class="btn btn-sm btn-primary btn-block btn-outline-primary" type="submit" value="<fmt:message key="toclientmain" />" />
+						<input class="btn btn-block btn-outline-primary" type="submit" value="<fmt:message key="toclientmain" />" />
 					</form>
 				</c:otherwise>
 			</c:choose>

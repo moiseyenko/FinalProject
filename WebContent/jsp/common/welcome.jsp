@@ -13,28 +13,26 @@
 
 <title><fmt:message key="title" /></title>
 </head>
-<body class="text-center">
-
+<body>
 	<jsp:include page="/locale" />
-
-	<main role="main" class="container-fluid justify-content-md-center">
-	<div class="row">
-		<fmt:message key="message" />
+	<div class="container justify-content-center">
+		<h2 class="row std-text-color justify-content-center">
+			<fmt:message key="message" />
+		</h2>
+		<div class="row">
+			<div class="col"></div>
+			<div class="col">
+				<jsp:include page="loginsignup.jsp" />
+				<form action="${pageContext.request.contextPath}/controller"
+					method="post">
+					<input type="hidden" name="command" value="hotel_info" /> <input
+						class="btn btn-primary btn-block btn-outline-primary"
+						type="submit" value="<fmt:message key="hotelinfo" />" size="20" />
+				</form>
+			</div>
+			<div class="col"></div>
+		</div>
 	</div>
-	<br />
-	<div class="container-fluid">
-		<jsp:include page="loginsignup.jsp" />
-	</div>
-	<br />
-	<div class="btn btn-dark">
-		<form action="${pageContext.request.contextPath}/controller"
-			method="post">
-			<input type="hidden" name="command" value="hotel_info" /> <input
-				class="btn btn-sm btn-primary btn-block btn-outline-primary"
-				type="submit" value="<fmt:message key="hotelinfo" />" size="20" />
-		</form>
-	</div>
-	</main>
 </body>
 	</html>
 </fmt:bundle>
