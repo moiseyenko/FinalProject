@@ -37,7 +37,6 @@ public class ErrorBackCommand implements ActionCommand {
 		String page = null;
 		HttpSession session = request.getSession();
 		SessionData sessionData = (SessionData) session.getAttribute(AttributeConstant.SESSION_DATA);
-		System.out.println("ROLE:" + sessionData.getRole());
 		switch (sessionData.getRole()) {
 		case GUEST:
 			page = ConfigurationManager.getProperty(PropertyConstant.PAGE_WELCOME);

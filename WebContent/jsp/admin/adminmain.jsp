@@ -13,76 +13,84 @@
 	href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
-	<main role="main" class="container-fluid">
-		<jsp:include page="/locale" />
-		<div class="row">
-			<fmt:message key="adminmessage" />
-		</div>
-		<div class="row justify-content-end">
-			<jsp:include page="/loginlogout" />
+	<jsp:include page="/locale" />
+	<div class="container justify-content-center">
+		<jsp:include page="/loginlogout" />
+		<div class="row justify-content-center">
+			<h2 class="std-text-color text-center">
+				<fmt:message key="adminmessage" />
+			</h2>
 		</div>
 
-		${errorRelogMessage} ${errorReSignupMessage}
+		<div class="text-danger text-center">${errorRelogMessage}</div>
+		<div class="text-danger text-center">${errorReSignupMessage}</div>
 
-		<form action="${pageContext.request.contextPath}/controller"
-			method="post">
-			<input type="hidden" name="command" value="to_all_orders" />
-			<input type="hidden" name="currentPage" value="1">
-			<input type="hidden" name="recordsPerPage" value="10">
-			<input class="btn btn-lg btn-primary btn-block " type="submit"
-				value="<fmt:message key="orders" />" />
-		</form>
-		<form action="${pageContext.request.contextPath}/controller"
-			method="post">
-			<input type="hidden" name="command" value="to_all_clients" />
-			<input type="hidden" name="currentPage" value="1">
-			<input type="hidden" name="recordsPerPage" value="10">
-			<input class="btn btn-lg btn-primary btn-block " type="submit"
-				value="<fmt:message key="clients" />" />
-		</form>
-		<form action="${pageContext.request.contextPath}/controller"
-			method="post">
-			<input type="hidden" name="command" value="to_admin_rooms" />
-			<input class="btn btn-lg btn-primary btn-block " type="submit"
-				value="<fmt:message key="rooms" />" />
-		</form>
-		<form action="${pageContext.request.contextPath}/controller"
-			method="post">
-			<input type="hidden" name="command" value="to_admin_nationalities" />
-			<input class="btn btn-lg btn-primary btn-block " type="submit"
-				value="<fmt:message key="nationalities" />" />
-		</form>
-		<form action="${pageContext.request.contextPath}/controller"
-			method="post">
-			<input type="hidden" name="command" value="to_admin_classes" />
-			<input class="btn btn-lg btn-primary btn-block " type="submit"
-				value="<fmt:message key="roomclasses" />" />
-		</form>
-		<form action="${pageContext.request.contextPath}/controller"
-			method="post">
-			<input type="hidden" name="command" value="to_all_accounts" />
-			<input type="hidden" name="currentPage" value="1">
-			<input type="hidden" name="recordsPerPage" value="10">
-			<input class="btn btn-lg btn-primary btn-block " type="submit"
-				value="<fmt:message key="accounts" />" />
-		</form>
-		<c:if test="${sessionData.login ne 'superadmin' }">
-			<form action="${pageContext.request.contextPath}/controller"
-				method="post">
-				<input type="hidden" name="command" value="to_change_personal_data" />
-				<input class="btn btn-lg btn-primary btn-block " type="submit"
-					value="<fmt:message key="changepersonaldata" />" />
-			</form>
-		</c:if>
-		<form action="${pageContext.request.contextPath}/controller"
-			method="post">
-			<input type="hidden" name="command" value="to_all_emails" />
-			<input type="hidden" name="currentPage" value="1">
-			<input type="hidden" name="recordsPerPage" value="10">
-			<input class="btn btn-lg btn-primary btn-block " type="submit"
-				value="<fmt:message key="sendmessage" />" />
-		</form>
-	</main>
+		<div class="row justify-content-center">
+			<div class="col-4"></div>
+			<div class="col">
+				<form action="${pageContext.request.contextPath}/controller"
+					method="post">
+					<input type="hidden" name="command" value="to_all_orders" /> <input
+						type="hidden" name="currentPage" value="1"> <input
+						type="hidden" name="recordsPerPage" value="10"> <input
+						class="btn btn-lg btn-primary btn-block " type="submit"
+						value="<fmt:message key="orders" />" />
+				</form>
+				<form action="${pageContext.request.contextPath}/controller"
+					method="post">
+					<input type="hidden" name="command" value="to_all_clients" /> <input
+						type="hidden" name="currentPage" value="1"> <input
+						type="hidden" name="recordsPerPage" value="10"> <input
+						class="btn btn-lg btn-primary btn-block " type="submit"
+						value="<fmt:message key="clients" />" />
+				</form>
+				<form action="${pageContext.request.contextPath}/controller"
+					method="post">
+					<input type="hidden" name="command" value="to_admin_rooms" /> <input
+						class="btn btn-lg btn-primary btn-block " type="submit"
+						value="<fmt:message key="rooms" />" />
+				</form>
+				<form action="${pageContext.request.contextPath}/controller"
+					method="post">
+					<input type="hidden" name="command" value="to_admin_nationalities" />
+					<input class="btn btn-lg btn-primary btn-block " type="submit"
+						value="<fmt:message key="nationalities" />" />
+				</form>
+				<form action="${pageContext.request.contextPath}/controller"
+					method="post">
+					<input type="hidden" name="command" value="to_admin_classes" /> <input
+						class="btn btn-lg btn-primary btn-block " type="submit"
+						value="<fmt:message key="roomclasses" />" />
+				</form>
+				<form action="${pageContext.request.contextPath}/controller"
+					method="post">
+					<input type="hidden" name="command" value="to_all_accounts" /> <input
+						type="hidden" name="currentPage" value="1"> <input
+						type="hidden" name="recordsPerPage" value="10"> <input
+						class="btn btn-lg btn-primary btn-block " type="submit"
+						value="<fmt:message key="accounts" />" />
+				</form>
+				<c:if test="${sessionData.login ne 'superadmin' }">
+					<form action="${pageContext.request.contextPath}/controller"
+						method="post">
+						<input type="hidden" name="command"
+							value="to_change_personal_data" /> <input
+							class="btn btn-lg btn-primary btn-block " type="submit"
+							value="<fmt:message key="changepersonaldata" />" />
+					</form>
+				</c:if>
+				<form action="${pageContext.request.contextPath}/controller"
+					method="post">
+					<input type="hidden" name="command" value="to_all_emails" /> <input
+						type="hidden" name="currentPage" value="1"> <input
+						type="hidden" name="recordsPerPage" value="10"> <input
+						class="btn btn-lg btn-primary btn-block" type="submit"
+						value="<fmt:message key="sendmessage" />" />
+				</form>
+			</div>
+			<div class="col-4"></div>
+		</div>
+	</div>
 </body>
 	</html>
 </fmt:bundle>

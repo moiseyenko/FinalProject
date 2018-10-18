@@ -15,39 +15,49 @@
 </head>
 <body>
 	<jsp:include page="/locale" />
-	<br />
-	<hr />
-	<form action="${pageContext.request.contextPath}/controller"
-		method="post">
-		<input type="hidden" name="command" value="change_password" />
-		<table>
-			<tr>
-				<td><fmt:message key="newpassword" />:</td>
-				<td><input type="password" name="newPassword"
-						autocomplete="off"
-						pattern="^(?=.*[0-9])(?=.*[a-zа-я])(?=.*[A-ZА-Я])(?=.*[@#$%^&+=])(?=\S+$).{8,}$"
-						title="<fmt:message key="message.passwordvalidateerror" bundle="${ rb }" />" />
-					${errorPasswordValidateMessage }${errorChangePasswordMessage }</td>
-			</tr>
-			<tr>
-				<td><fmt:message key="oldpassword" />:</td>
-				<td><input type="password" name="oldPassword"
-						autocomplete="off" /> ${errorCheckLoginPasswordMessage }</td>
-			</tr>
-			<tr>
-				<td><input type="submit"
-						value="<fmt:message key="changepassword" />" /></td>
-			</tr>
-		</table>
-	</form>
-	<hr />
-	<form action="${pageContext.request.contextPath}/controller"
-		method="post">
-		<input type="hidden" name="command"
-			value="to_change_personal_data" />
-		<input type="submit" value="<fmt:message key="backbutton" />"
-			size="20" />
-	</form>
+	<div class="container justify-content-center">
+		<jsp:include page="/loginlogout" />
+		<div class="container justify-content-center">
+			<div class="row justify-content-center">
+				<div class="col-4"></div>
+				<div class="col">
+					<form action="${pageContext.request.contextPath}/controller"
+						method="post">
+						<input type="hidden" name="command" value="change_password" />
+						<div class="input-group mb-3">
+							<div class="input-group-prepend">
+								<span class="input-group-text fixed-input-group"
+									id="basic-addon1"><fmt:message key="newpassword" /></span>
+							</div>
+							<input class="form-control" type="password" name="newPassword" autocomplete="off"
+								pattern="^(?=.*[0-9])(?=.*[a-zа-я])(?=.*[A-ZА-Я])(?=.*[@#$%^&+=])(?=\S+$).{8,}$"
+								title="<fmt:message key="message.passwordvalidateerror" bundle="${ rb }" />" />
+						</div>
+						<div class="text-danger text-center">${errorPasswordValidateMessage }${errorChangePasswordMessage }</div>
+						<div class="input-group mb-3">
+							<div class="input-group-prepend">
+								<span class="input-group-text fixed-input-group"
+									id="basic-addon1"><fmt:message key="oldpassword" /></span>
+							</div>
+							<input class="form-control" type="password" name="oldPassword"
+								autocomplete="off" /> 
+						</div>
+						<div class="text-danger text-center">${errorCheckLoginPasswordMessage }</div>
+						<input class="btn btn-lg btn-block btn-primary" type="submit"
+							value="<fmt:message key="changepassword" />" />
+					</form>
+					<form action="${pageContext.request.contextPath}/controller"
+						method="post">
+						<input type="hidden" name="command"
+							value="to_change_personal_data" /> <input
+							class="btn btn-block btn-outline-primary" type="submit"
+							value="<fmt:message key="backbutton" />" />
+					</form>
+				</div>
+				<div class="col-4"></div>
+			</div>
+		</div>
+	</div>
 </body>
 	</html>
 </fmt:bundle>

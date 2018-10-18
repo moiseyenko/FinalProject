@@ -9,24 +9,27 @@
 
 			<form action="${pageContext.request.contextPath}/controller"
 				method="post">
-				<input type="hidden" name="command" value="to_login" />
-				<input class="btn btn-lg btn-primary btn-block" type="submit" value="<fmt:message key="login" />" size="20" />
+				<input type="hidden" name="command" value="to_login" /> <input
+					class="btn btn-lg btn-primary btn-block" type="submit"
+					value="<fmt:message key="login" />" size="20" />
 			</form>
 
 			<form action="${pageContext.request.contextPath}/controller"
 				method="post">
-				<input type="hidden" name="command" value="to_signup" />
-				<input class="btn btn-block btn-outline-primary" type="submit" value="<fmt:message key="signup" />" size="20" />
+				<input type="hidden" name="command" value="to_signup" /> <input
+					class="btn btn-block btn-outline-primary" type="submit"
+					value="<fmt:message key="signup" />" size="20" />
 			</form>
 
 		</c:when>
 		<c:otherwise>
-			${sessionData.login}
-			
+			<h2 class="std-text-color text-center">${sessionData.login}</h2>
+
 			<form action="${pageContext.request.contextPath}/controller"
 				method="post">
-				<input type="hidden" name="command" value="logout" />
-				<input class="btn btn-lg btn-primary btn-block" type="submit" value="<fmt:message key="logout" />" />
+				<input type="hidden" name="command" value="logout" /> <input
+					class="btn btn-lg btn-primary btn-block" type="submit"
+					value="<fmt:message key="logout" />" />
 			</form>
 
 			<c:choose>
@@ -34,15 +37,16 @@
 					<form action="${pageContext.request.contextPath}/controller"
 						method="post">
 						<input type="hidden" name="command" value="back_to_admin_main" />
-						<input class="btn btn-block btn-outline-primary" type="submit" value="<fmt:message key="toadminmain" />"
-							size="20" />
+						<input class="btn btn-block btn-outline-primary" type="submit"
+							value="<fmt:message key="toadminmain" />" size="20" />
 					</form>
 				</c:when>
 				<c:otherwise>
 					<form action="${pageContext.request.contextPath}/controller"
 						method="post">
 						<input type="hidden" name="command" value="back_to_client_main" />
-						<input class="btn btn-block btn-outline-primary" type="submit" value="<fmt:message key="toclientmain" />" />
+						<input class="btn btn-block btn-outline-primary" type="submit"
+							value="<fmt:message key="toclientmain" />" />
 					</form>
 				</c:otherwise>
 			</c:choose>

@@ -15,38 +15,52 @@
 </head>
 <body>
 	<jsp:include page="/locale" />
-	<br />
-	<hr />
-	<form action="${pageContext.request.contextPath}/controller"
-		method="post">
-		<input type="hidden" name="command" value="change_login" />
-		<table>
-			<tr>
-				<td><fmt:message key="labelnewlogin" />:</td>
-				<td><input type="text" name="newLogin" autocomplete="off"
-						pattern="^[a-zA-ZА-Яа-я0-9_-]{3,25}$"
-						title="<fmt:message key="message.loginsignuperror" bundle="${ rb }" />" />
-					${errorLoginValidateMessage }${errorChangeLoginMessage }</td>
-			</tr>
-			<tr>
-				<td><fmt:message key="password" />:</td>
-				<td><input type="password" name="password" autocomplete="off" />
-					${errorCheckLoginPasswordMessage }</td>
-			</tr>
-			<tr>
-				<td><input type="submit"
-						value="<fmt:message key="submitchangelogin" />" size="20" /></td>
-			</tr>
-		</table>
-	</form>
-	<hr />
-	<form action="${pageContext.request.contextPath}/controller"
-		method="post">
-		<input type="hidden" name="command"
-			value="to_change_personal_data" />
-		<input type="submit" value="<fmt:message key="backbutton" />"
-			size="20" />
-	</form>
+	<div class="container justify-content-center">
+		<jsp:include page="/loginlogout" />
+		<div class="container justify-content-center">
+			<div class="row justify-content-center">
+				<div class="col-4"></div>
+				<div class="col">
+					<form action="${pageContext.request.contextPath}/controller"
+						method="post">
+						<input type="hidden" name="command" value="change_login" />
+						<div class="input-group mb-3">
+							<div class="input-group-prepend">
+								<span class="input-group-text fixed-input-group"
+									id="basic-addon1"><fmt:message key="labelnewlogin" /></span>
+							</div>
+							<input type="text" class="form-control" name="newLogin"
+								pattern="^[a-zA-ZА-Яа-я0-9_-]{3,25}$"
+								title="<fmt:message key="message.loginsignuperror" bundle="${ rb }" />"
+								aria-describedby="basic-addon1">
+						</div>
+						<div class="text-danger text-center">${errorLoginValidateMessage }${errorChangeLoginMessage }</div>
+						<div class="input-group mb-3">
+							<div class="input-group-prepend">
+								<span class="input-group-text fixed-input-group"
+									id="basic-addon1"><fmt:message key="password" /></span>
+							</div>
+							<input type="password" class="form-control" name="password"
+								pattern="^[a-zA-ZА-Яа-я0-9_-]{3,25}$"
+								title="<fmt:message key="message.loginsignuperror" bundle="${ rb }" />"
+								aria-describedby="basic-addon1" autocomplete="off">
+						</div>
+						<div class="text-danger text-center">${errorCheckLoginPasswordMessage }</div>
+						<input class="btn btn-lg btn-block btn-primary" type="submit"
+							value="<fmt:message key="submitchangelogin" />" />
+					</form>
+					<form action="${pageContext.request.contextPath}/controller"
+						method="post">
+						<input type="hidden" name="command"
+							value="to_change_personal_data" /> <input
+							class="btn btn-block btn-outline-primary" type="submit"
+							value="<fmt:message key="backbutton" />" />
+					</form>
+				</div>
+				<div class="col-4"></div>
+			</div>
+		</div>
+	</div>
 </body>
 	</html>
 </fmt:bundle>
